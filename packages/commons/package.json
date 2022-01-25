@@ -1,0 +1,44 @@
+{
+  "name": "@c19/commons",
+  "version": "0.0.0",
+  "private": true,
+  "description": "bag covid-19 dashboard - commons",
+  "author": "shiftcode GmbH <team@shiftcode.ch>",
+  "contributors": [
+    {
+      "name": "Simon Guggisberg",
+      "email": "simon.guggisberg@shiftcode.ch"
+    },
+    {
+      "name": "Simon Mumenthaler",
+      "email": "simon.mumenthaler@shiftcode.ch"
+    },
+    {
+      "name": "Patrick Suter",
+      "email": "patrick.suter@shiftcode.ch"
+    }
+  ],
+  "sideEffects": false,
+  "main": "./dist/index.js",
+  "module": "./dist/_esm2019/index.js",
+  "typings": "./dist/index.d.ts",
+  "scripts": {
+    "build": "tsc & tsc --outDir ./dist/_esm2019 --module esnext",
+    "build:ci": "rm -rf ./dist && yarn build",
+    "build:watch": "tsc -w",
+    "lint": "yarn lint:src --fix && yarn lint:tests --fix",
+    "lint:ci": "yarn lint:src && yarn lint:tests ",
+    "lint:src": "tslint --project ./tsconfig.json",
+    "lint:tests": "tslint --project tsconfig.spec.json",
+    "precommit": "lint-staged",
+    "prettier": "yarn prettier:base '{src,test}/**/*.ts'",
+    "prettier:base": "prettier --write --config ../../.prettierrc.yml",
+    "prettier:staged": "yarn prettier:base",
+    "test": "jest",
+    "test:ci": "jest"
+  },
+  "dependencies": {
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {}
+}

@@ -1,0 +1,67 @@
+<div class="geo-unit-data" [class.geo-unit-data--is-tooltip]="isTooltip">
+  <h5 class="geo-unit-data__title">{{ title }}</h5>
+  <p class="geo-unit-data__none-text" *ngIf="noneText">{{ noneText }}</p>
+
+  <ng-container *ngIf="!noneText">
+    <ng-container *ngIf="covidOnly">
+      <p
+        class="geo-unit-data__main"
+        [innerHTML]="
+          'HospCapacity.Card.Geography.Occupation.Covid19'
+            | i18n
+              : {
+                  percentage: (data.percentage_hospBedsCovid || 0 | adminNum),
+                  value: (data.value_hospBedsCovid || 0 | adminNum)
+                }
+        "
+      ></p>
+    </ng-container>
+
+    <ng-container *ngIf="!covidOnly">
+      <p
+        class="geo-unit-data__main"
+        [innerHTML]="
+          'HospCapacity.Card.Geography.Occupation.All' | i18n: { value: data.percentage_hospBedsAll || 0 | adminNum }
+        "
+      ></p>
+
+      <bag-distribution-bar class="geo-unit-data__chart" [entries]="distribution" facet="narrow"></bag-distribution-bar>
+
+      <table class="geo-unit-data__table">
+        <tbody>
+          <tr>
+            <th>
+              <span class="geo-unit-data__box" [style.--color]="colors[0]"></span>
+              {{ 'HospCapacity.Card.BedsCovid.Key' | i18n }}
+            </th>
+            <td>{{ data.value_hospBedsCovid || 0 | adminNum }}</td>
+            <td>{{ data.percentage_hospBedsCovid || 0 | adminNum }}%</td>
+          </tr>
+          <tr>
+            <th>
+              <span class="geo-unit-data__box" [style.--color]="colors[1]"></span>
+              {{ 'HospCapacity.Card.BedsNonCovid.Key' | i18n }}
+            </th>
+            <td>{{ data.value_hospBedsNonCovid || 0 | adminNum }}</td>
+            <td>{{ data.percentage_hospBedsNonCovid || 0 | adminNum }}%</td>
+          </tr>
+          <tr>
+            <th>
+              <span class="geo-unit-data__box" [style.--color]="colors[2]"></span>
+              {{ 'HospCapacity.Card.BedsFree.Key' | i18n }}
+            </th>
+            <td>{{ data.value_hospBedsFree || 0 | adminNum }}</td>
+            <td>{{ data.percentage_hospBedsFree || 0 | adminNum }}%</td>
+          </tr>
+        </tbody>
+        <tfoot>
+          <tr>
+            <th>{{ 'HospCapacity.Card.BedsTotal.Key' | i18n }}</th>
+            <td>{{ data.value_hospBedsCapacity || 0 | adminNum }}</td>
+            <td>100%</td>
+          </tr>
+        </tfoot>
+      </table>
+    </ng-container>
+  </ng-container>
+</div>

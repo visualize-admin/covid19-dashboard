@@ -1,0 +1,31 @@
+<div class="epidemiologic">
+  <bag-select-title
+    #geoSelectTitle
+    [formControl]="detailGeoFilterCtrl"
+    [optionGroups]="detailGeoFilterGroups"
+    [useFullWidthShadow]="int.isIntersecting$ | async"
+    titleKey="Epidemiologic.Title"
+    resetFilterKey="Epidemiologic.ResetGeographyFilter"
+  ></bag-select-title>
+
+  <ng-template [bagMasterDetail]="detailMenuItems$" [stickyHeaderEl]="geoSelectTitle.element" let-item>
+    <bag-histogram-menu
+      *ngIf="item.type === 'histogram'"
+      [data]="item.histogramData"
+      [selectionStartDate]="item.selectionStartDate"
+    ></bag-histogram-menu>
+
+    <ng-container *ngIf="item.type === 'repro'">
+      <bag-histogram-menu-line
+        *ngIf="item.histogramData"
+        [data]="item.histogramData"
+        [extraLabelAt]="1"
+      ></bag-histogram-menu-line>
+      <div *ngIf="!item.histogramData" class="epidemiologic__menu-item-hint">
+        {{ 'Epidemiologic.Menu.Reproduction.NoChFlDataHint' | i18n }}
+      </div>
+    </ng-container>
+  </ng-template>
+
+  <div [bagIntersection]="{ offset: 0 }" #int="bagIntersection"></div>
+</div>

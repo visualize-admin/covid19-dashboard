@@ -1,0 +1,72 @@
+@use 'src/styles/var';
+@use 'src/styles/col';
+@use 'src/styles/text';
+
+bag-geo-unit-hosp-capacity-data {
+  display: block;
+
+  .geo-unit-data {
+    display: flex;
+    flex-direction: column;
+
+    &.geo-unit-data--is-tooltip {
+      .geo-unit-data__title {
+        @include text.tooltipTitle;
+        margin: 0 0 0 0;
+      }
+      .geo-unit-data__none-text {
+        @include text.tooltip;
+      }
+      .geo-unit-data__main {
+        @include text.tooltip;
+      }
+    }
+  }
+
+  .geo-unit-data__title {
+    @include text.boxTitle;
+    margin: 0 0 8px 0;
+  }
+  .geo-unit-data__none-text {
+    @include text.paragraph2;
+  }
+
+  .geo-unit-data__main {
+    @include text.paragraph2;
+    margin-bottom: 4px;
+  }
+
+  .geo-unit-data__chart {
+    margin-bottom: 4px;
+  }
+
+  .geo-unit-data__table {
+    align-self: flex-start;
+    width: 100%;
+    @include text.meta;
+    th {
+      text-align: left;
+      font-weight: var.$font-weight-normal;
+    }
+    td {
+      padding-left: 12px;
+      text-align: right;
+      &:last-of-type {
+        font-weight: var.$font-weight-bold;
+      }
+    }
+    tfoot {
+      tr {
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+      }
+    }
+  }
+
+  .geo-unit-data__box {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    background-color: var(--color);
+  }
+}

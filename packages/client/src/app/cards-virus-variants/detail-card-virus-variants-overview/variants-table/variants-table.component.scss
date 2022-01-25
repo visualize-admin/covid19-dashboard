@@ -1,0 +1,130 @@
+@use 'src/styles/col';
+@use 'src/styles/dim';
+@use 'src/styles/var';
+@use 'src/styles/text';
+
+bag-variants-table {
+  display: block;
+
+  .variants-table {
+    display: grid;
+    grid-gap: 4px 2px;
+    grid-template-columns: minmax(1px, 1fr) max-content max-content;
+    @include text.paragraph2;
+
+    thead,
+    tbody,
+    tr {
+      display: contents;
+    }
+
+    tbody {
+      td,
+      th {
+        padding: 12px 16px;
+      }
+
+      tr:nth-child(odd) {
+        td,
+        th {
+          background-color: var(--c-bg-zebra-1);
+
+          &.variants-table__total--no-bg {
+            background-color: transparent;
+          }
+        }
+      }
+
+      tr:nth-child(even) {
+        td,
+        th {
+          background-color: var(--c-bg-zebra-2);
+
+          &.variants-table__total--no-bg {
+            background-color: transparent;
+          }
+        }
+      }
+
+      th {
+        text-align: left;
+      }
+    }
+  }
+
+  .variants-table__h1-cell {
+    padding: 0 16px;
+    font-weight: var.$font-weight-normal;
+    text-align: left;
+  }
+
+  .variants-table__description {
+    @include text.meta;
+    font-weight: var.$font-weight-normal;
+  }
+
+  .variants-table__value {
+    text-align: right;
+  }
+
+  .variants-table__total {
+    font-weight: bold;
+  }
+
+  .variants-table__th-mobile {
+    display: none;
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .variants-table__th-mobile {
+      display: block;
+      @include text.meta;
+      color: var(--c-fg-meta);
+      font-weight: var.$font-weight-normal;
+    }
+
+    .variants-table {
+      grid-gap: 0px;
+      grid-template-columns: repeat(2, 1fr);
+
+      .variants-table__h1-cell--ident {
+        display: none;
+      }
+
+      thead {
+        th {
+          padding: 0px 8px 4px 8px;
+          @include text.meta;
+        }
+      }
+
+      tbody {
+        th {
+          grid-column: span 2;
+          padding: 8px 8px;
+
+          &.variants-table__total--no-bg {
+            text-align: left;
+          }
+        }
+
+        td {
+          padding: 2px 8px;
+        }
+
+        tr > {
+          :not(:first-child) {
+            margin-top: 1px;
+            margin-bottom: 4px;
+          }
+        }
+      }
+    }
+  }
+
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .variants-table {
+      grid-template-columns: minmax(1px, 9fr) minmax(max-content, 1fr) minmax(max-content, 1fr);
+    }
+  }
+}

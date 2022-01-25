@@ -1,0 +1,25 @@
+@use 'src/styles/text';
+@use 'src/styles/mix';
+
+bag-detail-card-vaccination-group-ratio {
+  display: block;
+
+  .detail-card-vaccination-grp-ratio {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-card-vaccination-grp-ratio__lr {
+    @include mix.cardFiltersMainLr;
+  }
+
+  .detail-card-vaccination-grp-ratio__legend {
+    align-self: flex-end;
+    margin-bottom: 8px;
+  }
+
+  .detail-card-vaccination-grp-ratio__meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+}

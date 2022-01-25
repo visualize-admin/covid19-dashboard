@@ -1,0 +1,74 @@
+@use 'src/styles/dim';
+@use 'src/styles/col';
+@use 'src/styles/text';
+
+bag-detail-card-international-quarantine-geography {
+  display: block;
+
+  .detail-card-international-quarantine-geography__legend {
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .detail-card-international-quarantine-geography__map {
+    display: flex;
+    flex-direction: column;
+    margin: 0 var(--card-padding-neg);
+    position: relative;
+    border-top: 1px solid col.$datavis-choropleth-border;
+    border-bottom: 1px solid col.$datavis-choropleth-border;
+  }
+
+  .detail-card-international-quarantine-geography__map-source {
+    @include text.meta;
+    color: var(--c-fg-meta);
+    text-align: right;
+    margin: 4px 0 var(--d-general-spacing);
+  }
+
+  .detail-card-international-quarantine-geography__filter-buttons {
+    position: absolute;
+    top: var(--card-padding);
+    left: var(--card-padding);
+    z-index: 1;
+  }
+
+  .detail-card-international-quarantine-geography__filter-select {
+    margin: var(--card-padding) 0 var(--card-padding) var(--card-padding);
+    align-self: flex-start;
+  }
+
+  @media (max-width: #{dim.$bp-max-sm}) {
+    --card-padding: 16px;
+
+    .detail-card-international-quarantine-geography__filter-select[bag-select] {
+      width: calc(100% - (var(--card-padding) * 2));
+    }
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .detail-card-international-quarantine-geography__filter-buttons {
+      display: none;
+    }
+  }
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .detail-card-international-quarantine-geography__filter-select[bag-select] {
+      display: none;
+    }
+  }
+}
+
+.detail-card-international-quarantine-geography-tooltip {
+  display: flex;
+  flex-direction: column;
+  max-width: 260px;
+}
+.detail-card-international-quarantine-geography-tooltip__title {
+  @include text.tooltipTitle;
+}
+
+.detail-card-international-quarantine-geography-tooltip__value {
+  @include text.tooltip;
+  color: var(--c-fg-tooltip-value);
+}

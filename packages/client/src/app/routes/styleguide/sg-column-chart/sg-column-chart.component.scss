@@ -1,0 +1,9 @@
+@use 'src/styles/text';
+
+bag-sg-column-chart {
+  display: block;
+
+  h2 {
+    @include text.h1;
+  }
+}

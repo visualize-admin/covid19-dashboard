@@ -1,0 +1,61 @@
+<div class="tooltip-with-bounds">
+  <div class="tooltip-with-bounds__title">{{ title }}</div>
+  <ng-template #definitionTpl let-key="key" let-value="value" let-classes="classes" let-ref="ref">
+    <dt [attr.class]="classes">{{ key | i18n: { ref: ref } }}</dt>
+    <dd [attr.class]="classes">{{ value | adminNum: 2:(data.isPercentage ? '%' : '') }}</dd>
+  </ng-template>
+  <dl class="tooltip-with-bounds__values">
+    <ng-template
+      [ngTemplateOutlet]="definitionTpl"
+      [ngTemplateOutletContext]="{
+        key: hasRef ? labels.upperBoundRef : labels.upperBound,
+        value: data.values?.high,
+        ref: data.geoUnit,
+        classes: 'tooltip-with-bounds__value-lowlight'
+      }"
+    >
+    </ng-template>
+    <ng-template
+      [ngTemplateOutlet]="definitionTpl"
+      [ngTemplateOutletContext]="{
+        key: hasRef ? labels.valueRef : labels.value,
+        value: data.values?.value,
+        ref: data.geoUnit
+      }"
+    >
+    </ng-template>
+    <ng-template
+      [ngTemplateOutlet]="definitionTpl"
+      [ngTemplateOutletContext]="{
+        key: hasRef ? labels.lowerBoundRef : labels.lowerBound,
+        value: data.values?.low,
+        ref: data.geoUnit,
+        classes: 'tooltip-with-bounds__value-lowlight'
+      }"
+    >
+    </ng-template>
+    <ng-container *ngIf="has7dayMean">
+      <ng-template
+        [ngTemplateOutlet]="definitionTpl"
+        [ngTemplateOutletContext]="{
+          key: hasRef ? labels.value7dRef : labels.value7d,
+          value: data.values?.value7d,
+          ref: data.geoUnit,
+          classes: 'tooltip-with-bounds__value-top-border'
+        }"
+      ></ng-template>
+    </ng-container>
+    <ng-container *ngIf="hasRef">
+      <ng-template
+        [ngTemplateOutlet]="definitionTpl"
+        [ngTemplateOutletContext]="{
+          key: labels.refValue,
+          value: data.refValue,
+          ref: refGeoUnitLabel,
+          classes: has7dayMean ? '' : 'tooltip-with-bounds__value-top-border'
+        }"
+      >
+      </ng-template>
+    </ng-container>
+  </dl>
+</div>

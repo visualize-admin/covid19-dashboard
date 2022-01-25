@@ -1,0 +1,60 @@
+<ng-template #noChflDataTpl>
+  <div class="detail-card-repro-development__no-data g-content">
+    <p>{{ 'Reproduction.Card.NoChFlDataHint' | i18n }}</p>
+    <a *ngIf="!shareMode" [routerLink]="[]" [queryParams]="chQueryParams">{{
+      'Reproduction.Card.SetFilterToCh' | i18n
+    }}</a>
+  </div>
+</ng-template>
+
+<bag-detail-card
+  titleKey="Reproduction.Card.Development.Title"
+  infoKey="Reproduction.Card.Development.Info"
+  [sources]="data ? [{ sourceKey: 'Commons.Source.RE', date: (data.sourceDate | toDate) }] : []"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [infoAddOnKey]="infoAddOnKey"
+>
+  <ng-container *ngIf="histogramData$ | async as histogramData; else noChflDataTpl">
+    <div class="detail-card-repro-development">
+      <div class="detail-card-repro-development__lr">
+        <select
+          bag-select
+          name="TimeFilter"
+          [attr.aria-label]="'TimeSlotFilter.Label' | i18n"
+          [formControl]="timeSlotFilterCtrl"
+        >
+          <ng-container *ngFor="let opt of timeSlotFilterOptions">
+            <option [ngValue]="opt.val" [attr.selected]="opt.val === timeSlotFilterCtrl.value ? '' : null">
+              {{ opt.key | i18n }}
+            </option>
+          </ng-container>
+        </select>
+        <div class="detail-card-repro-development__lr-part">
+          <bag-chart-legend *ngIf="histogramData.legendPairs" [itemGap]="16">
+            <div
+              *ngFor="let pair of histogramData.legendPairs"
+              bagChartLegendLine
+              [length]="16"
+              [thickness]="pair[2]"
+              [color]="pair[0]"
+            >
+              {{ pair[1] }}
+            </div>
+          </bag-chart-legend>
+          <bag-repro-legend titleKey="Reproduction.Card.Legend.Title"></bag-repro-legend>
+        </div>
+      </div>
+
+      <div class="detail-card-repro-development__meta" [translate]="'Reproduction.Card.Development.DiagramTitle'"></div>
+
+      <bag-histogram-line-ref-re
+        [data]="histogramData.data"
+        (elFocus)="showTooltip($event, histogramData.geoUnit)"
+        (diagramLeave)="hideTooltip()"
+      ></bag-histogram-line-ref-re>
+    </div>
+  </ng-container>
+</bag-detail-card>

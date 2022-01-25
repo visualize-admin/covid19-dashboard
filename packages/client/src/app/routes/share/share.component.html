@@ -1,0 +1,26 @@
+<div class="share-detail" [class.share-detail--export]="isExport" [class.share-detail--sharing]="isSharing">
+  <bag-header *ngIf="isSharing"></bag-header>
+
+  <main class="share-detail__main">
+    <div class="share-detail__nav" *ngIf="isSharing">
+      <h1 class="share-detail__title">
+        {{ 'Page.Title' | i18n }}
+      </h1>
+      <p class="share-detail__sub-title" *ngIf="introArg$ | async as arg">{{ 'Page.Subtitle' | i18n: arg }}</p>
+      <bag-page-notification *ngIf="showGlobalDisclaimer$ | async" class="share-detail__notification">
+        <!-- usage of span on purpose: generates ugly linebreaks otherwise (ssr only) -->
+        <span [translate]="'Commons.GlobalDisclaimer'"></span>
+      </bag-page-notification>
+      <a class="share-detail__link g-default-icon" [routerLink]="['..']" queryParamsHandling="preserve">
+        <sc-svg class="share-detail__link-icon" url="/assets/icon/ic_chevron_right.svg"></sc-svg>
+        {{ 'Commons.BackToDashboard' | i18n }}
+      </a>
+    </div>
+
+    <div class="share-detail__container" id="screenshot-element">
+      <router-outlet></router-outlet>
+    </div>
+  </main>
+
+  <bag-footer *ngIf="isSharing"></bag-footer>
+</div>

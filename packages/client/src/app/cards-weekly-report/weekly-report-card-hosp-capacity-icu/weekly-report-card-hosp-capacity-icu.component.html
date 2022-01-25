@@ -1,0 +1,19 @@
+<bag-detail-card
+  titleKey="WeeklyReport.HospCapacityIcu.Card.Title"
+  infoKey="WeeklyReport.HospCapacityIcu.Card.Info"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.KSD', date: (data.curr.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+>
+  <div class="weekly-report-card-hosp-capacity-icu__view" *ngIf="currentValues$ | async as currentValues">
+    <p *ngIf="currentValues.noData" class="weekly-report-card-hosp-capacity-icu__no-data">
+      {{ 'WeeklyReport.HospCapacityIcu.Card.NoData' | i18n }}
+    </p>
+    <ng-container *ngIf="!currentValues.noData">
+      <bag-weekly-report-hosp-capacity-icu-chart></bag-weekly-report-hosp-capacity-icu-chart>
+    </ng-container>
+  </div>
+</bag-detail-card>

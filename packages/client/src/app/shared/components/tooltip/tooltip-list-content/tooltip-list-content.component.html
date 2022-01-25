@@ -1,0 +1,31 @@
+<div class="tooltip-list-content">
+  <span *ngIf="data.title" class="tooltip-list-content__title">{{ data.title }}</span>
+  <span *ngIf="data.date" class="tooltip-list-content__date">{{ data.date }}</span>
+
+  <span *ngIf="data.noData" class="tooltip-list-content__empty" [translate]="'Commons.NoData'"></span>
+  <span *ngIf="data.noCase" class="tooltip-list-content__empty" [translate]="data.noCaseKey || 'Commons.NoCase'"></span>
+
+  <dl *ngIf="showEntries" class="tooltip-list-content__values">
+    <ng-container *ngFor="let entry of data.entries">
+      <dt
+        [class.tooltip-list-content__colored]="entry.color"
+        [class.tooltip-list-content__colored--mean]="entry.type === 'mean'"
+        [class.tooltip-list-content__colored--ref-mean]="entry.type === 'refMean'"
+        [class.tooltip-list-content__colored--diagonal-line]="entry.type === 'diagLine'"
+        [class.tooltip-list-content__colored--pattern]="entry.pattern"
+        [class.tooltip-list-content__colored--dashed]="entry.dashed"
+        [class.tooltip-list-content__lighten]="entry.lighten"
+        [class.tooltip-list-content__border-below]="entry.borderBelow"
+        [style.--color]="entry.color"
+      >
+        {{ entry.label }}
+      </dt>
+      <dd
+        [class.tooltip-list-content__lighten]="entry.lighten"
+        [class.tooltip-list-content__border-below]="entry.borderBelow"
+      >
+        {{ entry.value }}
+      </dd>
+    </ng-container>
+  </dl>
+</div>

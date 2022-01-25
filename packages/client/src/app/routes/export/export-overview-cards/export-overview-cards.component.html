@@ -1,0 +1,51 @@
+<div id="screenshot-element" [ngSwitch]="cardType">
+  <!-- Case -->
+  <bag-card-overview-case *ngSwitchCase="'covidCase'" [data]="data.covidCase" facet="print"></bag-card-overview-case>
+
+  <!-- Hosp -->
+  <bag-card-overview-hosp *ngSwitchCase="'covidHosp'" [data]="data.covidHosp" facet="print"></bag-card-overview-hosp>
+
+  <!-- Death -->
+  <bag-card-overview-death
+    *ngSwitchCase="'covidDeath'"
+    [data]="data.covidDeath"
+    facet="print"
+  ></bag-card-overview-death>
+
+  <!-- Test -->
+  <bag-card-overview-test *ngSwitchCase="'covidTest'" [data]="data.covidTest" facet="print"></bag-card-overview-test>
+
+  <!-- Contact Tracing -->
+  <bag-card-overview-ct *ngSwitchCase="'covidCt'" [data]="data.covidCt" facet="print"></bag-card-overview-ct>
+
+  <!-- Re-Value -->
+  <bag-card-overview-repro *ngSwitchCase="'covidRe'" [data]="data.covidRe" facet="print"></bag-card-overview-repro>
+
+  <!-- Vaccines -->
+  <bag-card-overview-vaccine
+    *ngSwitchCase="'covidVacc'"
+    [data]="data.covidVacc"
+    facet="print"
+  ></bag-card-overview-vaccine>
+
+  <!-- Certificate -->
+  <bag-card-overview-certificate
+    *ngSwitchCase="'covidCertificates'"
+    [data]="data.covidCertificates"
+    facet="print"
+  ></bag-card-overview-certificate>
+
+  <!--  Virus Variants -->
+  <bag-card-overview-virus-variants
+    *ngSwitchCase="'covidVirusVariants'"
+    [data]="data.covidVirusVariants"
+    facet="print"
+  ></bag-card-overview-virus-variants>
+
+  <!--  HospCapacity-->
+  <bag-card-overview-hosp-capacity
+    *ngSwitchCase="'hospCapacity'"
+    [data]="data.hospCapacity"
+    facet="print"
+  ></bag-card-overview-hosp-capacity>
+</div>

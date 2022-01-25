@@ -1,0 +1,31 @@
+<table class="warnings-list">
+  <thead *ngIf="title">
+    <tr>
+      <th colspan="2">{{ title }}</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let entry of entries; let ix = index">
+      <tr
+        [class.warnings-list__row--zero]="entry.severity === WarningSeverity.ZERO"
+        [class.warnings-list__row--low]="entry.severity === WarningSeverity.LOW"
+        [class.warnings-list__row--medium]="entry.severity === WarningSeverity.MED"
+        [class.warnings-list__row--high]="entry.severity === WarningSeverity.HIGH"
+        [class.warnings-list__row--group-with-next]="entry.group === entries[ix + 1]?.group"
+      >
+        <th class="warnings-list__label">{{ entry.label }}</th>
+        <td class="warnings-list__info">
+          <span>{{ entry.info }}</span>
+          <sc-svg
+            class="warnings-list__icon"
+            [url]="
+              entry.severity === WarningSeverity.ZERO
+                ? '/assets/icon/ic_check-round.svg'
+                : '/assets/icon/ic_warning.svg'
+            "
+          ></sc-svg>
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>

@@ -1,0 +1,40 @@
+@use 'src/styles/text';
+@use 'src/styles/col';
+@use 'src/styles/dim';
+
+:host {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+
+  & > h3 {
+    @include text.h1;
+    margin-bottom: 16px;
+  }
+
+  .detail__title-desc {
+    margin: -12px 0 16px 0;
+    color: var(--c-fg-page);
+  }
+
+  & > p {
+    @include text.paragraph1;
+    margin-bottom: var(--d-page-side-gap);
+    max-width: dim.$paragraph-max-length;
+    color: var(--c-fg-intro);
+  }
+
+  .detail__toggles {
+    align-self: flex-start;
+    margin-bottom: var(--d-page-side-gap);
+  }
+
+  .detail__cards {
+    display: grid;
+    row-gap: var(--d-page-side-gap);
+    grid-template-columns: 100%;
+    & > * {
+      max-width: 100%;
+    }
+  }
+}

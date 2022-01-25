@@ -1,0 +1,45 @@
+@use 'src/styles/col';
+@use 'src/styles/text';
+@use 'src/styles/layout';
+@use 'src/styles/dim';
+
+:host {
+  display: block;
+
+  .weekly-report {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--c-divider);
+    background: var(--c-bg-page);
+  }
+
+  .weekly-report__header {
+    background-color: var(--c-bg-page);
+    border-bottom: 1px solid var(--c-divider);
+    padding-bottom: 24px;
+    @include layout.container(dim.$detail-container);
+  }
+
+  .weekly-report__header__source {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  .weekly-report__header__intro {
+    margin: 16px 0;
+    @include text.paragraph1;
+    color: var(--c-fg-intro);
+    max-width: dim.$paragraph-max-length;
+  }
+
+  .weekly-report__download-link {
+    display: flex;
+    padding: 8px 0;
+  }
+
+  .weekly-report__download-link-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+}

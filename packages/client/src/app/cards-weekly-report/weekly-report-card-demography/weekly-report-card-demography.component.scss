@@ -1,0 +1,23 @@
+@use 'src/styles/dim';
+@use 'src/styles/mix';
+
+bag-weekly-report-card-demography {
+  display: block;
+
+  .weekly-report-card-demography__view {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .weekly-report-card-demography__view-filter {
+    margin-top: 8px;
+    margin-bottom: 8px;
+    align-self: flex-end;
+    @media (max-width: #{dim.$bp-max-md}) {
+      align-self: flex-start;
+    }
+  }
+  .weekly-report-card-demography__no-data {
+    @include mix.noDetailCardContent;
+  }
+}

@@ -1,0 +1,14 @@
+@use 'src/styles/mix';
+
+bag-weekly-report-card-summary {
+  display: block;
+
+  .weekly-report-card-summary__view {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .weekly-report-card-summary__no-data {
+    @include mix.noDetailCardContent;
+  }
+}

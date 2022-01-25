@@ -1,0 +1,169 @@
+<ng-template #tooltip let-title="title" let-noneHint="noneHint" let-dailyData="dailyData" let-covidOnly="covidOnly">
+  <bag-geo-unit-hosp-capacity-data
+    [isTooltip]="true"
+    class="detail-card-capacity-geography-tooltip"
+    [title]="title"
+    [noneText]="noneHint"
+    [covidOnly]="covidOnly"
+    [data]="dailyData"
+  ></bag-geo-unit-hosp-capacity-data>
+</ng-template>
+
+<bag-detail-card
+  titleKey="HospCapacity.Card.Geography.Title"
+  [sources]="[{ sourceKey: 'Commons.Source.KSD', date: (data.sourceDate | toDate) }]"
+  [infoKey]="infoKey"
+  [infoAddOnKey]="infoAddOnKey"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [hideInfo]="hideInfo"
+>
+  <div class="detail-card-capacity-geography">
+    <div class="detail-card-capacity-geography__lr-filters">
+      <ng-container *ngIf="facet !== 'print'">
+        <label id="geo-view-filter-label" class="cdk-visually-hidden">{{ 'GeoViewFilter.Label' | i18n }}</label>
+        <bag-toggle-button-list
+          aria-labelledby="geo-view-filter-label"
+          name="geoViewFilter"
+          [formControl]="geoViewFilterCtrl"
+        >
+          <ng-container *ngFor="let opt of geoViewFilterOptions">
+            <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+          </ng-container>
+        </bag-toggle-button-list>
+      </ng-container>
+      <ng-container *ngIf="geoMapData$ | async as data">
+        <bag-toggle-button-list
+          [formControl]="hospOccupancyFilterCtrl"
+          [attr.aria-label]="'HospCapacity.OccupancyFilter.Label' | i18n"
+          class="detail-card-capacity-geography__filter-buttons"
+        >
+          <bag-toggle-button *ngFor="let opt of hospOccupancyFilterOptions" [value]="opt.val">{{
+            opt.key | i18n
+          }}</bag-toggle-button>
+        </bag-toggle-button-list>
+        <select
+          bag-select
+          name="OccupancyFilter"
+          [attr.aria-label]="'HospCapacity.OccupancyFilter.Label' | i18n"
+          [formControl]="hospOccupancyFilterCtrl"
+          class="detail-card-capacity-geography__filter-select"
+        >
+          <ng-container *ngFor="let opt of hospOccupancyFilterOptions">
+            <option [ngValue]="opt.val" [attr.selected]="opt.val === hospOccupancyFilterCtrl.value ? '' : null">
+              {{ opt.key | i18n }}
+            </option>
+          </ng-container>
+        </select>
+      </ng-container>
+    </div>
+
+    <ng-container *ngIf="geoMapData$ | async as data">
+      <div class="detail-card-capacity-geography__lr">
+        <div class="detail-card-capacity-geography__selected-unit" *ngIf="infoData$ | async as infoData">
+          <!-- key for Intensivstationen / Gesamt Spital Kapazität-->
+          <bag-geo-unit-hosp-capacity-data
+            [title]="infoData.title"
+            [noneText]="infoData.noneHint"
+            [covidOnly]="infoData.covidOnly"
+            [data]="infoData.dailyData"
+          ></bag-geo-unit-hosp-capacity-data>
+        </div>
+        <bag-color-legend
+          [min]="data.min"
+          [max]="data.max"
+          [isPercentage]="true"
+          titleKey="HospCapacity.Card.Geography.Legend.Title"
+          [noCasesKey]="data.isNotExisting ? noneAbbrKey : undefined"
+          [noDataKey]="data.hasNoData ? 'Commons.NoData' : undefined"
+          [scaleColors]="scaleColors"
+        ></bag-color-legend>
+      </div>
+
+      <bag-choropleth
+        [facet]="facet"
+        [extendedFeatureCollection]="data.featureCollection"
+        [selectedGeoUnit]="data.geoUnitSelection"
+        [fillFn]="getFill"
+        (elMouseEnter)="showTooltip($event, data)"
+        (diagramMouseLeave)="hideTooltip()"
+      ></bag-choropleth>
+    </ng-container>
+
+    <ng-container *ngIf="geoTableData$ | async as geoTableData">
+      <table class="detail-card-capacity-geography-table">
+        <thead>
+          <tr class="detail-card-capacity-geography-table__h2">
+            <td><!-- row title col --></td>
+            <th class="detail-card-capacity-geography-table__h2-bar" scope="col">
+              {{ 'HospCapacity.Card.Occupation.Key' | i18n }}
+            </th>
+            <th class="detail-card-capacity-geography-table__h2-val" scope="col">
+              {{ 'HospCapacity.Card.BedsCovid.Key' | i18n }}
+            </th>
+            <th class="detail-card-capacity-geography-table__h2-val" scope="col">
+              {{ 'HospCapacity.Card.BedsNonCovid.Key' | i18n }}
+            </th>
+            <th class="detail-card-capacity-geography-table__h2-val" scope="col">
+              {{ 'HospCapacity.Card.BedsFree.Key' | i18n }}
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <ng-container *ngFor="let row of geoTableData; let ix = index">
+            <tr
+              [style.--row]="ix + 1"
+              class="detail-card-capacity-geography-table__row"
+              [class.detail-card-capacity-geography-table__row--large-padding]="ix === 0"
+              [class.detail-card-capacity-geography-table__row--large-gap]="ix === 0"
+            >
+              <td
+                class="detail-card-capacity-geography-table__overlay"
+                [class.detail-card-capacity-geography-table__overlay--selected]="row.isSelected"
+              >
+                <!-- todo: make link accessible -->
+                <a
+                  href="#detail"
+                  class="detail-card-capacity-geography-table__overlay-link"
+                  (click)="scrollToDevelopmentCard(row.isSelected)"
+                  [routerLink]="['.']"
+                  [queryParams]="row.queryParams"
+                  queryParamsHandling="merge"
+                ></a>
+              </td>
+              <th class="detail-card-capacity-geography-table__title-cell" scope="row">
+                {{ row.key | i18n }}
+                <span *ngIf="row.noneHint === null"
+                  >{{ 'HospCapacity.Card.BedsTotal.Key' | i18n }}:&ngsp;{{ row.setCapacity.absolute | adminNum }}</span
+                >
+              </th>
+              <td *ngIf="row.noneHint !== null" colspan="4" class="detail-card-capacity-geography-table__bar-cell">
+                {{ row.noneHint }}
+              </td>
+              <ng-container *ngIf="row.noneHint === null">
+                <td
+                  class="detail-card-capacity-geography-table__bar-cell detail-card-capacity-geography-table__bar-cell--secondary"
+                  [style.--w.%]="row.setAll.percentage"
+                >
+                  <b>{{ row.setAll.percentage | adminNum }}%</b><span>{{ row.setAll.absolute | adminNum }}</span>
+                </td>
+                <td class="detail-card-capacity-geography-table__bar-cell" [style.--w.%]="row.setCovid.percentage">
+                  <b>{{ row.setCovid.percentage | adminNum }}%</b><span>{{ row.setCovid.absolute | adminNum }}</span>
+                </td>
+                <td class="detail-card-capacity-geography-table__bar-cell" [style.--w.%]="row.setNonCovid.percentage">
+                  <b>{{ row.setNonCovid.percentage | adminNum }}%</b
+                  ><span>{{ row.setNonCovid.absolute | adminNum }}</span>
+                </td>
+                <td class="detail-card-capacity-geography-table__bar-cell" [style.--w.%]="row.setFree.percentage">
+                  <b>{{ row.setFree.percentage | adminNum }}%</b><span>{{ row.setFree.absolute | adminNum }}</span>
+                </td>
+              </ng-container>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </ng-container>
+  </div>
+</bag-detail-card>

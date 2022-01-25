@@ -1,0 +1,47 @@
+<ng-container *ngIf="viewData$ | async as geoData">
+  <div class="weekly-report-card-geo__lr">
+    <bag-color-legend
+      [min]="geoData.min"
+      [max]="geoData.max"
+      [titleKey]="parent.keys.inzTitle"
+      [noDataKey]="geoData.hasNullValues ? 'Commons.NoData' : null"
+      [noCasesKey]="parent.keys.legendZero"
+      [scaleColors]="scaleColors"
+    ></bag-color-legend>
+  </div>
+
+  <div class="weekly-report-card-geo__two-col">
+    <div>
+      <h5 class="weekly-report-card-geo__subtitle">
+        {{
+          'WeeklyReport.WeekFrom'
+            | i18n: { week: geoData.prevWeek.date | fmtIsoWeek, date: geoData.prevWeek.date | fmtDate }
+        }}
+      </h5>
+      <bag-choropleth
+        [extendedFeatureCollection]="geoData.prevWeek.geoData"
+        [fillFn]="geoData.fillFn"
+        [facet]="parent.facet"
+        [hideZoom]="true"
+        (elMouseEnter)="showTooltip($event, geoData.prevWeek.date)"
+        (diagramMouseLeave)="hideTooltip()"
+      ></bag-choropleth>
+    </div>
+    <div>
+      <h5 class="weekly-report-card-geo__subtitle">
+        {{
+          'WeeklyReport.WeekFrom'
+            | i18n: { week: geoData.currWeek.date | fmtIsoWeek, date: geoData.currWeek.date | fmtDate }
+        }}
+      </h5>
+      <bag-choropleth
+        [extendedFeatureCollection]="geoData.currWeek.geoData"
+        [fillFn]="geoData.fillFn"
+        [facet]="parent.facet"
+        [hideZoom]="true"
+        (elMouseEnter)="showTooltip($event, geoData.currWeek.date)"
+        (diagramMouseLeave)="hideTooltip()"
+      ></bag-choropleth>
+    </div>
+  </div>
+</ng-container>

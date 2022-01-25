@@ -1,0 +1,23 @@
+<bag-detail-card-vacc-doses-vaccine
+  *ngIf="isVaccDoses"
+  [hideResetBtn]="true"
+  [facet]="facet"
+  [data]="dosesData"
+  [infoAddOnKey]="introKey"
+></bag-detail-card-vacc-doses-vaccine>
+
+<bag-detail-card-vacc-persons-vaccine
+  *ngIf="isVaccPersons"
+  [hideResetBtn]="true"
+  [facet]="facet"
+  [data]="personsData"
+  [infoAddOnKey]="introKey"
+></bag-detail-card-vacc-persons-vaccine>
+
+<bag-detail-card-vacc-status-vaccine
+  *ngIf="isVaccStatus"
+  [hideResetBtn]="true"
+  [facet]="facet"
+  [data]="vaccinationStatusData"
+  [infoAddOnKey]="introKey"
+></bag-detail-card-vacc-status-vaccine>

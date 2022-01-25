@@ -1,0 +1,59 @@
+<ng-template #tooltip let-title="title" let-values="values">
+  <div style="min-width: 200px">
+    <div>{{ title }}</div>
+    <div *ngFor="let value of values">{{ value | adminNum: 2 }}</div>
+  </div>
+</ng-template>
+
+<button (click)="changeData()">changeData</button>
+
+<h2>Histogram Preview</h2>
+<bag-histogram-preview [data]="previewData"></bag-histogram-preview>
+
+<h2>Histogram Menu</h2>
+<bag-histogram-menu [data]="menuData" [selectionStartDate]="selectionStartDate"></bag-histogram-menu>
+
+<h2>Histogram Detail</h2>
+<bag-histogram-detail
+  [data]="detailData"
+  [barColors]="barColors"
+  [lineColors]="['#fc0', '#f00']"
+  [lineThickness]="[4, 2]"
+></bag-histogram-detail>
+
+<h2>Line Chart</h2>
+<bag-histogram-line
+  [data]="lineData"
+  [spanGaps]="[spanGapsCtrl.value]"
+  [colors]="['red', 'blue', 'green']"
+></bag-histogram-line>
+
+<h2>Area Chart</h2>
+<bag-histogram-area
+  [data]="areaData"
+  [yTickCount]="4"
+  [noOffsetX]="true"
+  [colors]="['#3E783F', '#96B993']"
+  [areaOpacities]="[0.6, 0.4]"
+></bag-histogram-area>
+
+<h2>Area Stack Chart</h2>
+<bag-histogram-area-stack
+  [data]="areaStackData"
+  [yTickCount]="4"
+  [noOffsetX]="true"
+  [showLines]="false"
+  [yLabelFormatter]="percentageFmt"
+  (elFocus)="showHistogramAreaStackTooltip($event)"
+  (diagramLeave)="hideTooltip()"
+  [focusPosYCenter]="true"
+  [spanGaps]="[true, true, true]"
+  [colors]="['#1A4D1B', '#3E783F', '#96B993']"
+></bag-histogram-area-stack>
+
+<div>
+  <label for="span-gap-ctrl-field">span gaps</label
+  ><input type="checkbox" id="span-gap-ctrl-field" [formControl]="spanGapsCtrl" />
+</div>
+
+<button (click)="changeData()">changeData</button>

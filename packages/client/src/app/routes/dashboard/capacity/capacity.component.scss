@@ -1,0 +1,20 @@
+@use 'src/styles/col';
+@use 'src/styles/layout';
+@use 'src/styles/dim';
+@use 'src/styles/var';
+@use 'src/styles/text';
+
+:host {
+  display: block;
+
+  .capacity {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--c-divider);
+    background: var(--c-bg-page);
+  }
+
+  .capacity__distribution-bar {
+    padding: 12px 4px 4px 0;
+  }
+}

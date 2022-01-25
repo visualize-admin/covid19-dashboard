@@ -1,0 +1,69 @@
+<ng-template #noDataTxtTpl>{{ 'Commons.NoData.Abbr' | i18n }}</ng-template>
+
+<table class="weekly-compare-table" [style.--ref0w.%]="ref1w" [style.--ref1w.%]="ref2w">
+  <thead>
+    <tr class="weekly-compare-table__h1">
+      <td><!-- row title col --></td>
+      <th colspan="2" scope="colgroup">{{ val0Header }}</th>
+      <th colspan="3" scope="colgroup">{{ val1Header }}</th>
+    </tr>
+    <tr class="weekly-compare-table__h2">
+      <td><!-- row title col --></td>
+      <th class="weekly-compare-table__h2-bar" scope="col">
+        {{ (isModePercentage ? 'Commons.Percentage' : 'Commons.Inz100K.Abbr') | i18n }}
+      </th>
+      <th class="weekly-compare-table__h2-val" scope="col">{{ 'Commons.Absolute' | i18n }}</th>
+      <th class="weekly-compare-table__h2-bar" scope="col">
+        {{ (isModePercentage ? 'Commons.Percentage' : 'Commons.Inz100K.Abbr') | i18n }}
+      </th>
+      <th class="weekly-compare-table__h2-val" scope="col">{{ 'Commons.Absolute' | i18n }}</th>
+      <th class="weekly-compare-table__h2-val">{{ diffHeader }} ({{ isModePercentage ? 'pp' : '%' }})</th>
+    </tr>
+  </thead>
+  <tbody>
+    <ng-container *ngFor="let entry of entries; trackBy: identifyRowItem; let ix = index">
+      <tr
+        [style.--row]="ix + 1"
+        class="weekly-compare-table__row"
+        [class.weekly-compare-table__row--large-padding]="promoteFirstN > 0 && ix == 0"
+        [class.weekly-compare-table__row--large-gap]="ix > 0 && ix === promoteFirstN"
+      >
+        <th scope="row">{{ entry.label }}</th>
+        <td
+          class="weekly-compare-table__bar-cell weekly-compare-table__bar-cell--0"
+          [class.compare-table__value--ref]="ref1w"
+          [style.--w.%]="entry.set1.barWidth"
+        >
+          <ng-container *ngIf="entry.set1.rel | isDefined; else noDataTxtTpl">
+            {{ entry.set1.rel | adminNum: relToFixed:relSuffix }}
+          </ng-container>
+        </td>
+        <td class="weekly-compare-table__val-cell">
+          <ng-container *ngIf="entry.set1.abs | isDefined; else noDataTxtTpl">
+            {{ entry.set1.abs | adminNum }}
+          </ng-container>
+        </td>
+        <td
+          class="weekly-compare-table__bar-cell weekly-compare-table__bar-cell--1"
+          [class.compare-table__value--ref]="ref2w"
+          [style.--w.%]="entry.set2.barWidth"
+        >
+          <ng-container *ngIf="entry.set2.rel | isDefined; else noDataTxtTpl">
+            {{ entry.set2.rel | adminNum: relToFixed:relSuffix }}
+          </ng-container>
+        </td>
+        <td class="weekly-compare-table__val-cell">
+          <ng-container *ngIf="entry.set2.abs | isDefined; else noDataTxtTpl">
+            {{ entry.set2.abs | adminNum }}
+          </ng-container>
+        </td>
+        <td class="weekly-compare-table__diff">
+          <span>{{ entry.diff !== null && entry.diff > 0 ? '+' : '' }}{{ entry.diff | adminNum: 1 }}</span>
+          <!--          <sc-svg *ngIf="entry.diffIcon === 'incr'" url="/assets/icon/ic_change-incr.svg"></sc-svg>-->
+          <!--          <sc-svg *ngIf="entry.diffIcon === 'same'" url="/assets/icon/ic_change-same.svg"></sc-svg>-->
+          <!--          <sc-svg *ngIf="entry.diffIcon === 'decr'" url="/assets/icon/ic_change-decr.svg"></sc-svg>-->
+        </td>
+      </tr>
+    </ng-container>
+  </tbody>
+</table>

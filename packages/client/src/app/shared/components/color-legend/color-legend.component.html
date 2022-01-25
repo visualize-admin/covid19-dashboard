@@ -1,0 +1,25 @@
+<div class="color-legend">
+  <div class="color-legend__title">{{ titleKey | i18n }}</div>
+
+  <div class="color-legend__entry">
+    <div class="color-legend__stepped-gradient">
+      <ng-container *ngFor="let color of stepColors">
+        <span [style.--color]="color"></span>
+      </ng-container>
+    </div>
+    <div class="color-legend__cases-label">
+      <span>{{ min | adminNum: (isPercentage ? '%' : '') }}</span>
+      <span>{{ max | adminNum: (isPercentage ? '%' : '') }}</span>
+    </div>
+  </div>
+
+  <div class="color-legend__entry" *ngIf="noCasesKey">
+    <div class="color-legend__swatch color-legend__swatch--no-cases"></div>
+    <div>{{ noCasesKey | i18n }}</div>
+  </div>
+
+  <div class="color-legend__entry" *ngIf="noDataKey">
+    <div class="color-legend__swatch color-legend__swatch--no-data"></div>
+    <div>{{ noDataKey | i18n }}</div>
+  </div>
+</div>

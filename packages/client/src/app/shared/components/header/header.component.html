@@ -1,0 +1,32 @@
+<header class="header">
+  <div class="header__logo-title">
+    <a [routerLink]="['/', currentLanguage]" class="header__home">
+      <span class="cdk-visually-hidden">{{ 'MainHeader.TitleLabel' | i18n }}</span>
+      <sc-svg class="header__logo header__logo--full" aria-hidden="true" url="/assets/icon/bund_ch_logo.svg"></sc-svg>
+      <sc-svg class="header__logo header__logo--flag" aria-hidden="true" url="/assets/icon/bund_ch_flag.svg"></sc-svg>
+    </a>
+    <div class="header__title">
+      <a class="header__title-link" [attr.href]="'MainHeader.Title.URL' | i18n" target="_blank" rel="noopener">{{
+        'MainHeader.Title' | i18n
+      }}</a>
+    </div>
+  </div>
+
+  <div class="header__hamburger">
+    <button class="header__hamburger-btn" cdkMonitorElementFocus type="button" (click)="toggleNavBoard()">
+      <sc-svg url="/assets/icon/ic_menu-close-anim.svg" [bagSvgAnimate]="iconAnimState$ | async"></sc-svg>
+    </button>
+  </div>
+
+  <ul class="header__lang-select" *ngIf="urls$ | async as urls">
+    <li *ngFor="let i of urls">
+      <a
+        class="header__lang-link"
+        [class.header__lang-link--active]="i.lang === currentLanguage"
+        [attr.href]="i.altUrl"
+        [attr.lang]="i.lang"
+        >{{ i.lang | uppercase }}</a
+      >
+    </li>
+  </ul>
+</header>

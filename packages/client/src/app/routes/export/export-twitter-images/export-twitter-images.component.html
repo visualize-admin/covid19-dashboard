@@ -1,0 +1,28 @@
+<div id="screenshot-element" [ngSwitch]="exportType">
+  <ng-container *ngSwitchCase="TwitterImages.CASE_TEST">
+    <!-- Case -->
+    <bag-card-overview-case [data]="data.covidCase" facet="print"></bag-card-overview-case>
+    <!-- Test -->
+    <bag-card-overview-test [data]="data.covidTest" facet="print"></bag-card-overview-test>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="TwitterImages.HOSP_DEATH">
+    <!-- Hosp -->
+    <bag-card-overview-hosp [data]="data.covidHosp" facet="print"></bag-card-overview-hosp>
+    <!-- Death -->
+    <bag-card-overview-death [data]="data.covidDeath" facet="print"></bag-card-overview-death>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="TwitterImages.VARAINTS_REPRO">
+    <!-- Variants -->
+    <bag-card-overview-virus-variants [data]="data.covidVirusVariants" facet="print"></bag-card-overview-virus-variants>
+    <!-- Repro -->
+    <bag-card-overview-repro [data]="data.covidRe" facet="print"></bag-card-overview-repro>
+  </ng-container>
+
+  <ng-container *ngSwitchCase="TwitterImages.HOSP_HOSPCAP">
+    <!-- Hosp -->
+    <bag-card-overview-hosp [data]="data.covidHosp" facet="print"></bag-card-overview-hosp>
+    <bag-card-overview-hosp-capacity [data]="data.hospCapacity" facet="print"></bag-card-overview-hosp-capacity>
+  </ng-container>
+</div>

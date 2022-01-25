@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Covid-19 Switzerland | New Coronavirus | Current Situation</title>
+    <link rel="stylesheet" href="browser_not_supported.css" />
+  </head>
+  <body>
+    <div class="header">
+      <table>
+        <tbody>
+          <tr>
+            <td class="header__td__logo"><img class="header__logo" src="/assets/logo.png" /></td>
+            <td class="header__td__title">Federal Office of Public Health FOPH</td>
+            <td class="header__td__lang"><a class="lang" href="browser_not_supported.de.html">DE</a></td>
+            <td class="header__td__lang"><a class="lang" href="browser_not_supported.fr.html">FR</a></td>
+            <td class="header__td__lang"><a class="lang" href="browser_not_supported.it.html">IT</a></td>
+            <td class="header__td__lang"><a class="lang" href="browser_not_supported.rm.html">RM</a></td>
+            <td class="header__td__lang"><a class="lang lang--active" href="browser_not_supported.en.html">EN</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="main">
+      <h1>Covid-19 Switzerland</h1>
+      <p>
+        Your browser is not supported. To explore the data please upgrade to the latest version of Chrome, Firefox,
+        Safari or Edge and try again.
+      </p>
+      <p class="main__p-p">
+        If you would like to know more about the development of COVID-19 in Switzerland and Liechtenstein you can
+        download the latest PDF report below.
+      </p>
+      <a id="dailyreport" href="" download="COVID-19_epidemiological_situation_in_Switzerland.pdf"
+        >Download daily report</a
+      >
+      <script>
+        var link = document.getElementById('dailyreport')
+        if (!window.location.origin) {
+          window.location.origin =
+            window.location.protocol +
+            '//' +
+            window.location.hostname +
+            (window.location.port ? ':' + window.location.port : '')
+        }
+        var origin = window.location.origin
+        link.href = origin + '/api/renderer/pdf?url=' + origin + '/en/export/report'
+      </script>
+    </div>
+
+    <div class="footer">
+      <div class="footer__main">
+        <h2>Additional information</h2>
+        <ul>
+          <li>
+            <a
+              target="_blank"
+              href="https://www.bag.admin.ch/bag/en/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov.html"
+              >Federal Office of Public Health</a
+            >
+          </li>
+          <li>
+            <a
+              target="_blank"
+              href="https://www.experimental.bfs.admin.ch/expstat/en/home/innovative-methods/swisscovid-app-monitoring.html"
+              >More information about SwissCovid app</a
+            >
+          </li>
+          <li>
+            <a
+              target="_blank"
+              href="https://www.bag.admin.ch/bag/en/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/massnahmen-des-bundes.html"
+              >New coronavirus: Measures and ordinances</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="footer__addon">
+        <table>
+          <tbody>
+            <tr>
+              <td class="footer__td__title">Federal Office of Public Health FOPH</td>
+              <td class="footer__td__link">
+                <a
+                  target="_blank"
+                  href="https://www.bag.admin.ch/bag/en/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/faq-kontakte-downloads/kontake-neues-coronavirus.html"
+                  >Contact</a
+                >
+              </td>
+              <td class="footer__td__link">
+                <a target="_blank" href="https://www.admin.ch/gov/en/start/terms-and-conditions.html"
+                  >Legal framework</a
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

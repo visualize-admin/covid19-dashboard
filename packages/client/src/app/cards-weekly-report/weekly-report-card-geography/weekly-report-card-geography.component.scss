@@ -1,0 +1,83 @@
+@use 'src/styles/dim';
+@use 'src/styles/col';
+@use 'src/styles/mix';
+@use 'src/styles/var';
+@use 'src/styles/layout';
+@use 'src/styles/text';
+
+bag-weekly-report-card-geography {
+  display: block;
+
+  .weekly-report-card-geo {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .weekly-report-card-geo__lr {
+    @include layout.leftRight;
+  }
+
+  .weekly-report-card-geo__no-data {
+    @include mix.noDetailCardContent;
+  }
+
+  --static-box-max-width: #{dim.$paragraph-max-length};
+  @media (max-width: #{dim.$bp-max-sm}) {
+    --static-box-max-width: 100%;
+  }
+
+  .weekly-report-card-geo__static-box {
+    @include mix.geoInfoBox;
+    max-width: var(--static-box-max-width);
+    align-self: flex-start;
+    margin-top: 8px;
+    color: var(--c-fg-box-default);
+    table {
+      thead {
+        th {
+          @include text.meta;
+          font-weight: var.$font-weight-normal;
+          color: var(--c-fg-meta);
+          text-align: right;
+          padding-left: 16px;
+          vertical-align: bottom;
+        }
+      }
+
+      tbody {
+        @include text.paragraph2;
+        color: var(--c-fg-box-default);
+
+        tr {
+          &:first-child {
+            border-bottom: 1px solid var(--c-divider-light);
+            border-top: 1px solid var(--c-divider-light);
+
+            th,
+            td {
+              padding-top: 4px;
+              padding-bottom: 4px;
+            }
+          }
+        }
+
+        th {
+          text-align: left;
+          font-weight: var.$font-weight-normal;
+        }
+
+        td {
+          text-align: right;
+          font-weight: var.$font-weight-bold;
+          padding-left: 16px;
+          white-space: nowrap;
+        }
+      }
+    }
+  }
+  .weekly-report-card-geo__static-box-title {
+    font-weight: var.$font-weight-bold;
+    @include text.paragraph1;
+    margin: 0 0 8px 0;
+  }
+}

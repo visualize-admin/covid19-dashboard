@@ -1,0 +1,251 @@
+<bag-detail-card
+  titleKey="Vaccination.Card.Demography.Title"
+  [infoKey]="keys.info"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: (data.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [hideInfo]="hideInfo"
+>
+  <ng-container *ngIf="demographyData$ | async as demoData">
+    <div class="detail-card-vacc-persons-demography__chart-list">
+      <div>
+        <h5 class="detail-card-vacc-persons-demography__subtitle">
+          {{ 'Vaccination.Card.Demography.Age.Title' | i18n }}
+        </h5>
+        <div class="detail-card-vacc-persons-demography__gender-lr">
+          <!-- vacc persons filter -->
+          <select
+            bag-select
+            [attr.aria-label]="'VaccAgeGroupClassificationFilter.Label' | i18n"
+            name="ageGroupClassificationFilter"
+            [formControl]="ageGroupClassificationFilterCtrl"
+          >
+            <ng-container *ngFor="let opt of ageGroupClassificationFilterOptions">
+              <option
+                [ngValue]="opt.val"
+                [attr.selected]="opt.val === ageGroupClassificationFilterCtrl.value ? '' : null"
+              >
+                {{ opt.key | i18n }}
+              </option>
+            </ng-container>
+          </select>
+        </div>
+
+        <div class="detail-card-vacc-persons-demography__infobox">
+          <div class="detail-card-vacc-persons-demography__infobox-header">
+            <h5 class="detail-card-vacc-persons-demography__infobox-title">{{ demoData.infoBoxData.title }}</h5>
+            <bag-chart-legend [itemGap]="16">
+              <div
+                *ngFor="let pair of demoData.infoBoxData.histoLegendPairs"
+                bagChartLegendSquare
+                [color]="pair[0]"
+                [translate]="pair[1]"
+                [pattern]="pair[2]"
+              ></div>
+            </bag-chart-legend>
+          </div>
+          <span *ngIf="demoData.infoBoxData.subTitle" class="detail-card-vacc-persons-demography__infobox-sub-title">{{
+            demoData.infoBoxData.subTitle
+          }}</span>
+          <div
+            class="detail-card-vacc-persons-demography__infobox-buckets"
+            [class.detail-card-vacc-persons-demography__infobox-buckets--vacc-strategy]="
+              demoData.infoBoxData.byVaccStrategy
+            "
+          >
+            <div *ngFor="let bucket of demoData.infoBoxData.buckets">
+              <div class="detail-card-vacc-persons-demography__infobox-bucket-header">
+                <p>{{ bucket.name | replaceHyphenWithEnDash }}</p>
+                <p [style.color]="colorBooster">{{ bucket.booster | adminNum: 2:'%' }}</p>
+                <p [style.color]="demoData.infoBoxData.histoLegendPairs[1][0]">{{ bucket.full | adminNum: 2:'%' }}</p>
+                <p [style.color]="demoData.infoBoxData.histoLegendPairs[2][0]">
+                  {{ bucket.partial | adminNum: 2:'%' }}
+                </p>
+              </div>
+              <bag-distribution-bar [entries]="bucket.distribution" facet="narrow"></bag-distribution-bar>
+            </div>
+          </div>
+        </div>
+
+        <div
+          class="detail-card-vacc-persons-demography__lr"
+          [class.detail-card-vacc-persons-demography__lr--is-detail]="isDetailPage"
+          [class.detail-card-vacc-persons-demography__lr--is-not-detail]="!isDetailPage"
+        >
+          <!-- full or min one doses filter -->
+          <select
+            bag-select
+            [attr.aria-label]="'Vaccination.VaccPersons.Card.Demography.Filter.Label' | i18n"
+            name="vaccPersonsFilter"
+            [formControl]="vaccPersonsAgeFilterCtrl"
+          >
+            <ng-container *ngFor="let opt of vaccPersonsAgeFilterOptions">
+              <option [ngValue]="opt.val" [attr.selected]="opt.val === vaccPersonsAgeFilterCtrl.value ? '' : null">
+                {{ opt.key | i18n }}
+              </option>
+            </ng-container>
+          </select>
+
+          <!-- cumulative filter -->
+          <select
+            [class.detail-card-vacc-persons-demography__mr-auto]="!demoData.showCumulative"
+            bag-select
+            [attr.aria-label]="'Vaccination.CumulativeFilter.Label' | i18n"
+            name="detailCumulativeFilter"
+            [formControl]="cumulativeFilterCtrl"
+          >
+            <ng-container *ngFor="let opt of cumulativeFilterOptions">
+              <option [ngValue]="opt.val" [attr.selected]="opt.val === cumulativeFilterCtrl.value ? '' : null">
+                {{ opt.key | i18n }}
+              </option>
+            </ng-container>
+          </select>
+
+          <!-- ageRange filter -->
+          <bag-multi-select
+            *ngIf="demoData.showCumulative"
+            [formControl]="ageRangeFilterCtrl"
+            [labelFn]="demoViewMultiSelectFilterLabelFn"
+            [options]="ageRangeFilterOptions"
+          >
+          </bag-multi-select>
+
+          <!-- relativity filter -->
+          <bag-toggle-button-list
+            class="detail-card-vacc-persons-demography__relativity-filter--toggle"
+            [attr.aria-label]="'RelAbsFilter.Label' | i18n"
+            name="detailRelativityFilter"
+            [formControl]="vaccPersonsRelativityFilterCtrl"
+          >
+            <ng-container *ngFor="let opt of vaccPersonsRelativityFilterOptions">
+              <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+            </ng-container>
+          </bag-toggle-button-list>
+          <select
+            bag-select
+            class="detail-card-vacc-persons-demography__relativity-filter--select"
+            [attr.aria-label]="'RelAbsFilter.Label' | i18n"
+            name="detailRelativityFilter"
+            [formControl]="vaccPersonsRelativityFilterCtrl"
+          >
+            <ng-container *ngFor="let opt of vaccPersonsRelativityFilterOptions">
+              <option
+                [ngValue]="opt.val"
+                [attr.selected]="opt.val === vaccPersonsRelativityFilterCtrl.value ? '' : null"
+              >
+                {{ opt.key | i18n }}
+              </option>
+            </ng-container>
+          </select>
+        </div>
+
+        <!-- Age Distribution Chart -->
+        <ng-container *ngIf="demoData.showWeeklyValues">
+          <div class="detail-card-vacc-persons-demography__chart-intro">
+            <bag-color-legend
+              class="detail-card-geo__legend"
+              [min]="demoData.matrixData.age.min"
+              [max]="demoData.matrixData.age.max"
+              [titleKey]="demoData.ageKeys.legendKey"
+              [noCasesKey]="demoData.matrixData.age.hasZeroValues ? demoData.ageKeys.legendNoCasesKey : null"
+              [noDataKey]="demoData.matrixData.age.hasNullValues ? 'Commons.NoData' : null"
+              [scaleColors]="heatmapScaleColors"
+              [isPercentage]="demoData.isRel"
+              [colorTicks]="6"
+            ></bag-color-legend>
+          </div>
+          <bag-matrix-heatmap
+            [data]="demoData.matrixData.age.entries"
+            [fillFn]="demoData.matrixData.ageFillFn"
+            [yLabelFormatter]="matrixYLabelFmt"
+            [yLabelMaxLength]="5"
+            (elFocus)="showMatrixTooltip($event, demoData.isRel, demoData.ageKeys.tooltipKey)"
+            (diagramLeave)="hideTooltip()"
+          ></bag-matrix-heatmap>
+        </ng-container>
+
+        <ng-container *ngIf="demoData.showCumulative">
+          <div class="detail-card-vacc-persons-demography__chart-intro">
+            <bag-chart-legend [itemGap]="16">
+              <div *ngFor="let pair of demoData.histogramData.histoLegendPairs" bagChartLegendSquare [color]="pair[0]">
+                {{ pair[1] | replaceHyphenWithEnDash }}
+              </div>
+            </bag-chart-legend>
+          </div>
+          <div class="detail-card-vacc-persons-demography__chart-meta">
+            {{ demoData.ageKeys.legendKey | i18n }}
+          </div>
+          <bag-histogram-line
+            [data]="demoData.histogramData.data"
+            [focusPosYCenter]="true"
+            [colors]="demoData.histogramData.ageHistoColors"
+            [strokeWidths]="2"
+            [yLabelFormatter]="demoData.isRel ? yLabelFmt : undefined"
+            [disableNoDataBlocks]="true"
+            [withWeeklyValues]="true"
+            (elFocus)="
+              showCumulTooltip(
+                $event,
+                demoData.isRel,
+                demoData.histogramData.histoLegendPairs,
+                demoData.ageKeys.legendNoCasesKey
+              )
+            "
+            (diagramLeave)="hideTooltip()"
+          ></bag-histogram-line>
+        </ng-container>
+      </div>
+
+      <!-- Gender distribution chart -->
+      <div>
+        <h5 class="detail-card-vacc-persons-demography__subtitle">
+          {{ 'Vaccination.Card.Demography.Sex.Title' | i18n }}
+        </h5>
+
+        <div class="detail-card-vacc-persons-demography__gender-lr">
+          <!-- vacc persons filter -->
+          <select
+            bag-select
+            [attr.aria-label]="'Vaccination.VaccPersons.Card.Demography.Filter.Label' | i18n"
+            name="vaccPersonsSexFilter"
+            [formControl]="vaccPersonsSexFilterCtrl"
+          >
+            <ng-container *ngFor="let opt of vaccPersonsSexFilterOptions">
+              <option [ngValue]="opt.val" [attr.selected]="opt.val === vaccPersonsSexFilterCtrl.value ? '' : null">
+                {{ opt.key | i18n }}
+              </option>
+            </ng-container>
+          </select>
+          <bag-chart-legend [itemGap]="16">
+            <div bagChartLegendSquare [color]="colorMale" translate="Commons.Male"></div>
+            <div bagChartLegendSquare [color]="colorUnknown" translate="Commons.Unknown"></div>
+            <div bagChartLegendSquare [color]="colorFemale" translate="Commons.Female"></div>
+            <div
+              *ngIf="demoData.matrixData.gender.hasBucketsAllZero"
+              bagChartLegendSquare
+              noCase
+              [translate]="demoData.sexKeys.legendNoCasesKey"
+            ></div>
+            <div
+              *ngIf="demoData.matrixData.gender.hasNullValues"
+              bagChartLegendSquare
+              noData
+              translate="Commons.NoData"
+            ></div>
+          </bag-chart-legend>
+        </div>
+        <bag-matrix-stack
+          [data]="demoData.matrixData.gender.entries"
+          [yLabelMaxLength]="5"
+          [bucketColors]="stackColors"
+          [rulerAt]="50"
+          (elFocus)="showStackTooltip($event, demoData.sexKeys.legendNoCasesKey)"
+          (diagramLeave)="hideTooltip()"
+        ></bag-matrix-stack>
+      </div>
+    </div>
+  </ng-container>
+</bag-detail-card>

@@ -1,0 +1,152 @@
+<footer class="footer">
+  <div class="footer__main">
+    <div class="footer__info-grid">
+      <div class="footer__info-group">
+        <h2 class="footer__sub-title">{{ 'MainFooter.Info.Title' | i18n }}</h2>
+        <ul class="footer__nav">
+          <li>
+            <a
+              class="footer__nav__link g-default-icon"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="'MainFooter.Info.BAG.URL' | i18n"
+            >
+              {{ 'MainFooter.Info.BAG' | i18n }}
+              <sc-svg class="footer__nav__link__icon" url="/assets/icon/ic_link-external.svg"></sc-svg>
+            </a>
+          </li>
+          <li>
+            <a
+              class="footer__nav__link g-default-icon"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="'MainFooter.Info.App.URL' | i18n"
+            >
+              {{ 'MainFooter.Info.App' | i18n }}
+              <sc-svg class="footer__nav__link__icon" url="/assets/icon/ic_link-external.svg"></sc-svg>
+            </a>
+          </li>
+          <li>
+            <a
+              class="footer__nav__link g-default-icon"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="'MainFooter.Info.MeasuresOrdinances.URL' | i18n"
+            >
+              {{ 'MainFooter.Info.MeasuresOrdinances' | i18n }}
+              <sc-svg class="footer__nav__link__icon" url="/assets/icon/ic_link-external.svg"></sc-svg>
+            </a>
+          </li>
+          <li>
+            <a
+              class="footer__nav__link g-default-icon"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="'MainFooter.Info.Icumonitoring.URL' | i18n"
+            >
+              {{ 'MainFooter.Info.Icumonitoring' | i18n }}
+              <sc-svg class="footer__nav__link__icon" url="/assets/icon/ic_link-external.svg"></sc-svg>
+            </a>
+          </li>
+          <li>
+            <a
+              class="footer__nav__link g-default-icon"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="'MainFooter.Info.Quarantine.URL' | i18n"
+            >
+              {{ 'MainFooter.Info.Quarantine' | i18n }}
+              <sc-svg class="footer__nav__link__icon" url="/assets/icon/ic_link-external.svg"></sc-svg>
+            </a>
+          </li>
+          <li>
+            <a
+              class="footer__nav__link g-default-icon"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="'MainFooter.Info.Travel.URL' | i18n"
+            >
+              {{ 'MainFooter.Info.Travel' | i18n }}
+              <sc-svg class="footer__nav__link__icon" url="/assets/icon/ic_link-external.svg"></sc-svg>
+            </a>
+          </li>
+          <li>
+            <a
+              class="footer__nav__link g-default-icon"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="'MainFooter.Info.Sentinella.URL' | i18n"
+            >
+              {{ 'MainFooter.Info.Sentinella' | i18n }}
+              <sc-svg class="footer__nav__link__icon" url="/assets/icon/ic_link-external.svg"></sc-svg>
+            </a>
+          </li>
+          <li>
+            <a
+              class="footer__nav__link g-default-icon"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="'MainFooter.Info.CHSur.URL' | i18n"
+            >
+              {{ 'MainFooter.Info.CHSur' | i18n }}
+              <sc-svg class="footer__nav__link__icon" url="/assets/icon/ic_link-external.svg"></sc-svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="footer__info-group">
+        <h2 class="footer__sub-title">{{ 'MainFooter.Data.Title' | i18n }}</h2>
+        <ul class="footer__nav" *ngIf="downloads | async as d">
+          <li>
+            <a class="footer__nav__link g-default-icon" [href]="d.data.csv.url" [download]="d.data.csv.filename">
+              {{ 'MainFooter.Data.CSV' | i18n }}
+              <sc-svg class="footer__nav__link__icon" url="/assets/icon/ic_download.svg"></sc-svg>
+            </a>
+          </li>
+          <li>
+            <a class="footer__nav__link g-default-icon" [href]="d.data.json.url" [download]="d.data.json.filename">
+              {{ 'MainFooter.Data.JSON' | i18n }}
+              <sc-svg class="footer__nav__link__icon" url="/assets/icon/ic_download.svg"></sc-svg>
+            </a>
+          </li>
+          <li>
+            <a
+              class="footer__nav__link g-default-icon"
+              target="_blank"
+              rel="noopener"
+              [attr.href]="'MainFooter.Data.OpenData.URL' | i18n"
+            >
+              {{ 'MainFooter.Data.OpenData' | i18n }}
+              <sc-svg class="footer__nav__link__icon" url="/assets/icon/ic_link-external.svg"></sc-svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer__bottom">
+    <p class="footer__bottom__title">{{ 'MainFooter.Data' | i18n }}</p>
+    <nav>
+      <ul class="footer__bottom__nav__list">
+        <li>
+          <a
+            class="g-default footer__bottom__nav__list__link"
+            target="_blank"
+            rel="noopener"
+            [attr.href]="'MainFooter.Contact.URL' | i18n"
+            >{{ 'MainFooter.Contact' | i18n }}</a
+          >
+        </li>
+        <li>
+          <a
+            class="g-default footer__bottom__nav__list__link"
+            target="_blank"
+            rel="noopener"
+            [attr.href]="'MainFooter.Legal.URL' | i18n"
+            >{{ 'MainFooter.Legal' | i18n }}</a
+          >
+        </li>
+      </ul>
+    </nav>
+  </div>
+</footer>

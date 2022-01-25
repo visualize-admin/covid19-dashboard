@@ -1,0 +1,166 @@
+<ng-template
+  #tooltip
+  let-title="title"
+  let-periodStart="periodStart"
+  let-periodEnd="periodEnd"
+  let-heatmapEntries="heatmapEntries"
+  let-unitData="unitData"
+>
+  <div class="detail-card-geo-regions-tooltip">
+    <span class="detail-card-geo-regions-tooltip__title">{{ title }}</span>
+    <span class="detail-card-geo-regions-tooltip__date-range">{{
+      dateLabelFromUnitData(unitData[periodSliderCtrl.value])
+    }}</span>
+    <dl class="detail-card-geo-regions-tooltip__values">
+      <dt>{{ 'DetailCardGeoRegions.Tooltip.CategoryLabel' | i18n }}</dt>
+      <dd>
+        {{
+          'DetailCardGeoRegions.Tooltip.CategoryValue'
+            | i18n: { category: unitData[periodSliderCtrl.value].normalizedCat | replaceHyphenWithEnDash }
+        }}
+      </dd>
+    </dl>
+    <div class="detail-card-geo-regions-tooltip__heat-map">
+      <bag-heatmap-row
+        [entries]="heatmapEntries"
+        [height]="30"
+        [selectedIndex]="periodSliderCtrl.value"
+      ></bag-heatmap-row>
+      <div class="detail-card-geo-regions-tooltip__heat-map-axis">
+        <p>{{ periodStart | fmtDate }}</p>
+        <p>{{ periodEnd | fmtDate }}</p>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<bag-detail-card
+  id="detail-card-geo-regions"
+  titleKey="DetailCardGeoRegions.Title"
+  infoKey="DetailCardGeoRegions.Info"
+  [description]="'DetailCardGeoRegions.Description' | i18n"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: sourceDate$ | async }]"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+>
+  <div
+    class="detail-card-geo-regions"
+    [style.--vh.px]="initialVh || 0"
+    [class.detail-card-geo-regions--no-vh-var]="initialVh === 0"
+    [class.detail-card-geo-regions--print]="facet === 'print'"
+    [class.detail-card-geo-regions--loading]="loading"
+  >
+    <div class="detail-card-geo-regions__lr">
+      <select
+        bag-select
+        [attr.aria-label]="'DetailCardGeoRegions.GeoLevelFilter.Label' | i18n"
+        name="geoLevelFilter"
+        [formControl]="geoLevelFilterCtrl"
+      >
+        <ng-container *ngFor="let opt of geoLevelFilterOptions">
+          <option [ngValue]="opt.val" [attr.selected]="opt.val === geoLevelFilterCtrl.value ? '' : null">
+            {{ opt.key | i18n }}
+          </option>
+        </ng-container>
+      </select>
+
+      <div class="detail-card-geo-regions__legend">
+        <div class="detail-card-geo-regions__legend-title">{{ 'DetailCardGeoRegions.Legend' | i18n }}</div>
+        <bag-chart-legend [itemGap]="8">
+          <ng-container *ngFor="let category of categories">
+            <div bagChartLegendSquare [color]="category.color">{{ category.label | replaceHyphenWithEnDash }}</div>
+          </ng-container>
+        </bag-chart-legend>
+      </div>
+    </div>
+
+    <ng-container *ngIf="geoRegionData$ | async as geoRegionData">
+      <bag-paginator
+        class="detail-card-geo-regions__paginator"
+        [attr.aria-label]="'DetailCardGeoRegions.Paginator.Label' | i18n"
+        [min]="0"
+        [max]="geoRegionData.periodData.length - 1"
+        [value]="periodSliderCtrl.value"
+        (valueChange)="sliderValueChanged($event)"
+      >
+        <div *bagPaginatorContent="let value" class="detail-card-geo-regions__paginator-inner">
+          <span class="detail-card-geo-regions__paginator-title">{{
+            geoRegionData.paginatorOptions[periodSliderCtrl.value].title
+          }}</span>
+          <span class="detail-card-geo-regions__paginator-label">{{
+            geoRegionData.paginatorOptions[periodSliderCtrl.value].label
+          }}</span>
+        </div>
+      </bag-paginator>
+
+      <bag-choropleth-canvas
+        class="detail-card-geo-regions__choropleth"
+        zoomSpaced
+        [extendedFeatureCollection]="geoRegionData.periodData[periodSliderCtrl.value].data.featureCollection"
+        [fillFn]="canvasFillFn"
+        (featureFocus)="showTooltip($event, geoRegionData.fullData, geoRegionData.periodStart, geoRegionData.periodEnd)"
+        (featureBlur)="hideTooltip()"
+      ></bag-choropleth-canvas>
+
+      <p class="detail-card-geo-regions__slider-meta">
+        {{ 'DetailCardGeoRegions.RangeSlider.Meta' | i18n }}
+      </p>
+
+      <bag-range-slider
+        labelKey="DetailCardGeoRegions.RangeSlider.Label"
+        [titleTxt]="geoRegionData.paginatorOptions[periodSliderCtrl.value].label"
+        [descTxt]="
+          'DetailCardGeoRegions.RangeSlider.Category'
+            | i18n
+              : {
+                  category:
+                    geoRegionData.periodData[periodSliderCtrl.value].data.featureCollection.features[0].properties
+                      .category | replaceHyphenWithEnDash
+                }
+        "
+        [min]="0"
+        [max]="geoRegionData.periodData.length - 1"
+        [value]="periodSliderCtrl.value"
+        (valueChange)="sliderValueChanged($event)"
+      >
+        <bag-heatmap-row
+          [entries]="geoRegionData.heatmapEntries"
+          [height]="50"
+          [selectedIndex]="periodSliderCtrl.value"
+        ></bag-heatmap-row>
+      </bag-range-slider>
+
+      <div class="detail-card-geo-regions__slider-axis">
+        <p>{{ geoRegionData.periodStart | fmtDate }}</p>
+        <p>{{ geoRegionData.periodEnd | fmtDate }}</p>
+      </div>
+
+      <div class="detail-card-geo-regions__ixt-ctrls">
+        <button
+          [attr.aria-label]="'DetailCardGeoRegions.PlayPauseBtnLabel' | i18n"
+          class="detail-card-geo-regions__btn g-default-icon"
+          (click)="playOrPause()"
+        >
+          <sc-svg url="/assets/icon/ic_play-pause.svg" [bagSvgAnimate]="svgState$ | async"></sc-svg>
+          <span
+            ><ng-container *ngIf="isRunning$ | async">{{ 'DetailCardGeoRegions.Pause' | i18n }}</ng-container>
+            <ng-container *ngIf="!(isRunning$ | async)">{{ 'DetailCardGeoRegions.Play' | i18n }}</ng-container></span
+          >
+        </button>
+        <div class="detail-card-geo-regions__speed-control">
+          <p>{{ 'DetailCardGeoRegions.SpeedBtn' | i18n }}</p>
+          <bag-toggle-button-list
+            [attr.aria-label]="'DetailCardGeoRegions.SpeedBtnLabel' | i18n"
+            name="speed"
+            [formControl]="speedCtrl"
+          >
+            <ng-container *ngFor="let option of speedOptions">
+              <bag-toggle-button [value]="option.value">{{ option.label }}</bag-toggle-button>
+            </ng-container>
+          </bag-toggle-button-list>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</bag-detail-card>

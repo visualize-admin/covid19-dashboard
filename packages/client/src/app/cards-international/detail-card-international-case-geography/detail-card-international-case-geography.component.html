@@ -1,0 +1,74 @@
+<bag-detail-card
+  titleKey="International.Cases.Card.Geography.Title"
+  infoKey="International.Cases.Card.Geography.Info"
+  [description]="description$ | async"
+  [sources]="[{ sourceKey: 'International.Cases.Card.DataSource', date: (data.sourceDate | toDate) }]"
+  [facet]="facet"
+  [infoAddOnKey]="infoAddOnKey"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+>
+  <div class="detail-card-international-case-geography__lr" *ngIf="geoMapData$ | async as geoMapData">
+    <div class="detail-card-international-case-geography__selected-unit">
+      <bag-geo-unit-int-cases-data
+        [title]="
+          (geoMapData.currentGeoUnit === 'WORLD' ? 'Commons.World' : 'CountryRegionFilter.' + geoMapData.currentGeoUnit)
+            | i18n
+        "
+        [data]="geoMapData.currentGeoUnitData"
+        [dataCh]="geoMapData.dataCH"
+      ></bag-geo-unit-int-cases-data>
+    </div>
+
+    <bag-inz14d-sum-legend
+      titleKey="Commons.Cases.Inz100K"
+      [noDataKey]="geoMapData.withNoData ? 'Commons.NoData' : undefined"
+      [noCasesKey]="geoMapData.withNoCase ? 'Commons.NoCase' : undefined"
+    ></bag-inz14d-sum-legend>
+  </div>
+
+  <div class="detail-card-international-case-geography__map" *ngIf="geoMapData$ | async as geoMapData">
+    <ng-container *ngIf="geoMapData.geoUnitFilter === null && facet !== 'print'">
+      <bag-toggle-button-list
+        [formControl]="mapZoomFilterCtrl"
+        [attr.aria-label]="'International.MapZoomFilter.Label' | i18n"
+        class="detail-card-international-case-geography__filter-buttons"
+      >
+        <ng-container *ngFor="let opt of mapZoomFilterOptions">
+          <bag-toggle-button *ngIf="opt.val !== null" [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+        </ng-container>
+      </bag-toggle-button-list>
+      <select
+        bag-select
+        name="ZoomFilter"
+        [attr.aria-label]="'International.MapZoomFilter.Label' | i18n"
+        [formControl]="mapZoomFilterCtrl"
+        class="detail-card-international-case-geography__filter-select"
+      >
+        <ng-container *ngFor="let opt of mapZoomFilterOptions">
+          <option [ngValue]="opt.val" [attr.selected]="opt.val === mapZoomFilterCtrl.value ? '' : null">
+            {{ opt.key | i18n }}
+          </option>
+        </ng-container>
+      </select>
+    </ng-container>
+    <bag-choropleth
+      [facet]="facet"
+      [extendedFeatureCollection]="geoMapData.featureCollection"
+      [fillFn]="getFill"
+      [countriesWithRegion]="countriesWithRegion"
+      [selectedGeoUnit]="geoMapData.geoUnitFilter"
+      [zoomGeoUnit]="geoMapData.zoomGeoUnit"
+      [zoomToSelection]="true"
+      [zoomMaxExtent]="geoMapData.zoomMaxExtent"
+      [hideDropShadowFilter]="true"
+      (elMouseEnter)="showTooltip($event, geoMapData.dataCH)"
+      (diagramMouseLeave)="hideTooltip()"
+      (zoomedOrMoved)="mapZoomedOrMoved($event)"
+      [zoomFacet]="'spaced'"
+    ></bag-choropleth>
+  </div>
+  <p class="detail-card-international-case-geography__map-source">
+    {{ 'International.Cases.Card.Geography.MapSource' | i18n }}
+  </p>
+</bag-detail-card>

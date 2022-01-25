@@ -1,0 +1,112 @@
+<bag-detail-card
+  [titleKey]="titleKey"
+  [infoKey]="hideInfo ? null : infoKey"
+  [infoAddOnKey]="hideInfo ? null : infoAddOnKey"
+  [warnKey]="hideInfo ? null : warnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: (data.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+>
+  <div class="detail-card-development">
+    <div class="detail-card-development__lr">
+      <select
+        bag-select
+        name="cumulativeFilter"
+        [formControl]="cumulativeFilterCtrl"
+        [attr.aria-label]="'DetailCardDevelopment.Filter.Label' | i18n"
+      >
+        <option [ngValue]="null">{{ 'DetailCardDevelopment.Filter.Daily' | i18n }}</option>
+        <option [ngValue]="CumulativeFilter.TWO_WEEK_SUM" *ngIf="isGdiCase">
+          {{ 'DetailCardDevelopment.Filter.TwoWeekSum' | i18n }}
+        </option>
+        <option [ngValue]="CumulativeFilter.CUMULATIVE">{{ 'DetailCardDevelopment.Filter.Total' | i18n }}</option>
+      </select>
+      <ng-container *ngIf="dailyChart$ | async as dailyChart">
+        <bag-chart-legend [itemGap]="16">
+          <div
+            *ngFor="let bar of dailyChart.legendBarDef"
+            bagChartLegendSquare
+            [color]="bar[0]"
+            [translate]="bar[1]"
+          ></div>
+          <div
+            bagChartLegendLine
+            [color]="dailyChart.histogramDef.mean.color"
+            [translate]="dailyChart.histogramDef.mean.legendKey"
+            [thickness]="4"
+          ></div>
+          <div
+            *ngIf="dailyChart.showRefMean && dailyChart.histogramDef.refMean"
+            bagChartLegendLine
+            [color]="dailyChart.histogramDef.refMean.color"
+            [translate]="dailyChart.histogramDef.refMean.legendKey"
+          ></div>
+          <div *ngIf="dailyChart.hasNoData" bagChartLegendSquare noData [length]="24" translate="Commons.NoData"></div>
+        </bag-chart-legend>
+      </ng-container>
+      <ng-container *ngIf="twoWeekChart$ | async as twoWeek">
+        <div class="detail-card-development__lr-part">
+          <bag-chart-legend [itemGap]="16">
+            <div
+              *ngFor="let line of twoWeek.legendPairs"
+              [length]="16"
+              bagChartLegendLine
+              [color]="line[0]"
+              [thickness]="line[2]"
+            >
+              {{ line[1] }}
+            </div>
+          </bag-chart-legend>
+          <bag-inz14d-sum-legend
+            *ngIf="twoWeek.isInz"
+            titleKey="DetailCardDevelopment.TwoWeekSum.Inz"
+          ></bag-inz14d-sum-legend>
+        </div>
+      </ng-container>
+    </div>
+
+    <ng-container *ngIf="dailyChart$ | async as dailyChart">
+      <p class="detail-card-development__meta">{{ (dailyChart.isInz ? metaInzKey : metaAbsKey) | i18n }}</p>
+      <bag-histogram-detail
+        [data]="dailyChart.data"
+        (elFocus)="showDailyChartTooltip($event, dailyChart.histogramDef, dailyChart.isInz)"
+        (diagramLeave)="hideTooltip()"
+        [barColors]="[dailyChart.histogramDef.value.color, dailyChart.histogramDef.stacked?.color || '#fff']"
+        [lineColors]="[dailyChart.histogramDef.mean.color, dailyChart.histogramDef.refMean?.color || '#fff']"
+        [lineThickness]="[4, 2]"
+      ></bag-histogram-detail>
+    </ng-container>
+
+    <ng-container *ngIf="cumulativeChart$ | async as cumul">
+      <p class="detail-card-development__meta">{{ (cumul.isInz ? metaInzKey : metaAbsKey) | i18n }}</p>
+      <bag-histogram-line
+        [data]="cumul.data"
+        [focusPosYCenter]="true"
+        (elFocus)="showCumulativeChartTooltip($event, cumul.cumulativeDef)"
+        (diagramLeave)="hideTooltip()"
+      ></bag-histogram-line>
+    </ng-container>
+
+    <ng-container *ngIf="twoWeekChart$ | async as twoWeek">
+      <p class="detail-card-development__meta">
+        {{ (twoWeek.isInz ? 'DetailCardDevelopment.TwoWeekSum.Inz' : 'DetailCardDevelopment.TwoWeekSum.Abs') | i18n }}
+      </p>
+      <bag-histogram-line-ref
+        *ngIf="!twoWeek.isInz"
+        [data]="twoWeek.data"
+        (elFocus)="showTwoWeekChartTooltip($event, twoWeek.geoUnit)"
+        (diagramLeave)="hideTooltip()"
+        [color]="'#428BD3'"
+        [disableNoDataBlocks]="true"
+      ></bag-histogram-line-ref>
+      <bag-histogram-line-ref-inz14d
+        *ngIf="twoWeek.isInz"
+        [data]="twoWeek.data"
+        (elFocus)="showTwoWeekChartTooltip($event, twoWeek.geoUnit)"
+        (diagramLeave)="hideTooltip()"
+      ></bag-histogram-line-ref-inz14d>
+    </ng-container>
+  </div>
+</bag-detail-card>

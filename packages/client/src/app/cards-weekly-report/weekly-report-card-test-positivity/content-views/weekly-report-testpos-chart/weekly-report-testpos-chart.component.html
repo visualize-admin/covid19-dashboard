@@ -1,0 +1,91 @@
+<ng-container *ngIf="viewData$ | async as data">
+  <ng-container *ngIf="data.pcrEntries">
+    <h5 class="weekly-report-testpos-chart__chart-title">
+      {{ 'WeeklyReport.Card.TestPositivity.SubtitlePcr' | i18n }}
+    </h5>
+    <bag-chart-legend [itemGap]="16" class="weekly-report-testpos-chart__legend">
+      <div
+        bagChartLegendSquare
+        [color]="colors[0]"
+        translate="WeeklyReport.WeekFrom"
+        [translateValues]="{ week: data.prevDate | fmtIsoWeek, date: data.prevDate | fmtDate }"
+      ></div>
+      <div
+        bagChartLegendSquare
+        [color]="colors[1]"
+        translate="WeeklyReport.WeekFrom"
+        [translateValues]="{ week: data.currDate | fmtIsoWeek, date: data.currDate | fmtDate }"
+      ></div>
+      <div
+        bagChartLegendLine
+        [color]="refColors[0]"
+        [length]="16"
+        translate="WeeklyReport.Card.RefLineLabelChFl"
+        [translateValues]="{ week: data.prevDate | fmtIsoWeek, date: data.prevDate | fmtDate }"
+      ></div>
+      <div
+        bagChartLegendLine
+        [color]="refColors[1]"
+        [length]="16"
+        translate="WeeklyReport.Card.RefLineLabelChFl"
+        [translateValues]="{ week: data.currDate | fmtIsoWeek, date: data.currDate | fmtDate }"
+      ></div>
+    </bag-chart-legend>
+    <p class="weekly-report-testpos-chart__meta">{{ 'WeeklyReport.Card.TestPositivity.ChartMetaPcr' | i18n }}</p>
+    <bag-column-chart
+      [data]="data.pcrEntries"
+      [refValues]="data.pcrRefValues"
+      [colors]="colors"
+      [refColors]="refColors"
+      [direction]="(direction$ | async) || 'horizontal'"
+      [rotateXAxisLabels]="!data.forCantons"
+      (elFocus)="showTooltip($event, data)"
+      (diagramLeave)="hideTooltip()"
+    ></bag-column-chart>
+  </ng-container>
+
+  <ng-container *ngIf="data.antigenEntries">
+    <h5 class="weekly-report-testpos-chart__chart-title weekly-report-testpos-chart__chart-title--secondary">
+      {{ 'WeeklyReport.Card.TestPositivity.SubtitleAntigen' | i18n }}
+    </h5>
+    <bag-chart-legend [itemGap]="16" class="weekly-report-testpos-chart__legend">
+      <div
+        bagChartLegendSquare
+        [color]="colors[0]"
+        translate="WeeklyReport.WeekFrom"
+        [translateValues]="{ week: data.prevDate | fmtIsoWeek, date: data.prevDate | fmtDate }"
+      ></div>
+      <div
+        bagChartLegendSquare
+        [color]="colors[1]"
+        translate="WeeklyReport.WeekFrom"
+        [translateValues]="{ week: data.currDate | fmtIsoWeek, date: data.currDate | fmtDate }"
+      ></div>
+      <div
+        bagChartLegendLine
+        [color]="refColors[0]"
+        [length]="16"
+        translate="WeeklyReport.Card.RefLineLabelChFl"
+        [translateValues]="{ week: data.prevDate | fmtIsoWeek, date: data.prevDate | fmtDate }"
+      ></div>
+      <div
+        bagChartLegendLine
+        [color]="refColors[1]"
+        [length]="16"
+        translate="WeeklyReport.Card.RefLineLabelChFl"
+        [translateValues]="{ week: data.currDate | fmtIsoWeek, date: data.currDate | fmtDate }"
+      ></div>
+    </bag-chart-legend>
+    <p class="weekly-report-testpos-chart__meta">{{ 'WeeklyReport.Card.TestPositivity.ChartMetaAntigen' | i18n }}</p>
+    <bag-column-chart
+      [data]="data.antigenEntries"
+      [refValues]="data.antigenRefValues"
+      [colors]="colors"
+      [refColors]="refColors"
+      [direction]="(direction$ | async) || 'horizontal'"
+      [rotateXAxisLabels]="!data.forCantons"
+      (elFocus)="showTooltip($event, data)"
+      (diagramLeave)="hideTooltip()"
+    ></bag-column-chart>
+  </ng-container>
+</ng-container>

@@ -1,0 +1,37 @@
+@use 'src/styles/text';
+@use 'src/styles/mix';
+
+bag-detail-card-virus-variants-segmentation {
+  display: block;
+
+  .card-virus-variants-segmentation {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .card-virus-variants-segmentation__no-data {
+    @include mix.noDetailCardContent;
+    a {
+      color: var(--c-fg-link);
+      text-decoration: none;
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .card-virus-variants-segmentation__lr {
+    @include mix.cardFiltersMainLr;
+  }
+
+  .card-virus-variants-segmentation__chart {
+    & + .card-virus-variants-segmentation__chart {
+      margin-top: 48px;
+    }
+  }
+
+  .card-virus-variants-segmentation__chart-meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+}

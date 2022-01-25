@@ -1,0 +1,39 @@
+<div class="vaccination">
+  <bag-select-title
+    #geoSelectTitle
+    [formControl]="geoFilterCtrl"
+    [optionGroups]="geoFilterGroups"
+    [useFullWidthShadow]="int.isIntersecting$ | async"
+    titleKey="Vaccination.Title"
+    resetFilterKey="Vaccination.ResetGeographyFilter"
+  ></bag-select-title>
+
+  <ng-template [bagMasterDetail]="detailMenuItems$" [stickyHeaderEl]="geoSelectTitle.element" let-item>
+    <div
+      class="vaccination__menu-item"
+      [class.vaccination__menu-item--no-data]="item.noData"
+      *ngIf="item.facet !== 'slim'"
+    >
+      <ng-container *ngIf="item.textLines">
+        <div *ngFor="let txt of item.textLines" [translate]="txt.key" [translateValues]="txt.args"></div>
+      </ng-container>
+      <ng-container *ngIf="!item.noData">
+        <p class="vaccination__menu-item-meta" *ngIf="item.metaKey" [translate]="item.metaKey"></p>
+        <bag-histogram-menu-line
+          *ngIf="item.histoLineData"
+          [lineColor]="item.color"
+          [data]="item.histoLineData"
+        ></bag-histogram-menu-line>
+        <bag-distribution-bar
+          *ngIf="item.distributionData && item.distributionLabel"
+          class="vaccination__distribution-bar"
+          [label]="item.distributionLabel"
+          [entries]="item.distributionData"
+        ></bag-distribution-bar>
+      </ng-container>
+      <p *ngIf="item.noData" [translate]="item.noDataKey ? item.noDataKey : 'Commons.NoData'"></p>
+    </div>
+  </ng-template>
+
+  <div [bagIntersection]="{ offset: 0 }" #int="bagIntersection"></div>
+</div>

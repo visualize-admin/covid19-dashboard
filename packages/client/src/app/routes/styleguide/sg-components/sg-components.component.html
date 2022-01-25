@@ -1,0 +1,28 @@
+<div class="styleguide__card">
+  <h2>Share Link</h2>
+  <bag-share-link></bag-share-link>
+</div>
+<div class="styleguide__card">
+  <h2>Multi-Select</h2>
+  <bag-multi-select
+    [formControl]="multiSelectCtrl"
+    [allSelectedLabel]="'Alle'"
+    [noneSelectedLabel]="'Keine'"
+    [options]="[
+      { label: '0 - 4', value: 1 },
+      { label: '5 - 9', value: 2 },
+      { label: '10 - 19', value: 3 }
+    ]"
+  >
+  </bag-multi-select>
+  {{ multiSelectCtrl.valueChanges | async | json }}
+</div>
+
+<div class="styleguide__card">
+  <bag-weekly-compare-table
+    [val0Header]="'Woche vom 18.01.2020'"
+    [val1Header]="'Woche vom 25.01.2020'"
+    [diffHeader]="'Differenz'"
+    [data]="compareData"
+  ></bag-weekly-compare-table>
+</div>

@@ -1,0 +1,91 @@
+<ng-template #noData>
+  <div class="detail-card-vacc-symptoms-development__no-data">
+    {{ 'Vaccination.VaccSymptoms.Card.ChFlDataOnly.Info' | i18n }}<br />
+    <button *ngIf="!hideResetBtn" class="detail-card-vacc-symptoms-development__no-data-btn" (click)="resetToChFl()">
+      {{ 'Vaccination.VaccSymptoms.Card.ChFlDataOnly.Btn' | i18n }}
+    </button>
+  </div>
+</ng-template>
+
+<ng-template #noDataForVaccineUnknown>
+  <div class="detail-card-vacc-symptoms-development__no-data">
+    {{ 'Vaccination.VaccSymptoms.Card.Development.AdminNoData.Info' | i18n }}<br />
+    <button
+      *ngIf="!hideResetBtn"
+      class="detail-card-vacc-symptoms-development__no-data-btn"
+      (click)="resetToVaccineAll()"
+    >
+      {{ 'Vaccination.VaccSymptoms.Card.Development.AdminNoData.Btn' | i18n }}
+    </button>
+  </div>
+</ng-template>
+
+<bag-detail-card
+  titleKey="Vaccination.Card.Development.Title"
+  [infoKey]="keys.info"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="sources"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [hideInfo]="hideInfo"
+>
+  <div class="detail-card-vacc-symptoms-development" *ngIf="cumulativeData$ | async as cumulData; else noData">
+    <div class="detail-card-vacc-symptoms-development__lr">
+      <!-- cumulative filter -->
+      <select
+        bag-select
+        [attr.aria-label]="'Vaccination.VaccSymptoms.Card.Development.Filter.Label' | i18n"
+        name="detailVaccineFilter"
+        [formControl]="vaccineFilterCtrl"
+      >
+        <ng-container *ngFor="let opt of vaccineFilterOptions">
+          <option [ngValue]="opt.val" [attr.selected]="opt.val === vaccineFilterCtrl.value ? '' : null">
+            {{ opt.key | i18n }}
+          </option>
+        </ng-container>
+      </select>
+    </div>
+
+    <div class="detail-card-vacc-symptoms-development__chart-intro">
+      <bag-chart-legend [itemGap]="24">
+        <ng-container *ngFor="let entry of cumulData.legendPairs">
+          <div bagChartLegendSquare [color]="entry[0]">{{ entry[1] | i18n }}</div>
+        </ng-container>
+        <div *ngIf="cumulData.hasNoData" bagChartLegendSquare noData [length]="24" translate="Commons.NoData"></div>
+      </bag-chart-legend>
+    </div>
+
+    <p class="detail-card-vacc-symptoms-development__meta">
+      {{ keys.metaSymptoms | i18n }}
+    </p>
+
+    <bag-histogram-area
+      [data]="cumulData.data"
+      [colors]="cumulData.colors"
+      [focusPosYCenter]="true"
+      [disableNoDataBlocks]="false"
+      [yLabelsMaxLength]="9"
+      [showLines]="false"
+      (elFocus)="showAreaTooltip($event)"
+      (diagramLeave)="hideTooltip()"
+    ></bag-histogram-area>
+
+    <p class="detail-card-vacc-symptoms-development__meta detail-card-vacc-symptoms-development__meta--admin">
+      {{ keys.metaAdministered | i18n }}
+    </p>
+
+    <ng-container *ngIf="cumulData.dataAdmin; else noDataForVaccineUnknown">
+      <bag-histogram-line
+        [data]="cumulData.dataAdmin"
+        [disableNoDataBlocks]="false"
+        [yTickCount]="3"
+        [maxHeight]="150"
+        [colors]="cumulData.adminColors"
+        (elFocus)="showTooltip($event)"
+        (diagramLeave)="hideTooltip()"
+      ></bag-histogram-line>
+    </ng-container>
+  </div>
+</bag-detail-card>

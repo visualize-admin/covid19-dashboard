@@ -1,0 +1,30 @@
+<bag-detail-card-vacc-doses-demography
+  *ngIf="isVaccDoses"
+  [facet]="facet"
+  [data]="dosesData"
+  [infoAddOnKey]="introKey"
+></bag-detail-card-vacc-doses-demography>
+
+<bag-detail-card-vacc-persons-demography
+  *ngIf="isVaccPersons"
+  [facet]="facet"
+  [data]="personsData"
+  [infoAddOnKey]="introKey"
+  [isDetailPage]="true"
+></bag-detail-card-vacc-persons-demography>
+
+<bag-detail-card-vacc-symptoms-demography
+  *ngIf="isVaccSymptoms"
+  [facet]="facet"
+  [data]="symptomsData"
+  [hideResetBtn]="true"
+  [infoAddOnKey]="introKey"
+></bag-detail-card-vacc-symptoms-demography>
+
+<bag-detail-card-vacc-status-demography
+  *ngIf="isVaccStatus"
+  [facet]="facet"
+  [data]="vaccinationStatusData"
+  [hideResetBtn]="true"
+  [infoAddOnKey]="introKey"
+></bag-detail-card-vacc-status-demography>

@@ -1,0 +1,25 @@
+<div class="inz14d-sum-legend" aria-hidden="true">
+  <div class="inz14d-sum-legend__title" [translate]="titleKey"></div>
+  <div class="inz14d-sum-legend__row">
+    <div class="inz14d-sum-legend__gradient">
+      <div class="inz14d-sum-legend__gradient-part">
+        <div class="inz14d-sum-legend__gradient-lbl">0</div>
+      </div>
+      <div class="inz14d-sum-legend__gradient-part">
+        <div class="inz14d-sum-legend__gradient-lbl">60</div>
+      </div>
+      <div class="inz14d-sum-legend__gradient-part">
+        <div class="inz14d-sum-legend__gradient-lbl">120</div>
+      </div>
+      <div class="inz14d-sum-legend__gradient-part">
+        <div class="inz14d-sum-legend__gradient-lbl">240</div>
+      </div>
+    </div>
+    <div *ngIf="noCasesKey" class="inz14d-sum-legend__entry inz14d-sum-legend__entry--no-case">
+      <span class="inz14d-sum-legend__entry-lbl">{{ noCasesKey | i18n }}</span>
+    </div>
+    <div *ngIf="noDataKey" class="inz14d-sum-legend__entry inz14d-sum-legend__entry--no-data">
+      <span class="inz14d-sum-legend__entry-lbl">{{ noDataKey | i18n }}</span>
+    </div>
+  </div>
+</div>

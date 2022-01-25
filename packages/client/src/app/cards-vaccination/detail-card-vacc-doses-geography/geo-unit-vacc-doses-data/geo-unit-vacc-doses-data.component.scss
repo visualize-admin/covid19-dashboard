@@ -1,0 +1,136 @@
+@use 'src/styles/col';
+@use 'src/styles/var';
+@use 'src/styles/text';
+@use 'src/styles/dim';
+@use 'src/styles/mix';
+
+bag-geo-unit-vacc-doses-data {
+  display: block;
+
+  .geo-unit-vacc-doses-data {
+    color: var(--c-fg-box-default);
+
+    &.geo-unit-vacc-doses-data--tooltip {
+      .geo-unit-vacc-doses-data__title {
+        @include mix.tooltipTitle;
+      }
+      .geo-unit-vacc-doses-data__table {
+        tbody {
+          @include text.tooltip;
+          @media (max-width: #{dim.$bp-max-sm}) {
+            @include text.meta;
+            th,
+            td {
+              padding-top: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .geo-unit-vacc-doses-data__title {
+    @include text.boxTitle;
+    margin: 0 0 8px 0;
+  }
+
+  .geo-unit-vacc-doses-data__table {
+    $padding: 16px;
+    margin: 0 -16px;
+    align-self: flex-start;
+    width: calc(100% + 32px);
+    @include text.meta;
+
+    th {
+      padding-left: 16px;
+      text-align: left;
+      font-weight: var.$font-weight-normal;
+    }
+    td {
+      white-space: nowrap;
+      padding-left: 12px;
+      text-align: right;
+      &:last-of-type {
+        font-weight: var.$font-weight-bold;
+        padding-right: 16px;
+      }
+    }
+
+    thead {
+      @include text.meta;
+      @media (max-width: #{dim.$bp-max-sm}) {
+        line-height: 12px;
+      }
+      color: var(--c-fg-meta);
+      tr {
+        border-bottom: 1px solid var(--c-divider-light);
+      }
+      th {
+        padding-left: 12px;
+        font-weight: var.$font-weight-normal;
+        vertical-align: bottom;
+        text-align: right;
+        &:last-of-type {
+          padding-right: 16px;
+        }
+      }
+    }
+
+    tbody {
+      @include text.paragraph2;
+
+      @media (max-width: #{dim.$bp-max-sm}) {
+        @include text.meta;
+        line-height: 12px;
+        th,
+        td {
+          padding-top: 8px;
+        }
+      }
+
+      th {
+        text-align: left;
+        font-weight: var.$font-weight-normal;
+      }
+
+      td {
+        padding-left: 24px;
+        text-align: right;
+        font-weight: var.$font-weight-bold;
+        white-space: nowrap;
+      }
+    }
+  }
+
+  .geo-unit-vacc-doses-data__row--lowlight {
+    th,
+    td {
+      color: var(--c-fg-box-default-low);
+    }
+  }
+
+  .geo-unit-vacc-doses-data__no-details {
+    @include text.meta;
+    color: var(--c-fg-box-default-meta);
+    padding: 4px 6px;
+    margin: 4px -6px 0;
+    background-color: rgba(0, 0, 0, 0.05);
+  }
+
+  .geo-unit-vacc-doses-data__divider {
+    th {
+      padding-left: 0;
+      padding-top: 10px;
+    }
+    border-bottom: solid var(--c-bg-page) 3px;
+  }
+
+  .geo-unit-vacc-doses-data__additional {
+    th {
+      @include text.paragraph2;
+      font-weight: var.$font-weight-bold !important;
+      padding-top: 10px;
+      padding-right: 16px;
+    }
+  }
+}

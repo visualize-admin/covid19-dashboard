@@ -1,0 +1,7 @@
+<h3>{{ 'Vaccination.VaccSymptoms.DetailTitle' | i18n }}</h3>
+<p class="g-content" [translate]="'Vaccination.VaccSymptoms.DetailIntro'"></p>
+
+<div class="detail__cards" *ngIf="data$ | async as data">
+  <bag-detail-card-vacc-symptoms-development [data]="data.development"></bag-detail-card-vacc-symptoms-development>
+  <bag-detail-card-vacc-symptoms-demography [data]="data.demography"></bag-detail-card-vacc-symptoms-demography>
+</div>

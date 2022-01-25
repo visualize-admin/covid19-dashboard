@@ -1,0 +1,36 @@
+bag-heatmap-row {
+  display: block;
+  height: calc(var(--canvas-height) + 8px);
+
+  .heatmap-row__wrapper {
+    margin: 0 -8px;
+    padding: 0 8px;
+    overflow: hidden;
+  }
+
+  .heatmap-row__triangle {
+    position: relative;
+    height: 8px;
+  }
+  .heatmap-row__triangle-el {
+    position: absolute;
+    left: 0;
+    right: 0;
+    transform: translateX(var(--x));
+    &:before {
+      content: '';
+      display: block;
+      width: 0;
+      height: 0;
+      border: 8px solid transparent;
+      border-top-color: #000;
+      margin-bottom: -8px;
+      margin-left: -8px;
+    }
+  }
+
+  .heatmap-row__canvas {
+    display: block;
+    width: 100%;
+  }
+}

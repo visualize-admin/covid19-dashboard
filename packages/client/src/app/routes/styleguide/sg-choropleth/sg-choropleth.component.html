@@ -1,0 +1,129 @@
+<ng-template
+  #tooltip
+  let-title="title"
+  let-id="id"
+  let-max="max"
+  let-min="min"
+  let-category="category"
+  let-start="start"
+  let-end="end"
+>
+  <div class="detail-card-geography-tooltip">
+    <span class="detail-card-geography-tooltip__value" *ngIf="start"
+      >{{ start | fmtDate }}<span *ngIf="end"> - {{ end | fmtDate }}</span></span
+    >
+    <span class="detail-card-geography-tooltip__title">{{ title }}</span>
+    <span class="detail-card-geography-tooltip__value" *ngIf="id">ID: {{ id }}</span>
+    <span class="detail-card-geography-tooltip__value" *ngIf="min">inz sum min: {{ min | adminNum }}</span>
+    <span class="detail-card-geography-tooltip__value" *ngIf="max">inz sum max: {{ max | adminNum }}</span>
+    <span class="detail-card-geography-tooltip__value" *ngIf="category"
+      >inz sum category: <b>{{ category }}</b></span
+    >
+  </div>
+</ng-template>
+<!--
+<bag-toggle-button-list style="display: flex" [formControl]="mapCtrl">
+  <bag-toggle-button [value]="null">Welt</bag-toggle-button>
+  <bag-toggle-button [value]="'C'">Kantone</bag-toggle-button>
+  <bag-toggle-button [value]="'GR'">Grossregionen</bag-toggle-button>
+  <bag-toggle-button [value]="'AMGR'">Arbeitsmarktgrossregionen</bag-toggle-button>
+  <bag-toggle-button [value]="'AMRE'">Arbeitsmarktregionen</bag-toggle-button>
+  <bag-toggle-button [value]="'D'">Bezirke</bag-toggle-button>
+  <bag-toggle-button [value]="'M'">Gemeinden</bag-toggle-button>
+</bag-toggle-button-list>
+-->
+<div style="padding: 40px" *ngIf="mapCtrl.value === null">
+  <h2>Welt</h2>
+  <!--  <bag-toggle-button-list style="display: flex" [formControl]="geoUnitCtrl">-->
+  <!--    <bag-toggle-button [value]="null">World</bag-toggle-button>-->
+  <!--    <bag-toggle-button [value]="'CH'">CH</bag-toggle-button>-->
+  <!--    <bag-toggle-button [value]="'DE'">DE</bag-toggle-button>-->
+  <!--    <bag-toggle-button [value]="'FR'">FR</bag-toggle-button>-->
+  <!--    <bag-toggle-button [value]="'AT'">AT</bag-toggle-button>-->
+  <!--    <bag-toggle-button [value]="'IT'">IT</bag-toggle-button>-->
+  <!--    <bag-toggle-button [value]="'US'">US</bag-toggle-button>-->
+  <!--    <bag-toggle-button [value]="'GB'">GB</bag-toggle-button>-->
+  <!--  </bag-toggle-button-list>-->
+  <bag-choropleth
+    [extendedFeatureCollection]="mapDataWorld.featureCollection"
+    [fillFn]="getFill"
+    [maskFn]="getMask"
+    [selectedGeoUnit]="geoUnitCtrl.value"
+    [zoomToSelection]="true"
+    [countriesWithRegion]="countriesWithRegion"
+    (elMouseEnter)="showTooltip($event)"
+    (diagramMouseLeave)="hideTooltip()"
+  ></bag-choropleth>
+</div>
+
+<div class="geo-map-container" *ngIf="currentPeriodData && mapCtrl.value !== null">
+  <div class="geo-map-legend">
+    <div class="geo-map-legend-title">{{ 'Normalisierte 14-Tages-Inzidenz' }}</div>
+    <bag-chart-legend [itemGap]="8">
+      <ng-container *ngFor="let category of categories">
+        <div bagChartLegendSquare [color]="category.color">{{ category.label }}</div>
+      </ng-container>
+    </bag-chart-legend>
+  </div>
+
+  <bag-paginator [formControl]="paginatorCtrl" [max]="paginatorOptions.length - 1">
+    <div *bagPaginatorContent="let value">{{ value }}</div>
+  </bag-paginator>
+
+  <bag-choropleth-canvas
+    [extendedFeatureCollection]="currentPeriodData.data.featureCollection"
+    [fillFn]="canvasFillFn"
+    (featureFocus)="showTooltip($event)"
+    (featureBlur)="hideTooltip()"
+  ></bag-choropleth-canvas>
+
+  <bag-range-slider
+    [titleTxt]="sliderTitle(currentPeriodData.data)"
+    [descTxt]="'Bereich ' + currentPeriodData.data.featureCollection.features[0].properties.category"
+    [min]="0"
+    [max]="periodData.length - 1"
+    [formControl]="periodSliderCtrl"
+  >
+    <bag-heatmap-row [entries]="heatMapData" [height]="50" [selectedIndex]="periodSliderCtrl.value"></bag-heatmap-row>
+  </bag-range-slider>
+</div>
+
+<!--<div *ngIf="mapCtrl.value === 'C'" style="padding: 40px">-->
+<!--  <h2>Kantone</h2>-->
+<!--  <ng-container *ngIf="currentPeriodData">-->
+<!--    <bag-range-slider-->
+<!--      [title]="sliderTitle(currentPeriodData.data)"-->
+<!--      [value]="'Bereich ' + currentPeriodData.data.featureCollection.features[0].properties.category"-->
+<!--      [min]="0"-->
+<!--      [max]="mapDataCantonsPeriods.length - 1"-->
+<!--      [control]="periodSliderCtrl"-->
+<!--    >-->
+<!--      <bag-heatmap-row-->
+<!--        [entries]="heatmapRowCantonData"-->
+<!--        [height]="50"-->
+<!--        [selectedIndex]="periodSliderCtrl.value"-->
+<!--      ></bag-heatmap-row>-->
+<!--    </bag-range-slider>-->
+<!--    <bag-paginator-->
+<!--      [formControl]="paginatorCtrl"-->
+<!--      (onNext)="paginatorNext()"-->
+<!--      (onPrev)="paginatorPrev()"-->
+<!--      [options]="paginatorOptions"-->
+<!--    ></bag-paginator>-->
+<!--    <bag-color-category-legend></bag-color-category-legend>-->
+
+<!--    <div class="canton-split-view">-->
+<!--      <bag-choropleth-->
+<!--        [extendedFeatureCollection]="currentPeriodData.data.featureCollection"-->
+<!--        [fillFn]="currentPeriodData.data.fillFn"-->
+<!--        (elMouseEnter)="showTooltip($event)"-->
+<!--        (diagramMouseLeave)="hideTooltip()"-->
+<!--      ></bag-choropleth>-->
+
+<!--      &lt;!&ndash;          <bag-choropleth-canvas&ndash;&gt;-->
+<!--      &lt;!&ndash;            [extendedFeatureCollection]="currentPeriodData.data.featureCollection"&ndash;&gt;-->
+<!--      &lt;!&ndash;            [fillFn]="canvasFillFn"&ndash;&gt;-->
+<!--      &lt;!&ndash;          ></bag-choropleth-canvas>&ndash;&gt;-->
+<!--    </div>-->
+<!--  </ng-container>-->
+<!--</div>-->

@@ -1,0 +1,46 @@
+@use 'src/styles/text';
+@use 'src/styles/dim';
+@use 'src/styles/layout';
+@use 'src/styles/mix';
+
+bag-detail-card-vacc-doses-demography {
+  display: block;
+
+  .detail-card-vacc-doses-demography__chart-list {
+    display: grid;
+    grid-gap: 48px;
+  }
+
+  .detail-card-vacc-doses-demography__lr {
+    @include mix.cardFiltersMainWithMultiSelectLr;
+  }
+
+  .detail-card-vacc-doses-demography__subtitle {
+    @include text.h3;
+    margin: 0 0 0;
+  }
+
+  .detail-card-vacc-doses-demography__subtitle--age {
+    margin-bottom: 16px;
+  }
+
+  .detail-card-vacc-doses-demography__chart-intro {
+    @include mix.cardChartIntro;
+  }
+
+  .detail-card-vacc-doses-demography__chart-meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .detail-card-vacc-doses-demography__relativity-filter--toggle {
+      display: none;
+    }
+  }
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .detail-card-vacc-doses-demography__relativity-filter--select[bag-select] {
+      display: none;
+    }
+  }
+}

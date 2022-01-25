@@ -1,0 +1,28 @@
+@use 'src/styles/layout';
+@use 'src/styles/text';
+@use 'src/styles/col';
+@use 'src/styles/var';
+@use 'src/styles/mix';
+
+bag-detail-card-international-case-development {
+  display: block;
+
+  .detail-card-international-case-development__lr {
+    @include mix.cardFiltersMainLr;
+  }
+  .detail-card-international-case-development__lr-part {
+    @include layout.leftRightPart;
+  }
+
+  .detail-card-international-case-development__meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  .detail-card-international-case-development__no-data {
+    text-align: center;
+    margin: 24px 0;
+    color: var(--c-fg-no-content);
+    font-weight: var.$font-weight-bold;
+  }
+}

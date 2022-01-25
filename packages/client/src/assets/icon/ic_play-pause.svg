@@ -1,0 +1,10 @@
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <polygon points="4.5,3 4.5,21 12,16.5 12,7.5" fill="currentColor">
+    <animate id="play-pause-part-1-anim-to-pause" begin="indefinite" fill="freeze" attributeName="points" dur="200ms" to="3.4,3 3.4,21 11,21 11,3" />
+    <animate id="play-pause-part-1-anim-to-play" begin="indefinite" fill="freeze" attributeName="points" dur="200ms" to="4.5,3 4.5,21 12,16.5 12,7.5" />
+  </polygon>
+  <polygon points="12,7.5 12,16.5 19.5,12 19.5,12" fill="currentColor">
+    <animate id="play-pause-part-2-anim-to-pause" begin="indefinite" fill="freeze" attributeName="points" dur="200ms" to="14,3 14,21 21.4,21 21.4,3" />
+    <animate id="play-pause-part-2-anim-to-play" begin="indefinite" fill="freeze" attributeName="points" dur="200ms" to="12,7.5 12,16.5 19.5,12 19.5,12" />
+  </polygon>
+</svg>

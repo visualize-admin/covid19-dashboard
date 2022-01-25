@@ -1,0 +1,24 @@
+@use 'src/styles/text';
+@use 'src/styles/col';
+@use 'src/styles/layout';
+
+bag-detail-card-epidemiologic-development {
+  display: block;
+
+  .detail-card-development {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-card-development__lr {
+    @include layout.leftRight(-8px);
+  }
+  .detail-card-development__lr-part {
+    @include layout.leftRightPart;
+  }
+
+  .detail-card-development__meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+}

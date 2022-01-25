@@ -1,0 +1,46 @@
+<div class="weekly-report">
+  <bag-select-title
+    #selectTitle
+    [hideComma]="true"
+    [optionGroups]="detailWeekFilterGroups"
+    [formControl]="detailWeekFilterCtrl"
+    [noGrouping]="true"
+    [useFullWidthShadow]="(int1.isIntersecting$ | async) || (int2.isIntersecting$ | async)"
+    titleKey="WeeklyReport.Filter.Title"
+    resetFilterKey="WeeklyReport.Filter.Reset"
+    filterLabelKey="WeeklyReport.Filter.Label"
+    facet="noBorder"
+  ></bag-select-title>
+  <div class="weekly-report__header">
+    <p *ngIf="dataStatusArgs" class="weekly-report__header__source">
+      {{ 'Commons.Source' | i18n }}: {{ 'Commons.Source.BAG' | i18n }}&ngsp;–&ngsp;{{
+        'Commons.DataStatus' | i18n: dataStatusArgs
+      }}
+    </p>
+
+    <p class="weekly-report__header__intro">{{ 'WeeklyReport.Intro' | i18n }}</p>
+    <!--  TODO remove until pdf is ready  -->
+    <!--    <a-->
+    <!--      class="weekly-report__download-link g-default-icon"-->
+    <!--      [href]=""-->
+    <!--      [download]="('WeeklyReport.FileName' | i18n: { date: 'todo' }) + '.pdf'"-->
+    <!--    >-->
+    <!--      <sc-svg class="weekly-report__download-link-icon" [url]="'/assets/icon/ic_report.svg'"></sc-svg>-->
+    <!--      <span>{{ 'WeeklyReport.Download' | i18n: { date: '09.11.2020' } }}</span>-->
+    <!--    </a>-->
+    <bag-page-notification *ngIf="showGlobalDisclaimer$ | async" class="dashboard__notification">
+      <!-- usage of span on purpose: generates ugly linebreaks otherwise (ssr only) -->
+      <span [translate]="'WeeklyReport.Disclaimer'"></span>
+    </bag-page-notification>
+  </div>
+  <div
+    [bagIntersection]="{ offset: (detailWeekFilterCtrl.value === null ? 72 : 96) + 2 }"
+    #int1="bagIntersection"
+  ></div>
+  <ng-template
+    [bagMasterDetail]="detailMenuItems$"
+    [facet]="'slim'"
+    [stickyHeaderEl]="selectTitle.element"
+  ></ng-template>
+  <div [bagIntersection]="{ offset: 0 }" #int2="bagIntersection"></div>
+</div>

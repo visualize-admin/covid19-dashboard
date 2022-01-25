@@ -1,0 +1,107 @@
+<bag-detail-card
+  titleKey="Reproduction.Card.Geography.Title"
+  infoKey="Reproduction.Card.Geography.Info"
+  [sources]="[{ sourceKey: 'Commons.Source.RE', date: (data.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [infoAddOnKey]="infoAddOnKey"
+>
+  <div class="detail-card-repro-geography__filter-lr" *ngIf="facet !== 'print'">
+    <label id="geo-view-filter-label" class="cdk-visually-hidden">{{ 'GeoViewFilter.Label' | i18n }}</label>
+    <bag-toggle-button-list
+      aria-labelledby="geo-view-filter-label"
+      name="geoViewFilter"
+      [formControl]="geoViewFilterCtrl"
+    >
+      <ng-container *ngFor="let opt of geoViewFilterOptions">
+        <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+      </ng-container>
+    </bag-toggle-button-list>
+  </div>
+
+  <ng-container *ngIf="geoMapData$ | async as choro">
+    <div class="detail-card-repro-geography__lr">
+      <div *ngIf="infoBox$ | async as infoBox" class="detail-card-repro-geography__info-box">
+        <h5 class="detail-card-repro-geography__info-box-title">{{ infoBox.titleKey | i18n }}</h5>
+        <p *ngIf="infoBox.data" class="detail-card-repro-geography__info-box-txt">
+          <span [translate]="'Reproduction.Card.Reproduction.Key'"></span>
+          <strong>{{ infoBox.data.value | adminNum: 2 }}</strong>
+        </p>
+        <div *ngIf="!infoBox.data" class="detail-card-repro-geography__info-box-no-data">
+          <p>{{ 'Reproduction.Card.NoChFlDataHint' | i18n }}</p>
+          <a *ngIf="!shareMode" class="g-default-icon" [routerLink]="[]" [queryParams]="chQueryParams">{{
+            'Reproduction.Card.SetFilterToCh' | i18n
+          }}</a>
+        </div>
+      </div>
+      <bag-repro-legend titleKey="Reproduction.Card.Legend.Title"></bag-repro-legend>
+    </div>
+
+    <bag-choropleth
+      [facet]="facet"
+      [extendedFeatureCollection]="choro.featureCollection"
+      [selectedGeoUnit]="choro.selectedGeoUnit"
+      (elMouseEnter)="showTooltip($event)"
+      (diagramMouseLeave)="hideTooltip()"
+      [fillFn]="choroplethFillFn"
+    ></bag-choropleth>
+  </ng-container>
+
+  <ng-container *ngIf="geoTableData$ | async as geoTableData">
+    <div class="detail-card-repro-geography__lr-table-legend--right detail-card-repro-geography__lr-table-legend">
+      <bag-repro-legend [facet]="'table'" titleKey="Reproduction.Card.Legend.Title"></bag-repro-legend>
+    </div>
+    <table class="detail-card-repro-geography-table">
+      <thead>
+        <tr class="detail-card-repro-geography-table__h2">
+          <td><!-- row title col --></td>
+          <th class="detail-card-repro-geography-table__h2-bar" scope="col">
+            <span [translate]="'Reproduction.Card.Table.Title'"></span>
+          </th>
+          <th class="detail-card-repro-geography-table__h2-val" scope="col">
+            {{ 'Reproduction.Card.Table.Date' | i18n }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of geoTableData.rows; trackBy: identifyRowItem; let ix = index">
+          <tr
+            [style.--row]="ix + 1"
+            class="detail-card-repro-geography-table__row"
+            [class.detail-card-repro-geography-table__row--large-padding]="ix === 0"
+            [class.detail-card-repro-geography-table__row--large-gap]="ix === 1"
+          >
+            <td
+              class="detail-card-repro-geography-table__overlay"
+              [class.detail-card-repro-geography-table__overlay--selected]="row.isSelected"
+            >
+              <!-- todo: make link accessible -->
+              <a
+                href="#detail"
+                class="detail-card-repro-geography-table__overlay-link"
+                (click)="scrollToDevelopmentCard(row.isSelected)"
+                [routerLink]="['.']"
+                [queryParams]="row.queryParams"
+                queryParamsHandling="merge"
+              ></a>
+            </td>
+            <th class="detail-card-repro-geography-table__title-cell" scope="row">{{ row.key | i18n }}</th>
+            <td
+              class="detail-card-repro-geography-table__bar-cell"
+              [style.--color]="row.set.backgroundColor"
+              [style.--color-hover]="row.set.backgroundColorHover"
+              [style.--w.%]="row.set.barVal"
+            >
+              {{ row.set.val | adminNum: 2 }}
+            </td>
+            <td class="detail-card-repro-geography-table__val-cell">
+              {{ row.set.date ? (row.set.date | fmtDate) : '-' }}
+            </td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </ng-container>
+</bag-detail-card>

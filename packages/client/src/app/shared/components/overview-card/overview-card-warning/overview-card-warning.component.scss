@@ -1,0 +1,6 @@
+@use 'src/styles/mix';
+
+bag-overview-card-warning {
+  @include mix.warning;
+  margin-bottom: 16px;
+}

@@ -1,0 +1,37 @@
+@use 'src/styles/col';
+@use 'src/styles/layout';
+@use 'src/styles/dim';
+@use 'src/styles/var';
+@use 'src/styles/text';
+
+bag-paginator {
+  display: block;
+
+  .paginator {
+    display: grid;
+    grid-template-columns: max-content max-content max-content;
+  }
+
+  .paginator__btn {
+    width: 40px;
+    height: 40px;
+    padding: 8px;
+    color: var(--c-fg-form-control);
+    cursor: pointer;
+    &:hover:not([disabled]) {
+      color: var(--c-fg-link-hover);
+      &:active:not([disabled]) {
+        color: var(--c-fg-link-active);
+      }
+    }
+
+    &[disabled] {
+      cursor: default;
+      opacity: 0.25;
+    }
+  }
+
+  .paginator__btn--left {
+    transform: rotate(180deg);
+  }
+}

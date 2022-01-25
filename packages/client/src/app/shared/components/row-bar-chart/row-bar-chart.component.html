@@ -1,0 +1,20 @@
+<!-- both css-vars +1 from given value since we use 1ch padding on both-->
+<div class="row-bar-chart" [style.--val-width.ch]="maxValueLength + 1" [style.--label-width.ch]="maxLabelLength + 1">
+  <div class="row-bar-chart__title">
+    <span>{{ titleKey | i18n: titleArgs }}</span>
+  </div>
+  <dl class="row-bar-chart__grid">
+    <ng-container *ngFor="let row of entries">
+      <dt class="row-bar-chart__row-label">{{ row.label }}</dt>
+      <dd class="row-bar-chart__row-bar">
+        <ng-container *ngIf="row.ratio !== null">
+          <div [style.--width]="row.ratio"></div>
+          <span>{{ row.value }}</span>
+        </ng-container>
+        <ng-container *ngIf="row.ratio === null">
+          {{ 'Commons.NoData' | i18n }}
+        </ng-container>
+      </dd>
+    </ng-container>
+  </dl>
+</div>

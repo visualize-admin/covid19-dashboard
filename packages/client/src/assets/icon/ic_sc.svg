@@ -1,0 +1,356 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"
+     style="margin:auto;background:#000000;display:block;z-index:1;position:relative" width="1084" height="322"
+     preserveAspectRatio="xMidYMid" viewBox="0 0 1084 322">
+  <defs>
+    <pattern id="pid-0.9096609495668855" x="0" y="0" width="128" height="128" patternUnits="userSpaceOnUse">
+      <g transform="scale(0.5)">
+        <g style="font-family:courier new;font-size:25.6">
+          <g transform="translate(0 25.6)">
+            <text fill="#c3d9ef" style="animation-delay:-1.7124860714961367s">s</text>
+          </g>
+          <g transform="translate(0 51.2)">
+            <text fill="#c3d9ef" style="animation-delay:-1.6124860714961367s">h</text>
+          </g>
+          <g transform="translate(0 76.80000000000001)">
+            <text fill="#c3d9ef" style="animation-delay:-1.5124860714961368s">i</text>
+          </g>
+          <g transform="translate(0 102.4)">
+            <text fill="#c3d9ef" style="animation-delay:-1.4124860714961367s">f</text>
+          </g>
+          <g transform="translate(0 128)">
+            <text fill="#c3d9ef" style="animation-delay:-1.3124860714961368s">t</text>
+          </g>
+          <g transform="translate(0 153.60000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-1.2124860714961367s">c</text>
+          </g>
+          <g transform="translate(0 179.20000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-1.1124860714961367s">o</text>
+          </g>
+          <g transform="translate(0 204.8)">
+            <text fill="#c3d9ef" style="animation-delay:-1.0124860714961368s">d</text>
+          </g>
+          <g transform="translate(0 230.4)">
+            <text fill="#c3d9ef" style="animation-delay:-0.9124860714961367s">e</text>
+          </g>
+          <g transform="translate(0 256)">
+            <text fill="#c3d9ef" style="animation-delay:-0.8124860714961367s">▲</text>
+          </g>
+
+          <g transform="translate(25.6 25.6)">
+            <text fill="#c3d9ef" style="animation-delay:-1.270434879055283s">c</text>
+          </g>
+          <g transform="translate(25.6 51.2)">
+            <text fill="#c3d9ef" style="animation-delay:-1.170434879055283s">o</text>
+          </g>
+          <g transform="translate(25.6 76.80000000000001)">
+            <text fill="#c3d9ef" style="animation-delay:-1.0704348790552831s">d</text>
+          </g>
+          <g transform="translate(25.6 102.4)">
+            <text fill="#c3d9ef" style="animation-delay:-0.970434879055283s">e</text>
+          </g>
+          <g transform="translate(25.6 128)">
+            <text fill="#c3d9ef" style="animation-delay:-0.870434879055283s">▲</text>
+          </g>
+          <g transform="translate(25.6 153.60000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-0.7704348790552831s">s</text>
+          </g>
+          <g transform="translate(25.6 179.20000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-0.6704348790552831s">h</text>
+          </g>
+          <g transform="translate(25.6 204.8)">
+            <text fill="#c3d9ef" style="animation-delay:-0.5704348790552831s">i</text>
+          </g>
+          <g transform="translate(25.6 230.4)">
+            <text fill="#c3d9ef" style="animation-delay:-0.4704348790552831s">f</text>
+          </g>
+          <g transform="translate(25.6 256)">
+            <text fill="#c3d9ef" style="animation-delay:-0.37043487905528305s">t</text>
+          </g>
+
+
+
+          <g transform="translate(51.2 25.6)">
+            <text fill="#c3d9ef" style="animation-delay:-1.283002842043051s">h</text>
+          </g>
+          <g transform="translate(51.2 51.2)">
+            <text fill="#c3d9ef" style="animation-delay:-1.183002842043051s">i</text>
+          </g>
+          <g transform="translate(51.2 76.80000000000001)">
+            <text fill="#c3d9ef" style="animation-delay:-1.083002842043051s">f</text>
+          </g>
+          <g transform="translate(51.2 102.4)">
+            <text fill="#c3d9ef" style="animation-delay:-0.983002842043051s">t</text>
+          </g>
+          <g transform="translate(51.2 128)">
+            <text fill="#c3d9ef" style="animation-delay:-0.883002842043051s">c</text>
+          </g>
+          <g transform="translate(51.2 153.60000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-0.783002842043051s">o</text>
+          </g>
+          <g transform="translate(51.2 179.20000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-0.6830028420430511s">d</text>
+          </g>
+          <g transform="translate(51.2 204.8)">
+            <text fill="#c3d9ef" style="animation-delay:-0.5830028420430511s">e</text>
+          </g>
+          <g transform="translate(51.2 230.4)">
+            <text fill="#c3d9ef" style="animation-delay:-0.48300284204305105s">▲</text>
+          </g>
+          <g transform="translate(51.2 256)">
+            <text fill="#c3d9ef" style="animation-delay:-0.383002842043051s">s</text>
+          </g>
+
+
+          <g transform="translate(76.80000000000001 25.6)">
+            <text fill="#c3d9ef" style="animation-delay:-1.033920141101254s">d</text>
+          </g>
+          <g transform="translate(76.80000000000001 51.2)">
+            <text fill="#c3d9ef" style="animation-delay:-0.933920141101254s">e</text>
+          </g>
+          <g transform="translate(76.80000000000001 76.80000000000001)">
+            <text fill="#c3d9ef" style="animation-delay:-0.833920141101254s">▲</text>
+          </g>
+          <g transform="translate(76.80000000000001 102.4)">
+            <text fill="#c3d9ef" style="animation-delay:-0.7339201411012539s">s</text>
+          </g>
+          <g transform="translate(76.80000000000001 128)">
+            <text fill="#c3d9ef" style="animation-delay:-0.6339201411012539s">h</text>
+          </g>
+          <g transform="translate(76.80000000000001 153.60000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-0.533920141101254s">i</text>
+          </g>
+          <g transform="translate(76.80000000000001 179.20000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-0.433920141101254s">f</text>
+          </g>
+          <g transform="translate(76.80000000000001 204.8)">
+            <text fill="#c3d9ef" style="animation-delay:-0.33392014110125395s">t</text>
+          </g>
+          <g transform="translate(76.80000000000001 230.4)">
+            <text fill="#c3d9ef" style="animation-delay:-0.23392014110125398s">c</text>
+          </g>
+          <g transform="translate(76.80000000000001 256)">
+            <text fill="#c3d9ef" style="animation-delay:-0.13392014110125397s">o</text>
+          </g>
+
+
+          <g transform="translate(102.4 25.6)">
+            <text fill="#c3d9ef" style="animation-delay:-1.701122901948098s">e</text>
+          </g>
+          <g transform="translate(102.4 51.2)">
+            <text fill="#c3d9ef" style="animation-delay:-1.6011229019480981s">▲</text>
+          </g>
+          <g transform="translate(102.4 76.80000000000001)">
+            <text fill="#c3d9ef" style="animation-delay:-1.501122901948098s">s</text>
+          </g>
+          <g transform="translate(102.4 102.4)">
+            <text fill="#c3d9ef" style="animation-delay:-1.401122901948098s">h</text>
+          </g>
+          <g transform="translate(102.4 128)">
+            <text fill="#c3d9ef" style="animation-delay:-1.3011229019480979s">i</text>
+          </g>
+          <g transform="translate(102.4 153.60000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-1.201122901948098s">f</text>
+          </g>
+          <g transform="translate(102.4 179.20000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-1.1011229019480981s">t</text>
+          </g>
+          <g transform="translate(102.4 204.8)">
+            <text fill="#c3d9ef" style="animation-delay:-1.001122901948098s">c</text>
+          </g>
+          <g transform="translate(102.4 230.4)">
+            <text fill="#c3d9ef" style="animation-delay:-0.901122901948098s">o</text>
+          </g>
+          <g transform="translate(102.4 256)">
+            <text fill="#c3d9ef" style="animation-delay:-0.801122901948098s">d</text>
+          </g>
+
+          <g transform="translate(128 25.6)">
+            <text fill="#c3d9ef" style="animation-delay:-1.7808847630133497s">f</text>
+          </g>
+          <g transform="translate(128 51.2)">
+            <text fill="#c3d9ef" style="animation-delay:-1.6808847630133497s">t</text>
+          </g>
+          <g transform="translate(128 76.80000000000001)">
+            <text fill="#c3d9ef" style="animation-delay:-1.5808847630133498s">c</text>
+          </g>
+          <g transform="translate(128 102.4)">
+            <text fill="#c3d9ef" style="animation-delay:-1.4808847630133497s">o</text>
+          </g>
+          <g transform="translate(128 128)">
+            <text fill="#c3d9ef" style="animation-delay:-1.3808847630133498s">d</text>
+          </g>
+          <g transform="translate(128 153.60000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-1.2808847630133497s">e</text>
+          </g>
+          <g transform="translate(128 179.20000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-1.1808847630133497s">▲</text>
+          </g>
+          <g transform="translate(128 204.8)">
+            <text fill="#c3d9ef" style="animation-delay:-1.0808847630133498s">s</text>
+          </g>
+          <g transform="translate(128 230.4)">
+            <text fill="#c3d9ef" style="animation-delay:-0.9808847630133497s">h</text>
+          </g>
+          <g transform="translate(128 256)">
+            <text fill="#c3d9ef" style="animation-delay:-0.8808847630133497s">i</text>
+          </g>
+
+
+          <g transform="translate(153.60000000000002 25.6)">
+            <text fill="#c3d9ef" style="animation-delay:-1.8297066075332016s">o</text>
+          </g>
+          <g transform="translate(153.60000000000002 51.2)">
+            <text fill="#c3d9ef" style="animation-delay:-1.7297066075332017s">d</text>
+          </g>
+          <g transform="translate(153.60000000000002 76.80000000000001)">
+            <text fill="#c3d9ef" style="animation-delay:-1.6297066075332016s">e</text>
+          </g>
+          <g transform="translate(153.60000000000002 102.4)">
+            <text fill="#c3d9ef" style="animation-delay:-1.5297066075332015s">▲</text>
+          </g>
+          <g transform="translate(153.60000000000002 128)">
+            <text fill="#c3d9ef" style="animation-delay:-1.4297066075332014s">s</text>
+          </g>
+          <g transform="translate(153.60000000000002 153.60000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-1.3297066075332016s">h</text>
+          </g>
+          <g transform="translate(153.60000000000002 179.20000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-1.2297066075332017s">i</text>
+          </g>
+          <g transform="translate(153.60000000000002 204.8)">
+            <text fill="#c3d9ef" style="animation-delay:-1.1297066075332016s">f</text>
+          </g>
+          <g transform="translate(153.60000000000002 230.4)">
+            <text fill="#c3d9ef" style="animation-delay:-1.0297066075332015s">t</text>
+          </g>
+          <g transform="translate(153.60000000000002 256)">
+            <text fill="#c3d9ef" style="animation-delay:-0.9297066075332016s">c</text>
+          </g>
+
+
+          <g transform="translate(179.20000000000002 25.6)">
+            <text fill="#c3d9ef" style="animation-delay:-1.5559916866922885s">▲</text>
+          </g>
+          <g transform="translate(179.20000000000002 51.2)">
+            <text fill="#c3d9ef" style="animation-delay:-1.4559916866922884s">s</text>
+          </g>
+          <g transform="translate(179.20000000000002 76.80000000000001)">
+            <text fill="#c3d9ef" style="animation-delay:-1.3559916866922885s">h</text>
+          </g>
+          <g transform="translate(179.20000000000002 102.4)">
+            <text fill="#c3d9ef" style="animation-delay:-1.2559916866922884s">i</text>
+          </g>
+          <g transform="translate(179.20000000000002 128)">
+            <text fill="#c3d9ef" style="animation-delay:-1.1559916866922886s">f</text>
+          </g>
+          <g transform="translate(179.20000000000002 153.60000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-1.0559916866922885s">t</text>
+          </g>
+          <g transform="translate(179.20000000000002 179.20000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-0.9559916866922885s">c</text>
+          </g>
+          <g transform="translate(179.20000000000002 204.8)">
+            <text fill="#c3d9ef" style="animation-delay:-0.8559916866922885s">o</text>
+          </g>
+          <g transform="translate(179.20000000000002 230.4)">
+            <text fill="#c3d9ef" style="animation-delay:-0.7559916866922884s">d</text>
+          </g>
+          <g transform="translate(179.20000000000002 256)">
+            <text fill="#c3d9ef" style="animation-delay:-0.6559916866922885s">e</text>
+          </g>
+
+
+          <g transform="translate(204.8 25.6)">
+            <text fill="#c3d9ef" style="animation-delay:-1.8089157146511339s">i</text>
+          </g>
+          <g transform="translate(204.8 51.2)">
+            <text fill="#c3d9ef" style="animation-delay:-1.708915714651134s">f</text>
+          </g>
+          <g transform="translate(204.8 76.80000000000001)">
+            <text fill="#c3d9ef" style="animation-delay:-1.608915714651134s">t</text>
+          </g>
+          <g transform="translate(204.8 102.4)">
+            <text fill="#c3d9ef" style="animation-delay:-1.5089157146511338s">c</text>
+          </g>
+          <g transform="translate(204.8 128)">
+            <text fill="#c3d9ef" style="animation-delay:-1.4089157146511337s">o</text>
+          </g>
+          <g transform="translate(204.8 153.60000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-1.3089157146511339s">d</text>
+          </g>
+          <g transform="translate(204.8 179.20000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-1.208915714651134s">e</text>
+          </g>
+          <g transform="translate(204.8 204.8)">
+            <text fill="#c3d9ef" style="animation-delay:-1.108915714651134s">▲</text>
+          </g>
+          <g transform="translate(204.8 230.4)">
+            <text fill="#c3d9ef" style="animation-delay:-1.0089157146511338s">s</text>
+          </g>
+          <g transform="translate(204.8 256)">
+            <text fill="#c3d9ef" style="animation-delay:-0.9089157146511339s">h</text>
+          </g>
+
+
+          <g transform="translate(230.4 25.6)">
+            <text fill="#c3d9ef" style="animation-delay:-1.3943684597557076s">t</text>
+          </g>
+          <g transform="translate(230.4 51.2)">
+            <text fill="#c3d9ef" style="animation-delay:-1.2943684597557077s">c</text>
+          </g>
+          <g transform="translate(230.4 76.80000000000001)">
+            <text fill="#c3d9ef" style="animation-delay:-1.1943684597557076s">o</text>
+          </g>
+          <g transform="translate(230.4 102.4)">
+            <text fill="#c3d9ef" style="animation-delay:-1.0943684597557075s">d</text>
+          </g>
+          <g transform="translate(230.4 128)">
+            <text fill="#c3d9ef" style="animation-delay:-0.9943684597557075s">e</text>
+          </g>
+          <g transform="translate(230.4 153.60000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-0.8943684597557076s">▲</text>
+          </g>
+          <g transform="translate(230.4 179.20000000000002)">
+            <text fill="#c3d9ef" style="animation-delay:-0.7943684597557076s">s</text>
+          </g>
+          <g transform="translate(230.4 204.8)">
+            <text fill="#c3d9ef" style="animation-delay:-0.6943684597557076s">h</text>
+          </g>
+          <g transform="translate(230.4 230.4)">
+            <text fill="#c3d9ef" style="animation-delay:-0.5943684597557075s">i</text>
+          </g>
+          <g transform="translate(230.4 256)">
+            <text fill="#c3d9ef" style="animation-delay:-0.49436845975570753s">f</text>
+          </g>
+
+
+
+          <style type="text/css">
+            @keyframes ldp-matrix {
+              0% {
+                opacity: 1;
+                fill: #ff0000;
+              }
+              10% {
+                opacity: 1;
+                fill: #c3d9ef;
+              }
+              50% {
+                opacity: 0
+              }
+              100% {
+                opacity: 0
+              }
+            }
+
+            text {
+              animation: ldp-matrix 1s linear infinite;
+              transform: scaleX(0.7);
+            }
+          </style>
+        </g>
+      </g>
+    </pattern>
+  </defs>
+  <rect x="0" y="0" width="1084" height="322" fill="url(#pid-0.9096609495668855)"></rect>
+</svg>

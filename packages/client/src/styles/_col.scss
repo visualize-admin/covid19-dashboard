@@ -1,0 +1,110 @@
+////
+// All the Colors we use
+// (to name the colors, you can use the tool https://chir.ag/projects/name-that-color/ )
+///
+
+// Monochrome special decoration colors
+$_monochrome-white: #ffffff;
+$_monochrome-wild-sand: #f5f5f5;
+$_monochrome-mercury: #e5e5e5;
+$_monochrome-alto: #dddddd;
+$_monochrome-silver: #cccccc;
+$_monochrome-boulder: #757575;
+$_monochrome-tundora: #454545;
+$_monochrome-mine-shaft: #333333;
+$_monochrome-black: #000000;
+
+$_brand-red: #dc0018;
+$_brand-blue: #006699;
+$_brand-blue-light: #d8e8ef;
+
+$_datavis-seagull: #75afe3;
+$_datavis-cornflower: #66afe9;
+$_datavis-havelock-blue: #428bd3;
+$_datavis-biscay: #183458;
+$_datavis-spindle: #c0d8f0;
+$_datavis-carrot-orange: #f18820;
+$_datavis-rusty-nail: #804408;
+$_datavis-cornflower-2: #81b1e2;
+$_datavis-french-pass: #b8dcff;
+
+$_regal-blue: #004b70;
+$_prussian-blue: #00334d;
+$_black-squeeze: #f2f7fa;
+$_botticelli: #d8e8ef;
+$_athens-gray: #f9fafb;
+$_catskill-white: #f2f7f9;
+
+////
+// Color Variables by Purpose
+////
+$accent-primary: $_brand-red;
+
+$datavis-choropleth-border: $_monochrome-wild-sand;
+$datavis-bar-chart-title: $_monochrome-mine-shaft;
+$datavis-bar-chart-label: $_monochrome-boulder;
+$datavis-bar-chart-primary: $_datavis-havelock-blue;
+
+$datavis-vacc-gender-male: #6d9b6c;
+$datavis-vacc-gender-female: #98bb95;
+$datavis-vacc-gender-unknown: #c2dabd;
+
+$datavis-no-case: $_monochrome-mercury;
+
+$datavis-quarantine: #173d63;
+$datavis-quarantine-to: #428bd3;
+$datavis-quarantine-from: #81b1e2;
+$datavis-no-quarantine: #e5e5e5;
+
+$datavis-range-1: #f9c646;
+$datavis-range-2: #f18820;
+$datavis-range-3: #eb5957;
+$datavis-range-4: #b01715;
+$datavis-range-1-table: #f3d88e;
+$datavis-range-2-table: #efb377;
+$datavis-range-3-table: #eb9698;
+
+$page-hint-bg: $_brand-blue-light;
+$page-hint-fg: $_brand-blue;
+$page-hint-border: $_monochrome-alto;
+
+$report-h1: $_monochrome-black;
+$report-p: $_monochrome-mine-shaft;
+$report-main-item: $_catskill-white;
+$report-main-item-sub: $_monochrome-boulder;
+$report-tr-divider: $_monochrome-mercury;
+
+$warning-bg: #fffab2;
+$warning-fg: #8a6d3b;
+
+$warnings-list-severity-zero: $_monochrome-silver;
+$warnings-list-severity-low: #c0d8f0;
+$warnings-list-severity-medium: #428bd3;
+$warnings-list-severity-high: #173d63;
+$warnings-list-info: $_monochrome-tundora;
+
+$compare-table-cell: #ecf3fb;
+$compare-table-cell-hover: #d5e0ea;
+$compare-table-bar-0: #c0d8f0;
+$compare-table-bar-0-hover: #aec7e1;
+$compare-table-bar-1: #81b1e2;
+$compare-table-bar-1-hover: #75a4d4;
+$compare-table-ref: #a1c5e9;
+
+$table-header-primary: $_monochrome-mine-shaft;
+$table-header-secondary: $_monochrome-boulder;
+$table-header-text: $_monochrome-mine-shaft;
+$table-legend: $_monochrome-mine-shaft;
+
+$vacc-table-cell: #ecf3eb;
+$vacc-table-cell-hover: #d4e0d4;
+$vacc-table-bar: #c2dabd;
+$vacc-table-bar-hover: #afc9aa;
+$vacc-table-bar-secondary: #98bb95;
+$vacc-table-bar-hover-secondary: #87ac85;
+$vacc-table-icon-full: #3e783f;
+$vacc-table-icon-half: #96b993;
+
+$summary-table-bg: rgba(#c0d8f0, 0.3);
+$overview-table-bg: rgba(#c0d8f0, 0.3);
+$overview-table-col-light: $_monochrome-mine-shaft;

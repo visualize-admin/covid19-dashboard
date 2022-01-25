@@ -1,0 +1,6 @@
+#!/bin/sh
+export PATH=/usr/local/bin:$PATH
+
+. "$(dirname "$0")/_/husky.sh"
+
+yarn workspaces run lint:ci && yarn workspaces run test:ci && yarn workspaces run build:ci

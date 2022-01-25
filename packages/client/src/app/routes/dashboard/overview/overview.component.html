@@ -1,0 +1,110 @@
+<div class="overview">
+  <div class="overview__main">
+    <h2 class="overview__title">{{ 'Overview.Title' | i18n }}</h2>
+
+    <div
+      class="overview__header"
+      [class.overview__header--shadow]="!(int0.isIntersecting$ | async)"
+      [bagIntersection]
+      #int0="bagIntersection"
+    >
+      <div class="overview__header-inner">
+        <select
+          bag-select
+          class="overview__filter overview__filter--select"
+          name="overviewTimeFilter"
+          [attr.aria-label]="'TimeSlotFilter.Label' | i18n"
+          [formControl]="timeFilterCtrl"
+        >
+          <ng-container *ngFor="let opt of timeFilterOptions">
+            <option [ngValue]="opt.val" [attr.selected]="opt.val === timeFilterCtrl.value ? '' : null">
+              {{ opt.key | i18n }}
+            </option>
+          </ng-container>
+        </select>
+        <button
+          *ngIf="!(int0.isIntersecting$ | async)"
+          class="overview__hamburger-btn"
+          cdkMonitorElementFocus
+          type="button"
+          (click)="toggleNavBoard()"
+        >
+          <sc-svg
+            url="/assets/icon/ic_menu-close-anim.svg"
+            [bagSvgAnimate]="{ '#anim-close': navBoardService.isOpen, '#anim-menu': !navBoardService.isOpen }"
+          ></sc-svg>
+        </button>
+      </div>
+    </div>
+
+    <div class="overview__card-grid" [class.overview__card-grid--stretch]="stretchCards$ | async">
+      <!-- Case -->
+      <bag-card-overview-case [data]="overviewData.covidCase"></bag-card-overview-case>
+
+      <!-- Hosp -->
+      <bag-card-overview-hosp [data]="overviewData.covidHosp"></bag-card-overview-hosp>
+
+      <!-- Death -->
+      <bag-card-overview-death [data]="overviewData.covidDeath"></bag-card-overview-death>
+
+      <!-- Vaccine -->
+      <bag-card-overview-vaccine [data]="overviewData.covidVacc"></bag-card-overview-vaccine>
+
+      <!-- Hosp Capacity -->
+      <bag-card-overview-hosp-capacity [data]="overviewData.hospCapacity"></bag-card-overview-hosp-capacity>
+
+      <!-- Virus Variants -->
+      <bag-card-overview-virus-variants [data]="overviewData.covidVirusVariants"></bag-card-overview-virus-variants>
+
+      <!-- Test -->
+      <bag-card-overview-test [data]="overviewData.covidTest"></bag-card-overview-test>
+
+      <!-- Repro Value -->
+      <bag-card-overview-repro [data]="overviewData.covidRe"></bag-card-overview-repro>
+
+      <!-- Certificate -->
+      <bag-card-overview-certificate [data]="overviewData.covidCertificates"></bag-card-overview-certificate>
+
+      <!-- Contact Tracing -->
+      <bag-card-overview-ct [data]="overviewData.covidCt"></bag-card-overview-ct>
+    </div>
+  </div>
+
+  <div class="overview__more">
+    <div class="overview__more-inner">
+      <div>
+        <h2 class="overview__more-section-title">{{ 'Overview.More.ReportTitle' | i18n }}</h2>
+        <p class="overview__more-section-text">{{ 'Overview.More.ReportIntro' | i18n }}</p>
+        <ng-container *ngIf="downloadUrls | async as urls">
+          <a
+            class="overview__more-link g-default-icon"
+            [href]="urls.report.pdf14days"
+            [download]="('DailyReport.14Days.FileName' | i18n: { date: urls.sourceDate }) + '.pdf'"
+          >
+            <sc-svg class="overview__more-link-icon" [url]="'/assets/icon/ic_report.svg'"></sc-svg>
+            <span>{{ 'DailyReport.14Days.Download' | i18n }}</span>
+          </a>
+          <a
+            class="overview__more-link g-default-icon"
+            [href]="urls.report.pdf28days"
+            [download]="('DailyReport.28Days.FileName' | i18n: { date: urls.sourceDate }) + '.pdf'"
+          >
+            <sc-svg class="overview__more-link-icon" [url]="'/assets/icon/ic_report.svg'"></sc-svg>
+            <span>{{ 'DailyReport.28Days.Download' | i18n }}</span>
+          </a>
+        </ng-container>
+      </div>
+      <div>
+        <h2 class="overview__more-section-title">{{ 'Overview.More.LinksTitle' | i18n }}</h2>
+        <ul class="overview__link-list">
+          <li *ngFor="let link of bottomLinks">
+            <a class="overview__link-item g-default-icon" [routerLink]="link.pathArgs">
+              <span>{{ link.labelKey | i18n }}</span>
+              <sc-svg class="overview__link-item-icon" url="/assets/icon/ic_chevron_right.svg"></sc-svg>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>

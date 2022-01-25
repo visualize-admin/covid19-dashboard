@@ -1,0 +1,23 @@
+<div class="choropleth">
+  <bag-d3-canvas #mainCanvas class="choropleth__canvas" [flex]="true"></bag-d3-canvas>
+  <canvas #hiddenCanvas class="choropleth__hidden-canvas"></canvas>
+  <svg #hiddenSvg class="choropleth__hidden-svg"></svg>
+  <div class="choropleth__touch-hint" aria-hidden="true" [class.choropleth__touch-hint--show]="showTouchHint$ | async">
+    {{ 'Commons.Choropleth.TwoFingersHint' | i18n }}
+  </div>
+  <div class="choropleth__zoom" [class.choropleth__zoom--spaced]="zoomSpaced">
+    <button
+      *ngIf="isZoomed$ | async"
+      (click)="resetZoom()"
+      class="choropleth__zoom-btn choropleth__zoom-btn--zoom-reset"
+    >
+      <sc-svg url="/assets/icon/ic_recenter.svg"></sc-svg>
+    </button>
+    <button (click)="changeZoom(2)" class="choropleth__zoom-btn choropleth__zoom-btn--zoom-in">
+      <sc-svg url="/assets/icon/ic_add.svg"></sc-svg>
+    </button>
+    <button (click)="changeZoom(0.5)" class="choropleth__zoom-btn choropleth__zoom-btn--zoom-out">
+      <sc-svg url="/assets/icon/ic_minus.svg"></sc-svg>
+    </button>
+  </div>
+</div>

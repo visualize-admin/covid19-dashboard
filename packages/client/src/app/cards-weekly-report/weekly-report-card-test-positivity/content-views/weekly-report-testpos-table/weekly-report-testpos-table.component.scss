@@ -1,0 +1,129 @@
+@use 'src/styles/col';
+@use 'src/styles/text';
+@use 'src/styles/var';
+@use 'src/styles/dim';
+@use 'src/styles/layout';
+@use 'src/styles/table';
+
+bag-weekly-report-testpos-table {
+  display: flex;
+  flex-direction: column;
+
+  .bag-weekly-report-testpos-table__legend {
+    align-self: flex-end;
+    margin-bottom: 12px;
+    margin-top: 16px;
+  }
+
+  .weekly-report-testpos-table__table {
+    @include table.tableDefinition;
+    grid-template-columns: auto repeat(2, minmax(min-content, 1fr)) minmax(auto, max-content);
+    grid-column-gap: 1px;
+  }
+
+  .weekly-report-testpos-table__table-header-row {
+    th {
+      color: col.$table-header-primary;
+      font-weight: var.$font-weight-normal;
+      text-align: left;
+      margin-bottom: 4px;
+    }
+  }
+
+  .weekly-report-testpos-table__table-row {
+    td {
+      background-color: col.$compare-table-cell;
+      margin-bottom: 4px;
+    }
+  }
+  .weekly-report-testpos-table__table-row--top-gap {
+    th {
+      margin-top: 16px;
+    }
+  }
+  .weekly-report-testpos-table__table-row--large {
+    th,
+    td {
+      padding: table.$largeCellPadding;
+    }
+  }
+  .weekly-report-testpos-table__table-row--1 {
+    .weekly-report-testpos-table__table-val-cell {
+      @include table.barCell0;
+    }
+  }
+
+  .weekly-report-testpos-table__table-row--2 {
+    .weekly-report-testpos-table__table-val-cell {
+      @include table.barCell1;
+    }
+    th,
+    td {
+      margin-top: -3px;
+    }
+  }
+
+  .weekly-report-testpos-table__table-title-cell {
+    @include table.rowTitleCell;
+    grid-row-end: span 2;
+  }
+
+  .weekly-report-testpos-table__table-hidden-cell {
+    padding: 0;
+    margin: 0;
+    width: 1px !important;
+    height: 1px !important;
+    position: absolute;
+    opacity: 0;
+    overflow: hidden;
+  }
+
+  .weekly-report-testpos-table__table-val-cell {
+    @include table.valueWithBarCell;
+
+    margin-right: 0.5px;
+    margin-left: 0;
+    & + .weekly-report-testpos-table__table-val-cell {
+      margin-right: 0;
+      margin-left: 0.5px;
+    }
+  }
+
+  .weekly-report-testpos-table__table-diff-cell {
+    @include table.diffCell;
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .bag-weekly-report-testpos-table__legend {
+      align-self: flex-start;
+    }
+
+    .weekly-report-testpos-table__table {
+      grid-template-columns: repeat(2, minmax(min-content, 1fr)) minmax(auto, max-content);
+    }
+    .weekly-report-testpos-table__table-title-cell {
+      grid-column-end: span 3;
+    }
+    .weekly-report-testpos-table__table-header-row {
+      td {
+        display: none;
+      }
+    }
+  }
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .weekly-report-testpos-table__table-row {
+      th {
+        background-color: col.$compare-table-cell;
+        margin-bottom: table.$defaultRowGap;
+      }
+    }
+    .weekly-report-testpos-table__table-row--top-gap {
+      td {
+        margin-top: table.$largeRowGap;
+      }
+    }
+    .weekly-report-testpos-table__table-title-cell {
+      margin-right: 1px;
+    }
+  }
+}

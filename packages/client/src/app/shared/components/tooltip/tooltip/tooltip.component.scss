@@ -1,0 +1,102 @@
+@use 'src/styles/var';
+@use 'src/styles/col';
+
+bag-tooltip {
+  max-width: calc(100vw / 3 * 2);
+  position: relative;
+  filter: drop-shadow(0 0 1px var(--c-border-tooltip)) drop-shadow(0 16px 16px rgba(13, 27, 41, 0.08))
+    drop-shadow(0 8px 8px rgba(13, 27, 41, 0.08));
+
+  .tooltip__inner {
+    position: relative;
+    background: var(--c-bg-tooltip);
+    border-radius: var(--br-tooltip);
+    padding: 12px 16px;
+    z-index: 0;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    transform: translate(-50%, -50%) rotate(45deg);
+    top: var(--a-top);
+    left: var(--a-left);
+    width: 0;
+    height: 0;
+    border: {
+      width: 6px;
+      style: solid;
+      top-color: var(--a-c-top);
+      right-color: var(--a-c-right);
+      bottom-color: var(--a-c-bottom);
+      left-color: var(--a-c-left);
+    }
+    z-index: 1;
+  }
+
+  --a-c-top: transparent;
+  --a-c-right: transparent;
+  --a-c-bottom: transparent;
+  --a-c-left: transparent;
+
+  &.tooltip--arrow-right {
+    --a-left: 100%;
+  }
+
+  &.tooltip--arrow-left {
+    --a-left: 0%;
+  }
+
+  &.tooltip--arrow-top {
+    --a-top: 0%;
+  }
+
+  &.tooltip--arrow-bottom {
+    --a-top: 100%;
+  }
+
+  &.tooltip--arrow-y-top {
+    --a-top: 0%;
+    --a-c-right: var(--c-bg-tooltip);
+    --a-c-bottom: var(--c-bg-tooltip);
+  }
+
+  &.tooltip--arrow-y-center {
+    --a-top: 50%;
+  }
+
+  &.tooltip--arrow-y-bottom {
+    --a-top: 100%;
+    --a-c-top: var(--c-bg-tooltip);
+    --a-c-left: var(--c-bg-tooltip);
+  }
+
+  &.tooltip--arrow-x-start {
+    --a-left: 0%;
+    --a-c-right: var(--c-bg-tooltip);
+    --a-c-top: var(--c-bg-tooltip);
+  }
+
+  &.tooltip--arrow-x-center {
+    --a-left: 50%;
+  }
+
+  &.tooltip--arrow-x-end {
+    --a-left: 100%;
+    --a-c-left: var(--c-bg-tooltip);
+    --a-c-bottom: var(--c-bg-tooltip);
+  }
+
+  &.tooltip--arrow-y-center,
+  &.tooltip--arrow-x-center {
+    --a-c-top: var(--c-bg-tooltip);
+    --a-c-bottom: var(--c-bg-tooltip);
+    --a-c-right: var(--c-bg-tooltip);
+    --a-c-left: var(--c-bg-tooltip);
+  }
+}
+
+.bag-tooltip--panel-no-pointer-events {
+  // important is necessary since the cdk writes uses element-styles
+  pointer-events: none !important;
+}

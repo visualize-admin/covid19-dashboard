@@ -1,0 +1,14 @@
+#!/usr/bin/env node
+
+const readFileSync = require('fs').readFileSync
+const execSync = require('child_process').execSync
+
+const packageJson = JSON.parse(readFileSync('../../package.json', "utf8"))
+
+if (packageJson?.repository?.url === 'https://github.com/visualize-admin/covid19-dashboard.git') {
+  execSync('node ./setup-local-to-prod')
+} else {
+  execSync(`../iac/node_modules/.bin/export-base-runtime-config -d ./src`)
+}
+
+

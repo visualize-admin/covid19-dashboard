@@ -1,0 +1,69 @@
+@use 'src/styles/text';
+@use 'src/styles/mix';
+@use 'src/styles/dim';
+
+bag-detail-card-vacc-status-development {
+  display: block;
+
+  .detail-card-vacc-status-development {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-card-vacc-status-development__warning {
+    @include mix.warning;
+    margin-bottom: 32px;
+  }
+
+  .detail-card-vacc-status-development__lr {
+    justify-content: normal !important;
+    @include mix.cardFiltersMainLr;
+  }
+
+  .detail-card-vacc-status-development__no-data {
+    @include mix.noDetailCardContent;
+  }
+
+  .detail-card-vacc-status-development__no-data-btn {
+    @include mix.noDetailCardContentLink;
+  }
+
+  .detail-card-vacc-status-development__chart {
+    margin-top: 48px;
+  }
+
+  .detail-card-vacc-status-development__title {
+    @include text.h3;
+    margin: 0 0 16px 0;
+  }
+
+  .detail-card-vacc-status-development__chart-title {
+    @include text.h3;
+    margin: 0 0 0;
+  }
+
+  .detail-card-vacc-status-development__chart-intro {
+    @include mix.cardChartIntro;
+  }
+
+  .detail-card-vacc-status-development__chart-meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  .detail-card-vacc-status-development__view-filter {
+    margin-right: auto;
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .detail-card-vacc-status-development__relativity-filter--toggle {
+      display: none;
+    }
+  }
+
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .detail-card-vacc-status-development__relativity-filter--select[bag-select] {
+      display: none;
+    }
+  }
+}

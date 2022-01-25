@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Covid-19 Suisse | Nouveau Coronavirus | Situation actuelle</title>
+    <link rel="stylesheet" href="browser_not_supported.css" />
+  </head>
+  <body>
+    <div class="header">
+      <table>
+        <tbody>
+          <tr>
+            <td class="header__td__logo"><img class="header__logo" src="/assets/logo.png" /></td>
+            <td class="header__td__title">Office fédéral de la santé publique OFSP</td>
+            <td class="header__td__lang"><a class="lang" href="browser_not_supported.de.html">DE</a></td>
+            <td class="header__td__lang"><a class="lang lang--active" href="browser_not_supported.fr.html">FR</a></td>
+            <td class="header__td__lang"><a class="lang" href="browser_not_supported.it.html">IT</a></td>
+            <td class="header__td__lang"><a class="lang" href="browser_not_supported.rm.html">RM</a></td>
+            <td class="header__td__lang"><a class="lang" href="browser_not_supported.en.html">EN</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="main">
+      <h1>Covid-19 Suisse</h1>
+      <p>
+        Votre navigateur n'est pas supporté. Pour accéder aux données, utilisez la dernière version de Chrome, Firefox,
+        Safari ou Edge, et essayez à nouveau.
+      </p>
+      <p class="main__p-p">
+        Si vous désirez en savoir plus sur le développement de la COVID-19 en Suisse et au Liechtenstein, vous pouvez
+        télécharger le rapport ci-dessous au format PDF.
+      </p>
+      <a id="dailyreport" href="" download="COVID-19_Situation_épidémiologique_Suisse.pdf"
+        >Télécharger le rapport quotidien</a
+      >
+      <script>
+        var link = document.getElementById('dailyreport')
+        if (!window.location.origin) {
+          window.location.origin =
+            window.location.protocol +
+            '//' +
+            window.location.hostname +
+            (window.location.port ? ':' + window.location.port : '')
+        }
+        var origin = window.location.origin
+        link.href = origin + '/api/renderer/pdf?url=' + origin + '/fr/export/report'
+      </script>
+    </div>
+
+    <div class="footer">
+      <div class="footer__main">
+        <h2>Informations complémentaires</h2>
+        <ul>
+          <li>
+            <a
+              target="_blank"
+              href="https://www.bag.admin.ch/bag/fr/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov.html"
+              >Office fédéral de la santé publique</a
+            >
+          </li>
+          <li>
+            <a
+              target="_blank"
+              href="https://www.experimental.bfs.admin.ch/expstat/fr/home/methodes-innovation/swisscovid-app-monitoring.html"
+              >Informations sur l’application SwissCovid</a
+            >
+          </li>
+          <li>
+            <a
+              target="_blank"
+              href="https://www.bag.admin.ch/bag/fr/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/massnahmen-des-bundes.html"
+              >Nouveau coronavirus : mesures et ordonnances</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="footer__addon">
+        <table>
+          <tbody>
+            <tr>
+              <td class="footer__td__title">Office fédéral de la santé publique OFSP</td>
+              <td class="footer__td__link">
+                <a
+                  target="_blank"
+                  href="https://www.bag.admin.ch/bag/fr/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/faq-kontakte-downloads/kontake-neues-coronavirus.html"
+                  >Contact</a
+                >
+              </td>
+              <td class="footer__td__link">
+                <a target="_blank" href="https://www.admin.ch/gov/fr/accueil/conditions-utilisation.html"
+                  >Informations juridiques</a
+                >
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

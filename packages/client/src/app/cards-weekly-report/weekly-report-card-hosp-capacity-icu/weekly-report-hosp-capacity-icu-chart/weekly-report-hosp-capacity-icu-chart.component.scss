@@ -1,0 +1,42 @@
+@use 'src/styles/var';
+@use 'src/styles/col';
+@use 'src/styles/text';
+@use 'src/styles/layout';
+@use 'src/styles/dim';
+
+bag-weekly-report-hosp-capacity-icu-chart {
+  display: flex;
+  flex-direction: column;
+
+  .weekly-report-hosp-capacity-icu-chart__title {
+    @include text.paragraph1;
+    font-weight: var.$font-weight-bold;
+    margin: 16px 0 8px 0;
+  }
+
+  .weekly-report-hosp-capacity-icu-chart__subtitle {
+    @include text.paragraph2;
+    font-weight: var.$font-weight-bold;
+    margin: 8px 0;
+  }
+
+  .weekly-report-hosp-capacity-icu-chart__legend {
+    align-self: flex-end;
+    margin-bottom: 8px;
+  }
+
+  .weekly-report-hosp-capacity-icu-chart__meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  bag-column-chart:not(:last-child) {
+    margin-bottom: 24px;
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .weekly-report-hosp-capacity-icu-chart__legend {
+      align-self: flex-start;
+    }
+  }
+}

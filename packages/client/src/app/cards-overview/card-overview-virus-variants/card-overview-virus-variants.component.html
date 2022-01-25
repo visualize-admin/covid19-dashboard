@@ -1,0 +1,34 @@
+<bag-overview-card
+  titleKey="OverviewCardVirusVariant.Title"
+  [sourceDate]="data.sourceDate | toDate"
+  [facet]="facet"
+  [moreLinkArgs]="moreLink"
+  [warnKey]="warningKey$ | async"
+>
+  <p
+    *bagOverviewCardInfo
+    class="g-content"
+    bagOverviewCardHint
+    [translate]="'OverviewCardVirusVariant.InfoText.Top'"
+  ></p>
+
+  <p class="card__intro">{{ 'OverviewCardVirusVariant.IntroText' | i18n }}</p>
+
+  <bag-key-value-list
+    *ngIf="keyValueList$ | async as keyValueList"
+    [data]="keyValueList"
+    [showInfo]="(overviewCard?.showInfo$ | async) || false"
+  ></bag-key-value-list>
+
+  <ng-container *ngIf="histogram$ | async as histogram">
+    <bag-histogram-preview-lines
+      [data]="histogram.entries"
+      [colors]="histogram.colors"
+      [strokeWidths]="2"
+      [yLabelFormatter]="valFmt"
+      [noDataLabel]="'Commons.NoDataForSelectedTimeframe' | i18n"
+    ></bag-histogram-preview-lines>
+  </ng-container>
+
+  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'OverviewCardVirusVariant.InfoText.Bottom'"></p>
+</bag-overview-card>

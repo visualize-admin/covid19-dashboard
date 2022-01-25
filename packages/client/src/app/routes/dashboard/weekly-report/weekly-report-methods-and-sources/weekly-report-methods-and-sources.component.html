@@ -1,0 +1,11 @@
+<h3>{{ 'WeeklyReport.MethodsAndSources.DetailTitle' | i18n }}</h3>
+<ng-container *ngIf="methodData">
+  <p>{{ multiLangOrFallbackText(methodData.curr.epidemiologic) }}</p>
+  <p>{{ multiLangOrFallbackText(methodData.curr.deadline) }}</p>
+  <p>{{ multiLangOrFallbackText(methodData.curr.contactTracing) }}</p>
+  <p>{{ multiLangOrFallbackText(methodData.curr.hospCapacity) }}</p>
+  <p>{{ multiLangOrFallbackText(methodData.curr.trends) }}</p>
+  <p>
+    <small>{{ 'Commons.DataStatus' | i18n: getDataStatusArgs(methodData.curr.sourceDate) }}</small>
+  </p>
+</ng-container>

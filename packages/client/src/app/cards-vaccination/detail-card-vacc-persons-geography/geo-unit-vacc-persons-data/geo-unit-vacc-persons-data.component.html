@@ -1,0 +1,70 @@
+<div class="geo-unit-vacc-persons-data" [class.geo-unit-vacc-persons-data--tooltip]="isTooltip">
+  <h5 class="geo-unit-vacc-persons-data__title">{{ title }}</h5>
+  <span class="geo-unit-vacc-persons-data__sub-title">{{ subTitle }}</span>
+
+  <ng-container *ngIf="preparedData">
+    <p
+      class="geo-unit-vacc-persons-data__main"
+      [innerHTML]="
+        'Vaccination.Card.VaccPersons.MinOneDose.Val' | i18n: { value: preparedData.minOneDose || 0 | adminNum: 2 }
+      "
+    ></p>
+
+    <bag-distribution-bar
+      class="geo-unit-vacc-persons-data__chart"
+      [entries]="distribution"
+      facet="narrow"
+    ></bag-distribution-bar>
+
+    <table class="geo-unit-vacc-persons-data__table">
+      <tbody>
+        <tr>
+          <th>
+            <span
+              class="geo-unit-vacc-persons-data__box geo-unit-vacc-persons-data__box--pattern"
+              [style.--color]="preparedData.booster.color"
+              [style.--pattern-color]="preparedData.booster.patternColor"
+            ></span>
+            {{ 'Vaccination.Card.VaccPersons.WithBooster' | i18n }}
+          </th>
+          <td>{{ preparedData.booster.total || 0 | adminNum }}</td>
+          <td>{{ preparedData.booster.inzTotal || 0 | adminNum: 2 }}%</td>
+        </tr>
+        <tr>
+          <th>
+            <span class="geo-unit-vacc-persons-data__box" [style.--color]="preparedData.full.color"></span>
+            {{ 'Vaccination.Card.VaccPersons.Full' | i18n }}
+          </th>
+          <td>{{ preparedData.full.total || 0 | adminNum }}</td>
+          <td>{{ preparedData.full.inzTotal || 0 | adminNum: 2 }}%</td>
+        </tr>
+        <tr>
+          <th>
+            <span class="geo-unit-vacc-persons-data__box" [style.--color]="preparedData.partial.color"></span>
+            {{ 'Vaccination.Card.VaccPersons.Partial' | i18n }}
+          </th>
+          <td>{{ preparedData.partial.total || 0 | adminNum }}</td>
+          <td>{{ preparedData.partial.inzTotal || 0 | adminNum: 2 }}%</td>
+        </tr>
+        <ng-container *ngFor="let additional of additionalItems">
+          <tr class="geo-unit-vacc-persons-data__divider">
+            <th colspan="3"></th>
+          </tr>
+          <tr class="geo-unit-vacc-persons-data__additional">
+            <th colspan="3">{{ additional.title }}</th>
+          </tr>
+          <tr>
+            <th>{{ 'Vaccination.Card.VaccPersons.Full' | i18n }}</th>
+            <td>{{ additional.full.total | adminNum }}</td>
+            <td>{{ additional.full.inzTotal | adminNum: 2:'%' }}</td>
+          </tr>
+          <tr>
+            <th>{{ 'Vaccination.Card.VaccPersons.Partial' | i18n }}</th>
+            <td>{{ additional.partial.total | adminNum }}</td>
+            <td>{{ additional.partial.inzTotal | adminNum: 2:'%' }}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </ng-container>
+</div>

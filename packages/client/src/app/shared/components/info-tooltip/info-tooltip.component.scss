@@ -1,0 +1,26 @@
+@use 'src/styles/text';
+@use 'src/styles/col';
+bag-info-tooltip {
+  display: inline-flex;
+  align-items: baseline;
+
+  sc-svg {
+    display: inline-flex;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #e5e5e5;
+    transform: translateY(1px);
+    margin-left: 4px;
+
+    svg {
+      transform: scale(1.5);
+    }
+  }
+}
+
+.info-tooltip {
+  @include text.meta;
+  color: var(--c-fg-meta);
+  max-width: 300px;
+}

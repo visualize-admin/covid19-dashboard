@@ -1,0 +1,89 @@
+<bag-detail-card
+  titleKey="Epidemiologic.VirusVariants.Card.Segmentation.Title"
+  infoKey="Epidemiologic.VirusVariants.Card.Segmentation.Info"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="data.sourceDate ? [{ sourceKey: 'Commons.Source.WGS', date: (data.sourceDate | toDate) }] : []"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [hideInfo]="hideInfo"
+>
+  <div class="card-virus-variants-segmentation" *ngIf="currentValues$ | async as cv">
+    <div class="card-virus-variants-segmentation__no-data" *ngIf="cv.notChFl">
+      <p>{{ 'Epidemiologic.VirusVariants.Card.Segmentation.NoCantonData' | i18n }}</p>
+      <!--  todo fix key `SubDetail.FilterReset1` -->
+      <a *ngIf="!hideResetBtn" [routerLink]="['.']" [queryParams]="queryParamsResetGeoUnit">{{
+        'SubDetail.FilterReset1' | i18n
+      }}</a>
+    </div>
+
+    <ng-container *ngIf="chartData$ | async as chartData">
+      <div class="card-virus-variants-segmentation__lr">
+        <bag-multi-select
+          [formControl]="variantFilterCtrl"
+          [labelFn]="variantMultiSelectFilterLabelFn"
+          [options]="variantFilterOptions"
+        >
+        </bag-multi-select>
+
+        <bag-chart-legend *ngIf="!chartData.forSingleVariant" [itemGap]="16">
+          <ng-container *ngFor="let legend of chartData.legendPairs">
+            <div bagChartLegendSquare [color]="legend[0]" [tooltipKey]="legend[2]">{{ legend[1] | i18n }}</div>
+          </ng-container>
+        </bag-chart-legend>
+        <bag-chart-legend *ngIf="chartData.forSingleVariant" [itemGap]="16">
+          <div bagChartLegendLabel [tooltipKey]="chartData.legend[2]">{{ chartData.legend[1] | i18n }}</div>
+          <div bagChartLegendLine [color]="chartData.legend[0]" [thickness]="4" [length]="12">
+            {{ 'Epidemiologic.VirusVariants.Card.Legend.Mean7d' | i18n }}
+          </div>
+          <div bagChartLegendDailyValue>{{ 'Epidemiologic.VirusVariants.Card.Legend.DailyValues' | i18n }}</div>
+        </bag-chart-legend>
+      </div>
+
+      <div class="card-virus-variants-segmentation__chart">
+        <div class="card-virus-variants-segmentation__chart-meta">
+          <span>{{ 'Epidemiologic.VirusVariants.Card.Segmentation.ChartMeta' | i18n }}</span>
+        </div>
+
+        <bag-histogram-line
+          *ngIf="!chartData.forSingleVariant"
+          [data]="chartData.entries"
+          [colors]="chartData.colors"
+          [yLabelFormatter]="valFmt"
+          [focusPosYCenter]="true"
+          [strokeWidths]="2"
+          [disableNoDataBlocks]="true"
+          [yLabelsMaxLength]="chartData.yLabelMaxLength"
+          (elFocus)="showTooltipForMultiple($event, chartData)"
+          (diagramLeave)="hideTooltip()"
+        ></bag-histogram-line>
+
+        <bag-histogram-line-virus-variants
+          *ngIf="chartData.forSingleVariant"
+          [data]="chartData.entries"
+          [colors]="chartData.colors"
+          [yLabelFormatter]="valFmt"
+          [yLabelsMaxLength]="chartData.yLabelMaxLength"
+          (elFocus)="showTooltipForSingle($event)"
+          (diagramLeave)="hideTooltip()"
+        ></bag-histogram-line-virus-variants>
+      </div>
+
+      <div class="card-virus-variants-segmentation__chart">
+        <div class="card-virus-variants-segmentation__chart-meta">
+          <span>{{ 'Epidemiologic.VirusVariants.Card.Segmentation.ChartMetaSequencing' | i18n }}</span>
+        </div>
+        <bag-histogram-detail
+          [data]="chartData.sequencingEntries"
+          [barColors]="[sequencingColor]"
+          [yTickCount]="2"
+          [maxHeight]="150"
+          [yLabelsMaxLength]="chartData.yLabelMaxLength"
+          (elFocus)="showSequencingTooltip($event)"
+          (diagramLeave)="hideTooltip()"
+        ></bag-histogram-detail>
+      </div>
+    </ng-container>
+  </div>
+</bag-detail-card>

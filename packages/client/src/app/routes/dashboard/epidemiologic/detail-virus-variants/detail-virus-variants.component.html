@@ -1,0 +1,8 @@
+<h3>{{ 'Epidemiologic.VirusVariants.DetailTitle' | i18n }}</h3>
+<p class="g-content" [translate]="'Epidemiologic.VirusVariants.DetailIntro'"></p>
+
+<div class="detail__cards" *ngIf="data$ | async as data">
+  <bag-detail-card-virus-variants-overview [data]="data.geography"></bag-detail-card-virus-variants-overview>
+
+  <bag-detail-card-virus-variants-segmentation [data]="data.segmentation"></bag-detail-card-virus-variants-segmentation>
+</div>

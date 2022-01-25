@@ -1,0 +1,13 @@
+<bag-detail-card-vacc-doses-indication
+  *ngIf="isVaccDoses"
+  [facet]="facet"
+  [data]="dosesData"
+  [infoAddOnKey]="introKey"
+></bag-detail-card-vacc-doses-indication>
+
+<bag-detail-card-vacc-persons-indication
+  *ngIf="isVaccPersons"
+  [facet]="facet"
+  [data]="personsData"
+  [infoAddOnKey]="introKey"
+></bag-detail-card-vacc-persons-indication>

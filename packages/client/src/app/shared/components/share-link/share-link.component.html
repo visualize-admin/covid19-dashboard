@@ -1,0 +1,36 @@
+<div class="share-link">
+  <div class="share-link__link-field" tabindex="-1">
+    <label class="cdk-visually-hidden" [for]="linkInputId" [id]="ariaDescriptionId">{{
+      'Commons.ShareUrl' | i18n
+    }}</label>
+    <input
+      class="share-link__input"
+      readonly
+      type="url"
+      name="cardUrl"
+      [id]="linkInputId"
+      autocomplete="off"
+      [formControl]="linkCtrl"
+    />
+    <div class="share-link__inner-overlay"></div>
+    <button
+      class="share-link__button share-link__button--in-field"
+      type="button"
+      [attr.aria-label]="'Commons.Copy' | i18n"
+      [cdkCopyToClipboard]="urlToShare"
+      [attr.aria-describedby]="ariaDescriptionId"
+    >
+      <sc-svg class="share-link__button-icon" url="/assets/icon/ic_copy-2.svg"></sc-svg>
+    </button>
+  </div>
+  <button
+    class="share-link__button share-link__button--after-field"
+    *ngIf="supportsSharing"
+    type="button"
+    (click)="share()"
+    [attr.aria-label]="'Commons.Share' | i18n"
+    [attr.aria-describedby]="ariaDescriptionId"
+  >
+    <sc-svg class="share-link__button-icon" url="/assets/icon/ic_share.svg"></sc-svg>
+  </button>
+</div>

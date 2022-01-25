@@ -1,0 +1,79 @@
+<ng-container *ngIf="demoData$ | async as data">
+  <!-- Age inz -->
+  <h5 class="weekly-report-demo-chart__title">{{ 'WeeklyReport.Card.Demography.Subtitle.AgeGroups' | i18n }}</h5>
+  <h6 class="weekly-report-demo-chart__subtitle">{{ parent.keys.inzTitle | i18n }}</h6>
+  <bag-chart-legend [itemGap]="16" class="weekly-report-demo-chart__legend">
+    <div
+      bagChartLegendSquare
+      [color]="colors[0]"
+      translate="WeeklyReport.WeekFrom"
+      [translateValues]="{ week: data.prevDate | fmtIsoWeek, date: data.prevDate | fmtDate }"
+    ></div>
+    <div
+      bagChartLegendSquare
+      [color]="colors[1]"
+      translate="WeeklyReport.WeekFrom"
+      [translateValues]="{ week: data.currDate | fmtIsoWeek, date: data.currDate | fmtDate }"
+    ></div>
+  </bag-chart-legend>
+  <p class="weekly-report-demo-chart__meta">{{ parent.keys.inzChartMeta | i18n }}</p>
+  <bag-column-chart
+    [data]="data.inzData"
+    [colors]="colors"
+    [direction]="(direction$ | async) || 'horizontal'"
+    (elFocus)="showAgeTooltip($event, data, true)"
+    (diagramLeave)="hideTooltip()"
+    [xLabelFormatter]="yLabelFmt"
+  ></bag-column-chart>
+
+  <!--Age abs -->
+
+  <h6 class="weekly-report-demo-chart__subtitle">{{ parent.keys.absTitle | i18n }}</h6>
+  <bag-chart-legend [itemGap]="16" class="weekly-report-demo-chart__legend">
+    <div
+      bagChartLegendSquare
+      [color]="colors[0]"
+      translate="WeeklyReport.WeekFrom"
+      [translateValues]="{ week: data.prevDate | fmtIsoWeek, date: data.prevDate | fmtDate }"
+    ></div>
+    <div
+      bagChartLegendSquare
+      [color]="colors[1]"
+      translate="WeeklyReport.WeekFrom"
+      [translateValues]="{ week: data.currDate | fmtIsoWeek, date: data.currDate | fmtDate }"
+    ></div>
+  </bag-chart-legend>
+  <p class="weekly-report-demo-chart__meta">{{ parent.keys.absChartMeta | i18n }}</p>
+  <bag-column-chart
+    [data]="data.absData"
+    [colors]="colors"
+    [direction]="(direction$ | async) || 'horizontal'"
+    (elFocus)="showAgeTooltip($event, data, false)"
+    (diagramLeave)="hideTooltip()"
+    [xLabelFormatter]="yLabelFmt"
+  ></bag-column-chart>
+
+  <!-- Sex percentage -->
+  <h5 class="weekly-report-demo-chart__title">{{ 'WeeklyReport.Card.Demography.Subtitle.Sex' | i18n }}</h5>
+  <bag-chart-legend [itemGap]="16" class="weekly-report-demo-chart__legend">
+    <div
+      bagChartLegendSquare
+      [color]="colors[0]"
+      translate="WeeklyReport.WeekFrom"
+      [translateValues]="{ week: data.prevDate | fmtIsoWeek, date: data.prevDate | fmtDate }"
+    ></div>
+    <div
+      bagChartLegendSquare
+      [color]="colors[1]"
+      translate="WeeklyReport.WeekFrom"
+      [translateValues]="{ week: data.currDate | fmtIsoWeek, date: data.currDate | fmtDate }"
+    ></div>
+  </bag-chart-legend>
+  <p class="weekly-report-demo-chart__meta">{{ 'WeeklyReport.Card.Demography.PercentageShare' | i18n }}</p>
+  <bag-column-chart
+    [data]="data.sexData"
+    [colors]="colors"
+    (elFocus)="showSexTooltip($event, data)"
+    (diagramLeave)="hideTooltip()"
+  ></bag-column-chart>
+</ng-container>

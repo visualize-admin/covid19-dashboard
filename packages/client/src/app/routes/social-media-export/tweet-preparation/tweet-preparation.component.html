@@ -1,0 +1,19 @@
+<h3>{{ title }}</h3>
+<div class="text-prep">
+  <textarea id="tweet-input-epi" class="text-prep__input" [formControl]="templateCtrl" scAutosize></textarea>
+  <div class="text-prep__args">
+    <ng-container *ngFor="let arg of argEntries">
+      <button (click)="copyArg(arg[0], el)"><span>&#123;</span>{{ arg[0] }}<span>&#125;</span></button>
+      <div class="icon" #el>
+        <sc-svg url="/assets/icon/ic_check-round.svg"></sc-svg>
+      </div>
+      <span>{{ arg[1] }}</span>
+    </ng-container>
+  </div>
+  <ng-container *ngIf="tweet$ | async as tweet">
+    <div class="text-prep__output">
+      <div class="text-prep__output-text" [innerHTML]="replaceLineBreaksForHtml(tweet)"></div>
+      <button class="text-prep__output-btn" (click)="copyTweet()">copy tweet</button>
+    </div>
+  </ng-container>
+</div>

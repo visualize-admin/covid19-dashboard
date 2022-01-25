@@ -1,0 +1,14 @@
+@use 'src/styles/mix';
+
+bag-weekly-report-card-hosp-capacity-icu {
+  display: block;
+
+  .weekly-report-card-hosp-capacity-icu__view {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .weekly-report-card-hosp-capacity-icu__no-data {
+    @include mix.noDetailCardContent;
+  }
+}

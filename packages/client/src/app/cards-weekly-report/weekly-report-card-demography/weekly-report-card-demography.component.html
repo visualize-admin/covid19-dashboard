@@ -1,0 +1,31 @@
+<bag-detail-card
+  titleKey="WeeklyReport.Card.Demography.Title"
+  [infoKey]="keys.info"
+  [warnKey]="warnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: (data.curr.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [infoAddOnKey]="infoAddOnKey"
+>
+  <ng-container *ngIf="currentValues$ | async as currentValues">
+    <p *ngIf="currentValues.noData" class="weekly-report-card-demography__no-data">{{ demoKeys.noData | i18n }}</p>
+    <ng-container *ngIf="!currentValues.noData">
+      <bag-toggle-button-list
+        class="weekly-report-card-demography__view-filter"
+        [formControl]="demoViewFilterCtrl"
+        [attr.aria-label]="'WeeklyReport.Card.Demography.ViewFilter.Label' | i18n"
+      >
+        <bag-toggle-button *ngFor="let opt of demoViewFilterOptions" [value]="opt.val">{{
+          opt.key | i18n
+        }}</bag-toggle-button>
+      </bag-toggle-button-list>
+
+      <ng-container [ngSwitch]="currentValues.viewFilter">
+        <bag-weekly-report-demo-chart *ngSwitchCase="WeeklyReportDemoViewFilter.CHART"></bag-weekly-report-demo-chart>
+        <bag-weekly-report-demo-table *ngSwitchCase="WeeklyReportDemoViewFilter.TABLE"></bag-weekly-report-demo-table>
+      </ng-container>
+    </ng-container>
+  </ng-container>
+</bag-detail-card>

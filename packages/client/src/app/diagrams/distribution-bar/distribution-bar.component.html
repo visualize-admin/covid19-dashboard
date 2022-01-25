@@ -1,0 +1,16 @@
+<div class="distribution-bar" [class.distribution-bar--narrow]="facet === 'narrow'">
+  <p *ngIf="label" class="distribution-bar__label" [innerHtml]="label"></p>
+  <div *ngIf="entries" class="distribution-bar__bars">
+    <ng-container *ngFor="let entry of entries">
+      <ng-container *ngIf="entry.ratio !== null">
+        <div
+          class="distribution-bar__bar"
+          [class.distribution-bar__bar--overlay]="entry.isOverlay"
+          [style.--pattern-color]="entry.patternColorCode"
+          [style.--width.%]="entry.ratio"
+          [style.--bg-color]="entry.colorCode"
+        ></div>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,33 @@
+@use 'src/styles/col';
+@use 'src/styles/var';
+@use 'src/styles/dim';
+@use 'src/styles/text';
+
+$height: 48px;
+
+bag-multi-select {
+  display: block;
+  max-width: 300px;
+  min-width: 200px;
+
+  .multi-select {
+    width: 100%;
+    height: $height;
+    border-radius: var(--br-form-control);
+    box-shadow: var(--bs-form-control);
+    border: 1px solid var(--c-border-form-control);
+    color: var(--c-fg-form-control);
+    background-color: var(--c-bg-form-control);
+    padding-left: 12px;
+    text-align: left;
+    padding-right: 36px;
+    background-image: url('/assets/icon/ic_chevron_down.svg');
+    background-repeat: no-repeat;
+    background-position: right 5px center;
+    font-size: 16px;
+  }
+  @media (max-width: #{dim.$bp-max-sm}) {
+    max-width: 100%;
+    width: 100%;
+  }
+}

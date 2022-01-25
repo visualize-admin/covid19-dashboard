@@ -1,0 +1,25 @@
+@use 'src/styles/col';
+@use 'src/styles/var';
+@use 'src/styles/dim';
+
+bag-toggle-button-list {
+  display: block;
+  border-radius: var(--br-form-control);
+  box-shadow: var(--bs-form-control);
+
+  @media (max-width: #{dim.$bp-max-sm}) {
+    flex: 1 0 auto;
+    width: 100%;
+  }
+
+  $border: 1px solid var(--c-border-form-control);
+  .toggle-button-list__inner {
+    display: flex;
+    position: relative;
+    flex-direction: row;
+    border-radius: var(--br-form-control);
+    border: $border;
+    -webkit-tap-highlight-color: transparent;
+    background-color: var(--c-bg-page);
+  }
+}

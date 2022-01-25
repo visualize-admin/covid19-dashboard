@@ -1,0 +1,58 @@
+<ng-template #noDataTpl>
+  <p class="detail-card-international-case-development__no-data">{{ 'Commons.NoData' | i18n }}</p>
+</ng-template>
+
+<bag-detail-card
+  titleKey="International.Cases.Card.Development.Title"
+  infoKey="International.Cases.Card.Development.Info"
+  [description]="description$ | async"
+  [facet]="facet"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="[{ sourceKey: 'International.Cases.Card.DataSource', date: data ? (data.sourceDate | toDate) : null }]"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+>
+  <ng-container *ngIf="histoData$ | async as histoData">
+    <ng-container *ngIf="histoData.hasData; else noDataTpl">
+      <div class="detail-card-international-case-development__lr">
+        <select
+          bag-select
+          name="TimeFilter"
+          [attr.aria-label]="'TimeSlotFilter.Label' | i18n"
+          [formControl]="timeSlotFilterCtrl"
+        >
+          <ng-container *ngFor="let opt of timeSlotFilterOptions">
+            <option [ngValue]="opt.val" [attr.selected]="opt.val === timeSlotFilterCtrl.value ? '' : null">
+              {{ opt.key | i18n }}
+            </option>
+          </ng-container>
+        </select>
+        <div class="detail-card-international-case-development__lr-part">
+          <bag-chart-legend [itemGap]="16">
+            <div
+              *ngFor="let pair of histoData.legendPairs"
+              bagChartLegendLine
+              [length]="16"
+              [thickness]="pair[2]"
+              [color]="pair[0]"
+            >
+              {{ pair[1] }}
+            </div>
+          </bag-chart-legend>
+          <bag-inz14d-sum-legend titleKey="Commons.Cases.Inz100K"></bag-inz14d-sum-legend>
+          <!-- [noDataKey]="histoData.withNoData ? 'Commons.NoData' : undefined" -->
+        </div>
+      </div>
+
+      <p class="detail-card-international-case-development__meta">
+        {{ 'International.Cases.Card.Development.HistogramMeta' | i18n }}
+      </p>
+
+      <bag-histogram-line-ref-inz14d
+        [data]="histoData.data"
+        (elFocus)="showTooltip($event, histoData.geoUnit)"
+        (diagramLeave)="hideTooltip()"
+      ></bag-histogram-line-ref-inz14d>
+    </ng-container>
+  </ng-container>
+</bag-detail-card>

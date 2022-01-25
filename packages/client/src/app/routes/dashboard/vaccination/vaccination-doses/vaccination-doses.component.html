@@ -1,0 +1,21 @@
+<h3>{{ 'Vaccination.VaccDoses.DetailTitle' | i18n }}</h3>
+<p [translate]="'Vaccination.VaccDoses.DetailIntro'"></p>
+
+<div class="detail__cards" *ngIf="data$ | async as data">
+  <bag-detail-card-vacc-doses-geography
+    [data]="data.geography"
+    [geoJson]="chflGeoJson"
+  ></bag-detail-card-vacc-doses-geography>
+
+  <bag-detail-card-vacc-doses-development [data]="data.development"></bag-detail-card-vacc-doses-development>
+
+  <bag-detail-card-vacc-doses-vaccine [data]="data.vaccine"></bag-detail-card-vacc-doses-vaccine>
+
+  <bag-detail-card-vacc-doses-demography [data]="data.demography"></bag-detail-card-vacc-doses-demography>
+
+  <bag-detail-card-vacc-doses-location [data]="data.location"></bag-detail-card-vacc-doses-location>
+
+  <bag-detail-card-vaccination-group-ratio [data]="data.indication"></bag-detail-card-vaccination-group-ratio>
+
+  <bag-detail-card-vacc-doses-indication [data]="data.indication"></bag-detail-card-vacc-doses-indication>
+</div>

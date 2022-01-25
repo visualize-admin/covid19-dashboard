@@ -1,0 +1,220 @@
+<ng-template #tooltipElRef let-title="title" let-data="data" let-subTitle="subTitle">
+  <bag-geo-unit-vacc-persons-data
+    [isTooltip]="true"
+    [title]="title"
+    [subTitle]="subTitle"
+    [data]="data"
+  ></bag-geo-unit-vacc-persons-data>
+</ng-template>
+
+<bag-detail-card
+  titleKey="Vaccination.Card.Geography.Title"
+  [infoKey]="'Vaccination.VaccPersons.Card.Geography.InfoTextByResidence.IncompleteWeeks'"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="sources"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [hideInfo]="hideInfo"
+  [warnKey]="warningKey$ | async"
+>
+  <div class="vacc-persons__filter-lr">
+    <bag-toggle-button-list
+      *ngIf="facet !== 'print'"
+      [attr.aria-label]="'GeoViewFilter.Label' | i18n"
+      name="geoViewFilter"
+      [formControl]="geoViewFilterCtrl"
+    >
+      <ng-container *ngFor="let opt of geoViewFilterOptions">
+        <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+      </ng-container>
+    </bag-toggle-button-list>
+    <!-- age group filter -->
+    <select
+      bag-select
+      [attr.aria-label]="'Vaccination.VaccPersons.Card.Geography.AgeFilter.Label' | i18n"
+      name="vaccPersonsAgeFilter"
+      [formControl]="vaccPersonsAgeFilterCtrl"
+    >
+      <ng-container *ngFor="let opt of vaccPersonsAgeFilterOptions">
+        <option [ngValue]="opt.val" [attr.selected]="opt.val === vaccPersonsAgeFilterCtrl.value ? '' : null">
+          {{ opt.key | i18n }}
+        </option>
+      </ng-container>
+    </select>
+  </div>
+
+  <ng-container *ngIf="geoMapData$ | async as geoMapData">
+    <div class="vacc-persons__lr">
+      <div class="vacc-persons__info-box">
+        <bag-geo-unit-vacc-persons-data
+          [title]="geoMapData.selectedGeoUnitTitle"
+          [subTitle]="geoMapData.selectedGeoUnitSubTitle"
+          [data]="geoMapData.selectedGeoUnitData"
+          [additionalItems]="geoMapData.additionalInfoBoxData"
+        ></bag-geo-unit-vacc-persons-data>
+      </div>
+      <div>
+        <!-- extra div necessary -->
+        <bag-color-legend
+          [isPercentage]="true"
+          titleKey="Vaccination.VaccPersons.Card.Geography.Legend.Title"
+          [min]="geoMapData.min"
+          [max]="geoMapData.max"
+          [scaleColors]="scaleColors"
+          [useScaleColorsOnly]="true"
+          [colorTicks]="10"
+          [noDataKey]="geoMapData.hasNullValues ? 'Commons.NoData' : null"
+        ></bag-color-legend>
+      </div>
+    </div>
+    <bag-choropleth
+      [facet]="facet"
+      [extendedFeatureCollection]="geoMapData.featureCollection"
+      [selectedGeoUnit]="geoMapData.selectedGeoUnit"
+      [strokeColor]="geoMapData.strokeColor"
+      (elMouseEnter)="showTooltip($event, geoMapData.data, geoMapData.selectedGeoUnitSubTitle)"
+      (diagramMouseLeave)="hideTooltip()"
+      [fillFn]="geoMapData.fillFn"
+    ></bag-choropleth>
+  </ng-container>
+
+  <ng-container *ngIf="geoTableData$ | async as geoTableData">
+    <table class="vacc-persons-table">
+      <thead>
+        <tr class="vacc-persons-table__h1-first">
+          <td><!-- row title col --></td>
+          <th colspan="2" scope="colgroup"><!-- no content --></th>
+          <th colspan="2" scope="colgroup">
+            <div class="vacc-persons-table__h1-square" [style.--color]="tableColors.VaccPersonsFull">
+              {{ 'Vaccination.Card.VaccPersons.Full' | i18n }}
+            </div>
+          </th>
+        </tr>
+        <tr class="vacc-persons-table__h1 vacc-persons-table__h1-second">
+          <td><!-- row title col --></td>
+          <th colspan="2" scope="colgroup">{{ 'Vaccination.Card.VaccPersons.MinOneDose' | i18n }}</th>
+
+          <th colspan="2" scope="colgroup">
+            <div class="vacc-persons-table__h1-square" [style.--color]="tableColors.VaccPersonsFirstBooster">
+              {{ 'Vaccination.Card.VaccPersons.WithBooster' | i18n }}
+            </div>
+          </th>
+        </tr>
+        <tr class="vacc-persons-table__h2">
+          <td><!-- row title col --></td>
+          <th class="vacc-persons-table__h2-bar" scope="col">{{ 'Vaccination.Card.VaccPersons.Proportion' | i18n }}</th>
+          <th class="vacc-persons-table__h2-val" scope="col">{{ 'Commons.Absolute' | i18n }}</th>
+          <th class="vacc-persons-table__h2-bar" scope="col">{{ 'Vaccination.Card.VaccPersons.Proportion' | i18n }}</th>
+          <th class="vacc-persons-table__h2-val" scope="col">{{ 'Commons.Absolute' | i18n }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of geoTableData.rows; trackBy: identifyRowItem; let ix = index">
+          <tr
+            [style.--row]="ix + 1"
+            class="vacc-persons-table__row"
+            [class.vacc-persons-table__row--large-padding]="ix === 0"
+            [class.vacc-persons-table__row--large-gap]="ix === 3"
+          >
+            <td
+              class="vacc-persons-table__overlay"
+              rowspan="2"
+              [class.vacc-persons-table__overlay--selected]="row.isSelected"
+            >
+              <!-- todo: make link accessible -->
+              <a
+                href="#detail"
+                class="vacc-persons-table__overlay-link"
+                (click)="scrollToDevelopmentCard(row.isSelected)"
+                [routerLink]="['.']"
+                [queryParams]="row.queryParams"
+                queryParamsHandling="merge"
+              ></a>
+            </td>
+            <th class="vacc-persons-table__title-cell vacc-persons-table__table-cell-rowspan-2" scope="row" rowspan="2">
+              {{ row.key | i18n }}
+            </th>
+            <th class="vacc-persons-table__table-hidden-cell" scope="row">
+              {{ 'Vaccination.Card.VaccPersons.Full' | i18n }}
+            </th>
+
+            <td
+              class="vacc-persons-table__bar-cell vacc-persons-table__table-cell-rowspan-2"
+              rowspan="2"
+              [style.--w.%]="row.set1.barVal"
+            >
+              {{ row.set1.rel | adminNum: 2:'%' }}
+            </td>
+            <td class="vacc-persons-table__val-cell vacc-persons-table__table-cell-rowspan-2" rowspan="2">
+              {{ row.set1.abs | adminNum }}
+            </td>
+
+            <td
+              class="vacc-persons-table__bar-cell vacc-persons-table__mb-less-cell vacc-persons-table__bar-cell--secondary"
+              [style.--w.%]="row.set2.barVal"
+            >
+              {{ row.set2.rel | adminNum: 2:'%' }}
+            </td>
+            <td class="vacc-persons-table__val-cell vacc-persons-table__mb-less-cell">{{ row.set2.abs | adminNum }}</td>
+          </tr>
+          <tr
+            [style.--row]="ix + 1"
+            class="vacc-persons-table__row"
+            [class.vacc-persons-table__row--large-padding]="ix === 0"
+          >
+            <th class="vacc-persons-table__table-hidden-cell" scope="row">
+              {{ 'Vaccination.Card.VaccPersons.WithBooster' | i18n }}
+            </th>
+            <td
+              class="vacc-persons-table__bar-cell vacc-persons-table__bar-cell--booster"
+              [style.--w.%]="row.set3.barVal"
+            >
+              {{ row.set3.rel | adminNum: 2:'%' }}
+            </td>
+            <td class="vacc-persons-table__val-cell">{{ row.set3.abs | adminNum }}</td>
+          </tr>
+        </ng-container>
+        <ng-container *ngFor="let additional of geoTableData.additionalInfoBoxData; let ix = index">
+          <tr
+            [style.--row]="ix + 1 + geoTableData.rows.length"
+            class="vacc-persons-table__row"
+            [class.vacc-persons-table__row--large-gap-top]="ix === 0"
+          >
+            <th class="vacc-persons-table__title-cell vacc-persons-table__table-cell-rowspan-2" rowspan="2" scope="row">
+              {{ additional.title }}
+            </th>
+            <th class="vacc-persons-table__table-hidden-cell" scope="row">
+              {{ 'Vaccination.Card.VaccPersons.Full' | i18n }}
+            </th>
+
+            <td class="vacc-persons-table__bar-cell vacc-persons-table__table-cell-rowspan-2" rowspan="2">
+              {{ additional.minOne.inzTotal | adminNum: 2:'%' }}
+            </td>
+            <td class="vacc-persons-table__val-cell vacc-persons-table__table-cell-rowspan-2" rowspan="2">
+              {{ additional.minOne.total | adminNum }}
+            </td>
+            <td
+              class="vacc-persons-table__bar-cell vacc-persons-table__mb-less-cell vacc-persons-table__bar-cell--secondary"
+            >
+              {{ additional.full.inzTotal | adminNum: 2:'%' }}
+            </td>
+            <td class="vacc-persons-table__val-cell vacc-persons-table__mb-less-cell">
+              {{ additional.full.total | adminNum }}
+            </td>
+          </tr>
+          <tr [style.--row]="1" class="vacc-persons-table__row">
+            <th class="vacc-persons-table__table-hidden-cell" scope="row">
+              {{ 'Vaccination.Card.VaccPersons.WithBooster' | i18n }}
+            </th>
+            <td class="vacc-persons-table__bar-cell">
+              {{ additional.booster.inzTotal | adminNum: 2:'%' }}
+            </td>
+            <td class="vacc-persons-table__val-cell">{{ additional.booster.total | adminNum }}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </ng-container>
+</bag-detail-card>

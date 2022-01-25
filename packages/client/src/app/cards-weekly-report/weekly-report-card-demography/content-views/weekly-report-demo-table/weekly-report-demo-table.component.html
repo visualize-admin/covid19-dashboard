@@ -1,0 +1,21 @@
+<ng-container *ngIf="data$ | async as data">
+  <h5 class="weekly-report-demo-table__title">{{ 'WeeklyReport.Card.Demography.Subtitle.AgeGroups' | i18n }}</h5>
+  <bag-weekly-compare-table
+    [promoteFirstN]="0"
+    mode="inz"
+    [val0Header]="'WeeklyReport.WeekFrom' | i18n: { week: data.prevDate | fmtIsoWeek, date: data.prevDate | fmtDate }"
+    [val1Header]="'WeeklyReport.WeekFrom' | i18n: { week: data.currDate | fmtIsoWeek, date: data.currDate | fmtDate }"
+    [diffHeader]="'WeeklyReport.Difference' | i18n"
+    [data]="data.ageCompareData"
+  ></bag-weekly-compare-table>
+
+  <h5 class="weekly-report-demo-table__title">{{ 'WeeklyReport.Card.Demography.Subtitle.Sex' | i18n }}</h5>
+  <bag-weekly-compare-table
+    [promoteFirstN]="0"
+    mode="percentage"
+    [val0Header]="'WeeklyReport.WeekFrom' | i18n: { week: data.prevDate | fmtIsoWeek, date: data.prevDate | fmtDate }"
+    [val1Header]="'WeeklyReport.WeekFrom' | i18n: { week: data.currDate | fmtIsoWeek, date: data.currDate | fmtDate }"
+    [diffHeader]="'WeeklyReport.Difference' | i18n"
+    [data]="data.genderCompareData"
+  ></bag-weekly-compare-table>
+</ng-container>

@@ -1,0 +1,44 @@
+@use 'src/styles/dim';
+@use 'src/styles/var';
+@use 'src/styles/text';
+@use 'src/styles/layout';
+
+bag-weekly-report-geo-map {
+  display: block;
+
+  .weekly-report-card-geo__lr {
+    @include layout.leftRight(0, 0);
+    justify-content: flex-end;
+  }
+
+  .weekly-report-card-geo__two-col {
+    display: grid;
+    grid-template-columns: var(--template-columns);
+    grid-gap: var(--card-padding);
+
+    & > div {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  .weekly-report-card-geo__subtitle {
+    @include text.paragraph2;
+    font-weight: var.$font-weight-bold;
+    margin-top: 24px;
+    margin-bottom: 16px;
+    text-align: center;
+  }
+
+  --template-columns: 1fr 1fr;
+  @media (max-width: #{dim.$bp-max-md}) {
+    --template-columns: 1fr;
+
+    .weekly-report-card-geo__subtitle {
+      text-align: left;
+    }
+
+    .weekly-report-card-geo__lr {
+      justify-content: flex-start;
+    }
+  }
+}

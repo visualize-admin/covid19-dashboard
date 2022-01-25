@@ -1,0 +1,23 @@
+<ng-container *ngIf="data$ | async as data">
+  <h3>
+    {{ 'Vaccination.VaccPersons.DetailTitleByResidence' | i18n }}
+  </h3>
+  <p class="g-content" [translate]="'Vaccination.VaccPersonsFull.DetailIntroByResidence'"></p>
+
+  <div class="detail__cards">
+    <bag-detail-card-vacc-persons-geography
+      [data]="data.geography"
+      [geoJson]="chflGeoJson"
+    ></bag-detail-card-vacc-persons-geography>
+
+    <bag-detail-card-vacc-persons-development [data]="data.development"></bag-detail-card-vacc-persons-development>
+
+    <bag-detail-card-vacc-persons-vaccine [data]="data.vaccine"></bag-detail-card-vacc-persons-vaccine>
+
+    <bag-detail-card-vacc-persons-demography [data]="data.demography"></bag-detail-card-vacc-persons-demography>
+
+    <bag-detail-card-vaccination-group-ratio [data]="data.indication"></bag-detail-card-vaccination-group-ratio>
+
+    <bag-detail-card-vacc-persons-indication [data]="data.indication"></bag-detail-card-vacc-persons-indication>
+  </div>
+</ng-container>

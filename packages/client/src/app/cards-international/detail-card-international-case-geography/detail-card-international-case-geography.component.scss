@@ -1,0 +1,61 @@
+@use 'src/styles/dim';
+@use 'src/styles/mix';
+@use 'src/styles/col';
+@use 'src/styles/text';
+@use 'src/styles/layout';
+
+bag-detail-card-international-case-geography {
+  display: block;
+
+  .detail-card-international-case-geography__lr {
+    @include mix.cardFiltersMainLr;
+  }
+
+  .detail-card-international-case-geography__selected-unit {
+    @include mix.geoInfoBox;
+  }
+
+  .detail-card-international-case-geography__map {
+    display: flex;
+    flex-direction: column;
+    margin: 0 var(--card-padding-neg);
+    position: relative;
+    border-top: 1px solid col.$datavis-choropleth-border;
+    border-bottom: 1px solid col.$datavis-choropleth-border;
+  }
+
+  .detail-card-international-case-geography__map-source {
+    @include text.meta;
+    color: var(--c-fg-meta);
+    text-align: right;
+    margin: 4px 0;
+  }
+
+  .detail-card-international-case-geography__filter-buttons {
+    position: absolute;
+    top: var(--card-padding);
+    left: var(--card-padding);
+    z-index: 1;
+  }
+  .detail-card-international-case-geography__filter-select {
+    margin: var(--card-padding) 0 var(--card-padding) var(--card-padding);
+    align-self: flex-start;
+  }
+
+  @media (max-width: #{dim.$bp-max-sm}) {
+    .detail-card-international-case-geography__filter-select[bag-select] {
+      width: calc(100% - (var(--card-padding) * 2));
+    }
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .detail-card-international-case-geography__filter-buttons {
+      display: none;
+    }
+  }
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .detail-card-international-case-geography__filter-select[bag-select] {
+      display: none;
+    }
+  }
+}

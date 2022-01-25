@@ -1,0 +1,189 @@
+@use 'src/styles/layout';
+@use 'src/styles/text';
+@use 'src/styles/col';
+@use 'src/styles/dim';
+@use 'src/styles/var';
+@use 'src/styles/mix';
+
+bag-detail-card-epidemiologic-geo-regions {
+  display: block;
+
+  .detail-card-geo-regions {
+    min-height: var(--vh);
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(2, min-content) minmax(200px, 1fr) repeat(4, min-content);
+    position: relative;
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      right: var(--card-padding-neg);
+      left: var(--card-padding-neg);
+      background-color: rgba(255, 255, 255, 1);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 150ms ease-in-out;
+      z-index: 999;
+    }
+    &.detail-card-geo-regions--no-vh-var {
+      min-height: 100vh;
+    }
+  }
+
+  .detail-card-geo-regions--print {
+    .detail-card-geo-regions__ixt-ctrls,
+    .choropleth__zoom {
+      display: none;
+    }
+    .paginator__btn {
+      visibility: hidden;
+    }
+  }
+
+  .detail-card-geo-regions--loading {
+    &:after {
+      opacity: 0.7;
+      pointer-events: all;
+    }
+  }
+
+  .detail-card-geo-regions__lr {
+    @include mix.cardFiltersMainLr;
+  }
+  .detail-card-geo-regions__ixt-ctrls {
+    @include layout.leftRight(8px, -8px);
+  }
+
+  .detail-card-geo-regions__legend {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-card-geo-regions__legend-title {
+    @include text.meta();
+    color: var(--c-fg-meta);
+  }
+
+  .detail-card-geo-regions__paginator {
+    justify-self: center;
+  }
+
+  .detail-card-geo-regions__paginator-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 8px;
+  }
+  .detail-card-geo-regions__paginator-title {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+  .detail-card-geo-regions__paginator-label {
+    @include text.paragraph2;
+    font-weight: var.$font-weight-bold;
+  }
+
+  .detail-card-geo-regions__choropleth {
+    margin: 32px var(--card-padding-neg);
+    min-height: 200px;
+  }
+
+  .detail-card-geo-regions__slider-meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  .detail-card-geo-regions__speed-control {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    > p {
+      margin-right: 8px;
+      @include text.paragraph2;
+      padding: 8px 0;
+      color: var(--c-fg-meta);
+    }
+
+    @media (max-width: #{dim.$bp-max-sm}) {
+      width: 100%;
+    }
+    .toggle-button__label-content {
+      flex: 0 0 24px;
+      width: 24px;
+      font-weight: var.$font-weight-bold;
+    }
+  }
+
+  .detail-card-geo-regions__btn {
+    @include text.button;
+    display: flex;
+    color: var(--c-fg-link);
+    border: 1px solid var(--c-border-form-control);
+    border-radius: var(--br-form-control);
+    box-shadow: var(--bs-form-control);
+    align-items: center;
+    height: 48px;
+    padding: 0 12px;
+    cursor: pointer;
+    text-align: left;
+
+    outline: none;
+
+    sc-svg {
+      height: 24px;
+      width: 24px;
+      margin-right: 8px;
+    }
+
+    @media (max-width: #{dim.$bp-max-sm}) {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}
+
+.detail-card-geo-regions-tooltip {
+  display: flex;
+  flex-direction: column;
+  max-width: 320px;
+}
+
+.detail-card-geo-regions-tooltip__title {
+  @include text.tooltipTitle;
+}
+
+.detail-card-geo-regions-tooltip__date-range {
+  @include text.tooltipDate;
+}
+
+.detail-card-geo-regions-tooltip__values {
+  display: grid;
+  @include text.tooltip;
+  color: var(--c-fg-tooltip-value);
+
+  dt {
+  }
+
+  dd {
+    font-weight: var.$font-weight-bold;
+  }
+}
+
+.detail-card-geo-regions-tooltip__heat-map {
+  margin-top: 16px;
+  width: 100%;
+}
+
+.detail-card-geo-regions__slider-axis,
+.detail-card-geo-regions-tooltip__heat-map-axis {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 10px;
+  line-height: 16px;
+  letter-spacing: 0.1px;
+  color: var(--c-fg-meta);
+}

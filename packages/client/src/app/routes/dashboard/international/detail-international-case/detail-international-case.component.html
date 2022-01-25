@@ -1,0 +1,11 @@
+<h3>{{ 'International.Cases.DetailTitle' | i18n }}</h3>
+<p class="g-content" [translate]="'International.Cases.DetailIntro'"></p>
+<div class="detail__cards">
+  <bag-detail-card-international-case-geography [data]="geographyData" [geoJson]="worldGeoJson">
+  </bag-detail-card-international-case-geography>
+
+  <ng-container *ngIf="developmentData$ | async as developmentData">
+    <bag-detail-card-international-case-development [data]="developmentData.data">
+    </bag-detail-card-international-case-development>
+  </ng-container>
+</div>

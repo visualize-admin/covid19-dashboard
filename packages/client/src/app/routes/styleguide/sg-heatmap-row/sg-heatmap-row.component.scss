@@ -1,0 +1,25 @@
+@use 'src/styles/text';
+@use 'src/styles/col';
+
+:host {
+  display: block;
+  --c: hsl(48, 100%, 50%);
+
+  .sg-heatmap-row__row {
+    display: flex;
+    align-items: center;
+    margin: 0 -8px 48px;
+    > * {
+      margin: 0 8px;
+    }
+  }
+
+  .sg-heatmap-row__legend {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    @include text.meta;
+    color: var(--c-fg-meta);
+    margin-top: -16px;
+  }
+}

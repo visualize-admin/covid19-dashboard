@@ -1,0 +1,29 @@
+@use 'src/styles/layout';
+@use 'src/styles/var';
+@use 'src/styles/text';
+@use 'src/styles/mix';
+
+bag-detail-card-repro-development {
+  display: block;
+
+  .detail-card-repro-development {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-card-repro-development__lr {
+    @include mix.cardFiltersMainLr;
+  }
+  .detail-card-repro-development__lr-part {
+    @include layout.leftRightPart;
+  }
+
+  .detail-card-repro-development__meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  .detail-card-repro-development__no-data {
+    @include mix.noDetailCardContent;
+  }
+}

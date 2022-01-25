@@ -1,0 +1,11 @@
+<ng-template #tooltipRef let-key="key">
+  <p class="chart-legend-tooltip" [innerHTML]="key | i18n"></p>
+</ng-template>
+
+<div
+  class="chart-legend"
+  [class.chart-legend--justify-flex-end]="justifyContentFlexEnd"
+  [style.--item-gap.px]="itemGap"
+>
+  <ng-content></ng-content>
+</div>

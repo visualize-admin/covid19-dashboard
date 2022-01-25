@@ -1,0 +1,180 @@
+<header class="report__header">
+  <sc-svg class="report__header-logo" aria-hidden="true" url="/assets/icon/bund_ch_logo.svg"></sc-svg>
+  <div class="report__header-source">
+    <p>{{ 'DailyReport.HeaderDepartment' | i18n }}</p>
+    <p>
+      <b>{{ 'DailyReport.HeaderFederalOffice' | i18n }}</b>
+    </p>
+    <p>{{ 'DailyReport.HeaderUnit' | i18n }}</p>
+  </div>
+</header>
+<div class="report__content">
+  <h1>{{ 'DailyReport.Supertitle' | i18n }}&ngsp;–&ngsp;{{ 'Commons.DataStatus' | i18n: introArg }}</h1>
+  <h2>{{ 'DailyReport.Title' | i18n }}</h2>
+  <div class="report__intro">
+    <p [innerHTML]="'DailyReport.Description' | i18n"></p>
+    <p class="report__intro-addon" *ngIf="data.addOnText">{{ data.addOnText }}</p>
+  </div>
+
+  <div class="report__time-slot" aria-hidden="true">
+    <div class="report__time-slot-item">
+      {{ 'TimeSlotFilter.Total' | i18n }}
+    </div>
+    <div class="report__time-slot-item">
+      {{ (last4weeks ? 'TimeSlotFilter.Last4Weeks' : 'TimeSlotFilter.Last2Weeks') | i18n }}
+    </div>
+  </div>
+  <bag-chart-legend [itemGap]="8" class="report__legend">
+    <div
+      bagChartLegendSquare
+      [length]="6"
+      [height]="6"
+      [gap]="4"
+      color="#c0d8f0"
+      translate="Overview.Legend.Cases"
+    ></div>
+    <div
+      bagChartLegendSquare
+      [length]="6"
+      [height]="6"
+      [gap]="4"
+      color="#f18820"
+      translate="Overview.Legend.DeltaDay"
+    ></div>
+    <div
+      bagChartLegendLine
+      [thickness]="2"
+      [length]="6"
+      [gap]="4"
+      color="#183458"
+      translate="Overview.Legend.Mean.Short"
+    ></div>
+  </bag-chart-legend>
+
+  <!-- topics  -->
+  <ng-container *ngFor="let topic of data.topics">
+    <div class="report__data-header">
+      <h3>{{ topic.topicTitleKey | i18n }}</h3>
+      <dl *ngIf="topic.dataTotal.deltaDayEntry">
+        <dt>{{ topic.dataTotal.deltaDayEntry.key }}:</dt>
+        <dd>{{ topic.dataTotal.deltaDayEntry.value }}</dd>
+      </dl>
+      <p class="report__data-header-source">
+        {{ 'Commons.Source' | i18n }}: {{ 'Commons.Source.BAG' | i18n }}&ngsp;–&ngsp;{{
+          'Commons.DataStatus' | i18n: topic.dataTotal.sourceDateTransArg
+        }}
+      </p>
+    </div>
+    <div class="report__warning" *ngIf="topic.warnKey">
+      <sc-svg url="/assets/icon/ic_alert.svg"></sc-svg>
+      <p [translate]="topic.warnKey"></p>
+    </div>
+    <div class="report__table">
+      <table>
+        <tbody>
+          <tr class="cdk-visually-hidden">
+            <th scope="col">
+              {{ 'TimeSlotFilter.Total' | i18n }}
+            </th>
+            <th scope="col">
+              {{ (last4weeks ? 'TimeSlotFilter.Last4Weeks' : 'TimeSlotFilter.Last2Weeks') | i18n }}
+            </th>
+          </tr>
+          <tr
+            *ngFor="let entry of topic.dataTotal.entries; let index = index; let isLast = last"
+            [class.report__combine-above]="entry.combineAbove"
+            [class.report__combine-below]="entry.combineBelow"
+          >
+            <!--   dataTotal entries       -->
+            <th scope="row">
+              <div class="report__entry-key">
+                <div
+                  *ngIf="entry.colorCode"
+                  aria-hidden="true"
+                  class="report__color-square"
+                  [style.background-color]="entry.colorCode"
+                ></div>
+                {{ entry.key }}
+              </div>
+              <p *ngIf="entry.keyDescription" class="report__table-info">{{ entry.keyDescription }}</p>
+              <span *ngIf="!isLast && !entry.combineBelow"></span>
+            </th>
+            <td class="report__table-padding-right">
+              {{ entry.value }}
+              <span *ngIf="!isLast && !entry.combineBelow"></span>
+            </td>
+
+            <!--   secondary data (4 weeks / 2 weeks) entries       -->
+            <ng-container *ngIf="topic.dataSecondary.entries[index] as secondaryEntry">
+              <th class="report__table-padding-left" scope="row">
+                <div class="report__entry-key">
+                  <div
+                    *ngIf="secondaryEntry.colorCode"
+                    aria-hidden="true"
+                    class="report__color-square"
+                    [style.background-color]="secondaryEntry.colorCode"
+                  ></div>
+                  {{ secondaryEntry.key }}
+                </div>
+
+                <p *ngIf="secondaryEntry.keyDescription" class="report__table-info">
+                  {{ secondaryEntry.keyDescription }}
+                </p>
+                <span *ngIf="!isLast && !secondaryEntry.combineBelow"></span>
+              </th>
+              <td>
+                {{ secondaryEntry.value }}
+                <span *ngIf="!isLast && !secondaryEntry.combineBelow"></span>
+              </td>
+            </ng-container>
+          </tr>
+
+          <tr aria-hidden="true" class="report__table-charts">
+            <td colspan="2" class="report__table-charts-padding-right">
+              <bag-histogram-preview
+                [data]="topic.dataTotal.histogramData"
+                [barColors]="topic.dataTotal.histogramBarColors"
+                facet="report"
+              ></bag-histogram-preview>
+            </td>
+            <td colspan="2" class="report__table-charts-padding-left">
+              <bag-histogram-preview
+                [data]="topic.dataSecondary.histogramData"
+                [barColors]="topic.dataSecondary.histogramBarColors"
+                facet="report"
+              ></bag-histogram-preview>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </ng-container>
+
+  <!--  CT   -->
+  <div class="report__data-header">
+    <h3>{{ 'OverviewCardCT.Title' | i18n }}</h3>
+    <p class="report__data-header-source">
+      {{ 'Commons.Source' | i18n }}: {{ 'Commons.Source.BAG' | i18n }}&ngsp;–&ngsp;{{
+        'Commons.DataStatus' | i18n: data.covidCt.sourceDateTransArg
+      }}
+    </p>
+  </div>
+  <div class="report__table">
+    <p class="report__table-info">{{ data.covidCt.infoKey | i18n: data.covidCt.infoTransArg }}</p>
+    <table class="report__ct">
+      <tbody>
+        <tr>
+          <ng-container *ngFor="let entry of data.covidCt.entries; let index = index">
+            <th scope="row" [class.report__table__border-padding-left]="index !== 0">
+              {{ entry.key }}
+              <p *ngIf="entry.keyDescription" class="report__table-info">{{ entry.keyDescription }}</p>
+            </th>
+            <td class="report__table-padding-right">
+              {{ entry.value }}
+            </td>
+          </ng-container>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>

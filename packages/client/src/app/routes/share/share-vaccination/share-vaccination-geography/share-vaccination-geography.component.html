@@ -1,0 +1,17 @@
+<bag-detail-card-vacc-doses-geography
+  *ngIf="isVaccDoses"
+  [data]="dosesData"
+  [facet]="facet"
+  [geoJson]="chflGeoJson"
+  [infoAddOnKey]="introKey"
+  [hideInfo]="hideInfo"
+></bag-detail-card-vacc-doses-geography>
+
+<bag-detail-card-vacc-persons-geography
+  *ngIf="isVaccPersons"
+  [data]="personsData"
+  [facet]="facet"
+  [geoJson]="chflGeoJson"
+  [infoAddOnKey]="introKey"
+  [hideInfo]="hideInfo"
+></bag-detail-card-vacc-persons-geography>

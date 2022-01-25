@@ -1,0 +1,94 @@
+@use 'src/styles/col';
+@use 'src/styles/text';
+
+bag-repro-legend {
+  display: block;
+
+  --datavis-range-1: #{col.$datavis-range-1};
+  --datavis-range-2: #{col.$datavis-range-2};
+  --datavis-range-3: #{col.$datavis-range-3};
+
+  .repro-legend--table {
+    --datavis-range-1: #{col.$datavis-range-1-table};
+    --datavis-range-2: #{col.$datavis-range-2-table};
+    --datavis-range-3: #{col.$datavis-range-3-table};
+  }
+
+  .repro-legend {
+    padding-bottom: 20px;
+    @include text.meta;
+  }
+
+  .repro-legend__title {
+    color: var(--c-fg-meta);
+    margin-bottom: 4px;
+  }
+
+  .repro-legend__gradient {
+    display: flex;
+  }
+
+  .repro-legend__gradient-part {
+    height: var(--bar-height);
+    position: relative;
+
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: -4px;
+      border-left: 1px solid var(--lbl-color);
+    }
+
+    &:nth-child(1) {
+      width: calc(var(--width) * 0.8);
+      background-color: var(--datavis-range-1);
+    }
+
+    &:nth-child(2) {
+      width: calc(var(--width) * 0.2);
+      background-color: var(--datavis-range-2);
+    }
+
+    &:nth-child(3) {
+      --arrow-size: calc(var(--bar-height) / 2);
+      width: calc(var(--width) * 0.2 - var(--arrow-size));
+      margin-right: var(--arrow-size);
+      background-color: var(--datavis-range-3);
+
+      &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        border: {
+          width: var(--arrow-size);
+          style: solid;
+          color: transparent transparent transparent var(--datavis-range-3);
+        }
+        width: var(--arrow-size);
+        height: var(--arrow-size);
+        left: 100%;
+      }
+    }
+  }
+
+  .repro-legend__gradient-lbl {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    padding-top: 4px;
+    line-height: 1;
+    transform: translateX(calc(-50% + 1px));
+    color: var(--lbl-color);
+  }
+
+  --bar-height: 8px;
+  --lbl-color: var(--c-fg-legend);
+  --width: 140px;
+
+  .repro-legend--overview {
+    --width: 100px;
+    --bar-height: 4px;
+  }
+}

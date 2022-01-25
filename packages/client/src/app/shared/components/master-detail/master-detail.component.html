@@ -1,0 +1,42 @@
+<div class="master-detail">
+  <div class="master-detail__container">
+    <div class="master-detail__menu" #menuWrapperElRef [style.--row-span]="((items$ | async)?.length || 0) + 1">
+      <div class="master-detail__menu-inner" #menuScrollContainerElRef>
+        <ng-container *ngFor="let item of items$ | async; let ix = index">
+          <a
+            class="master-detail__menu-item"
+            [class.master-detail__menu-item--vaccine]="item.style === 'vaccine'"
+            #menuItemEl
+            (click)="toggleShowDetail(item, menuItemEl, routerLinkActive.isActive)"
+            [style.order]="ix"
+            [routerLink]="item.pathArgs"
+            queryParamsHandling="preserve"
+            routerLinkActive="master-detail__menu-item--active"
+            #routerLinkActive="routerLinkActive"
+            [class.master-detail__menu-item--mobile-active]="showDetail$ | async"
+            [routerLinkActiveOptions]="{ exact: true }"
+          >
+            <div class="master-detail__menu-item-inner">
+              <h4 class="master-detail__menu-item-title" [innerHTML]="item.title"></h4>
+              <sc-svg class="master-detail__menu-item-icon" url="/assets/icon/ic_chevron_right.svg"></sc-svg>
+              <div class="master-detail__menu-item-content" *ngIf="!(useSlimFacet || item.facet === 'slim')">
+                <ng-template [ngTemplateOutlet]="templateRef" [ngTemplateOutletContext]="{ $implicit: item }">
+                </ng-template>
+              </div>
+            </div>
+          </a>
+        </ng-container>
+      </div>
+    </div>
+
+    <div
+      #detailContainerRef
+      class="master-detail__content"
+      [class.master-detail__content--show]="showDetail$ | async"
+      [style.--order]="(activeMenuItemIndex$ | async) || 0"
+      [style.--row-span]="((items$ | async)?.length || 0) + 1"
+    >
+      <router-outlet></router-outlet>
+    </div>
+  </div>
+</div>

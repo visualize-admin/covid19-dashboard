@@ -1,0 +1,12 @@
+src/{**/,}!({*.spec,test}).ts:
+  - yarn prettier:staged
+  - yarn lint:src --fix
+src/{{**/,}*.spec,test}.ts:
+  - yarn prettier:staged
+  - yarn lint:tests --fix
+test/{**/,}*.ts:
+  - yarn prettier:staged
+  - yarn lint:tests --fix
+# sort package.json keys
+./package.json:
+  - sort-package-json

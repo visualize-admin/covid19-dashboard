@@ -1,10 +1,14 @@
-<h1 align="center">COVID-19 Dashboard</h1>
-<p align="center">
-  <i>The source code of the <a href="https://www.covid19.admin.ch">Covid-19 Dashboard</a> will be published here until 25.01.2022.</i>
-  <br><br>
-</p>
-<hr>
-<h3 align="center">Project Ownership</h3>
-<p align="center">
-  <i>Federal Office of Public Health FOPH</i>
-</p>
+# COVID-19 Dashboard
+The source code of the Covid-19 Dashboard.
+
+## Project Ownership
+Federal Office of Public Health FOPH
+
+## Run Locally
+For more detailed instruction see [packages/client/README.md](./packages/client/README.md)
+### Prerequisites
+- Node LTS
+- Yarn V1
+### Quick Start
+- exec `yarn start`
+- open Browser at [http://localhost:4200](http://localhost:4200)

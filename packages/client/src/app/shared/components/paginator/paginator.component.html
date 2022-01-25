@@ -1,0 +1,28 @@
+<div class="paginator">
+  <button
+    class="paginator__btn paginator__btn--left"
+    type="button"
+    (click)="onBtnClick($event, -step)"
+    [attr.aria-label]="'DetailCardGeoRegions.Paginator.PrevLabel' | i18n"
+    [disabled]="prevDisabled"
+  >
+    <sc-svg url="/assets/icon/ic_chevron_right.svg"></sc-svg>
+  </button>
+
+  <div>
+    <ng-template
+      [ngTemplateOutlet]="paginatorContent.templateRef"
+      [ngTemplateOutletContext]="{ $implicit: value }"
+    ></ng-template>
+  </div>
+
+  <button
+    class="paginator__btn"
+    type="button"
+    (click)="onBtnClick($event, +step)"
+    [attr.aria-label]="'DetailCardGeoRegions.Paginator.NextLabel' | i18n"
+    [disabled]="nextDisabled"
+  >
+    <sc-svg url="/assets/icon/ic_chevron_right.svg"></sc-svg>
+  </button>
+</div>

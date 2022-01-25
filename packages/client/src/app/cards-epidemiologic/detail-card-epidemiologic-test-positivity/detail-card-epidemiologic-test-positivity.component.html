@@ -1,0 +1,30 @@
+<bag-detail-card
+  [titleKey]="titleKey"
+  [infoKey]="hideInfo ? null : infoKey"
+  [infoAddOnKey]="hideInfo ? null : infoAddOnKey"
+  [warnKey]="hideInfo ? null : warnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: (data.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+>
+  <div class="detail-card-test-positivity" *ngIf="cumulativeData$ | async as cumulData">
+    <bag-chart-legend [itemGap]="16" class="detail-card-test-positivity__legend">
+      <div bagChartLegendSquare color="#C0D8F0" translate="DetailTest.PositivityRate.PCR.Label"></div>
+      <div bagChartLegendSquare color="#428BD3" translate="DetailTest.PositivityRate.ANTIGEN.Label"></div>
+    </bag-chart-legend>
+
+    <p class="detail-card-test-positivity__meta">{{ 'Commons.PositivityRate' | i18n }}</p>
+
+    <bag-histogram-line
+      [data]="cumulData.data"
+      [yLabelFormatter]="valFmt"
+      [focusPosYCenter]="true"
+      [strokeWidths]="[2, 2]"
+      [colors]="['#C0D8F0', '#428BD3']"
+      (elFocus)="showTooltip($event)"
+      (diagramLeave)="hideTooltip()"
+    ></bag-histogram-line>
+  </div>
+</bag-detail-card>

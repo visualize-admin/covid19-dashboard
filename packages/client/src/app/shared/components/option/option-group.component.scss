@@ -1,0 +1,27 @@
+@use 'src/styles/text';
+
+bag-option-group {
+  display: block;
+
+  .option-group__header {
+    user-select: none;
+    cursor: default;
+    height: 54px;
+    background: linear-gradient(
+      180deg,
+      var(--c-bg-gradient-option-group-1) 0%,
+      var(--c-bg-gradient-option-group-2) 100%
+    );
+    padding: 0 16px;
+    @include text.paragraph2;
+    display: flex;
+    align-items: center;
+    color: var(--c-fg-option-group);
+    border-bottom: 1px solid var(--c-divider-light);
+  }
+
+  .option-group__label {
+    user-select: none;
+    cursor: default;
+  }
+}

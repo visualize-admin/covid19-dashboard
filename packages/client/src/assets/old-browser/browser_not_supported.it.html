@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="it">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Covid-19 Svizzera | Nuovo coronavirus | Situazione attuale</title>
+    <link rel="stylesheet" href="browser_not_supported.css" />
+  </head>
+  <body>
+    <div class="header">
+      <table>
+        <tbody>
+          <tr>
+            <td class="header__td__logo"><img class="header__logo" src="/assets/logo.png" /></td>
+            <td class="header__td__title">Ufficio federale della sanità pubblica UFSP</td>
+            <td class="header__td__lang"><a class="lang" href="browser_not_supported.de.html">DE</a></td>
+            <td class="header__td__lang"><a class="lang" href="browser_not_supported.fr.html">FR</a></td>
+            <td class="header__td__lang"><a class="lang lang--active" href="browser_not_supported.it.html">IT</a></td>
+            <td class="header__td__lang"><a class="lang" href="browser_not_supported.rm.html">RM</a></td>
+            <td class="header__td__lang"><a class="lang" href="browser_not_supported.en.html">EN</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="main">
+      <h1>Covid-19 Svizzera</h1>
+      <p>
+        Il suo browser non è supportato. Per esplorare i dati, esegua l'upgrade all'ultima versione di Chrome, Firefox,
+        Safari o Edge e riprovi.
+      </p>
+      <p class="main__p-p">
+        Se desidera saperne di più sullo sviluppo della COVID-19 in Svizzera e nel Liechtenstein, può scaricare l'ultimo
+        rapporto PDF qui di seguito.
+      </p>
+      <a id="dailyreport" href="" download="COVID-19_situazione_epidemiologica_Svizzera.pdf"
+        >Scaricare il rapporto giornaliero</a
+      >
+      <script>
+        var link = document.getElementById('dailyreport')
+        if (!window.location.origin) {
+          window.location.origin =
+            window.location.protocol +
+            '//' +
+            window.location.hostname +
+            (window.location.port ? ':' + window.location.port : '')
+        }
+        var origin = window.location.origin
+        link.href = origin + '/api/renderer/pdf?url=' + origin + '/it/export/report'
+      </script>
+    </div>
+
+    <div class="footer">
+      <div class="footer__main">
+        <h2>Per maggiori informazioni</h2>
+        <ul>
+          <li>
+            <a
+              target="_blank"
+              href="https://www.bag.admin.ch/bag/it/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov.html"
+              >Ufficio federale della sanità pubblica</a
+            >
+          </li>
+          <li>
+            <a
+              target="_blank"
+              href="https://www.experimental.bfs.admin.ch/expstat/de/home/innovative-methoden/swisscovid-app-monitoring.html"
+              >Informazioni sull'app SwissCovid</a
+            >
+          </li>
+          <li>
+            <a
+              target="_blank"
+              href="https://www.bag.admin.ch/bag/it/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/massnahmen-des-bundes.html"
+              >Nuovo coronavirus: provvedimenti e ordinanze</a
+            >
+          </li>
+        </ul>
+      </div>
+      <div class="footer__addon">
+        <table>
+          <tbody>
+            <tr>
+              <td class="footer__td__title">Ufficio federale della sanità pubblica UFSP</td>
+              <td class="footer__td__link">
+                <a
+                  target="_blank"
+                  href="https://www.bag.admin.ch/bag/it/home/krankheiten/ausbrueche-epidemien-pandemien/aktuelle-ausbrueche-epidemien/novel-cov/faq-kontakte-downloads/kontake-neues-coronavirus.html"
+                  >Contatto</a
+                >
+              </td>
+              <td class="footer__td__link">
+                <a target="_blank" href="https://www.admin.ch/gov/it/pagina-iniziale/basi-legali.html">Basi legali</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </body>
+</html>

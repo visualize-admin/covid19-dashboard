@@ -1,0 +1,28 @@
+<div
+  class="download-modal"
+  [class.download-modal--share]="data.type === 'share'"
+  [class.download-modal--daily-report]="data.type === 'dailyReport'"
+  cdkTrapFocus
+  [cdkTrapFocusAutoCapture]="true"
+>
+  <div class="download-modal__inner" tabindex="-1" cdkFocusInitial>
+    <!-- ignore the warning due to cdkFocusInitial -- it's all good -->
+    <h4 class="download-modal__label">
+      <span class="cdk-visually-hidden">{{ data.fileDescription }}&nbsp;-&nbsp;</span>
+      <span *ngIf="data.type === 'download'">{{ 'Commons.DownloadAs' | i18n }}</span>
+      <span *ngIf="data.type === 'share'">{{ 'Commons.ShareUrl' | i18n }}</span>
+      <span *ngIf="data.type === 'dailyReport'">{{ 'DailyReport.Download' | i18n }}</span>
+    </h4>
+
+    <ng-container *ngFor="let item of data.linkItems">
+      <span class="download-modal__item" [class.download-modal__item--daily-report]="data.type === 'dailyReport'">
+        <ng-template [ngTemplateOutlet]="item.template"></ng-template>
+      </span>
+    </ng-container>
+
+    <button class="download-modal__hidden-btn" cdkMonitorElementFocus (click)="ref.close()">
+      <sc-svg url="/assets/icon/ic_close.svg"></sc-svg>
+      <span class="cdk-visually-hidden">{{ 'Commons.Close' | i18n }}</span>
+    </button>
+  </div>
+</div>

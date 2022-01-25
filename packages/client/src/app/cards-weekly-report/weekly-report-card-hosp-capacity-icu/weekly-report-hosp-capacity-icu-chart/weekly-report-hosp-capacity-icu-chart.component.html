@@ -1,0 +1,59 @@
+<ng-container *ngIf="capIcuData$ | async as data">
+  <!-- Rel icu cap -->
+  <h6 class="weekly-report-hosp-capacity-icu-chart__subtitle">
+    {{ 'WeeklyReport.HospCapacityIcu.Card.Relative' | i18n }}
+  </h6>
+  <bag-chart-legend [itemGap]="16" class="weekly-report-hosp-capacity-icu-chart__legend">
+    <div
+      bagChartLegendSquare
+      [color]="colors[0]"
+      translate="WeeklyReport.WeekFrom"
+      [translateValues]="{ week: data.prevDate | fmtIsoWeek, date: data.prevDate | fmtDate }"
+    ></div>
+    <div
+      bagChartLegendSquare
+      [color]="colors[1]"
+      translate="WeeklyReport.WeekFrom"
+      [translateValues]="{ week: data.currDate | fmtIsoWeek, date: data.currDate | fmtDate }"
+    ></div>
+  </bag-chart-legend>
+  <p class="weekly-report-hosp-capacity-icu-chart__meta">
+    {{ 'WeeklyReport.HospCapacityIcu.Card.DiagramTitle' | i18n }}
+  </p>
+  <bag-column-chart
+    [data]="data.relData"
+    [colors]="colors"
+    (elFocus)="showWeeklyCapTooltip($event, data, true)"
+    (diagramLeave)="hideTooltip()"
+    [xLabelFormatter]="yLabelFmt"
+  ></bag-column-chart>
+
+  <!-- Abs icu cap -->
+  <h6 class="weekly-report-hosp-capacity-icu-chart__subtitle">
+    {{ 'WeeklyReport.HospCapacityIcu.Card.Absolute' | i18n }}
+  </h6>
+  <bag-chart-legend [itemGap]="16" class="weekly-report-hosp-capacity-icu-chart__legend">
+    <div
+      bagChartLegendSquare
+      [color]="colors[0]"
+      translate="WeeklyReport.WeekFrom"
+      [translateValues]="{ week: data.prevDate | fmtIsoWeek, date: data.prevDate | fmtDate }"
+    ></div>
+    <div
+      bagChartLegendSquare
+      [color]="colors[1]"
+      translate="WeeklyReport.WeekFrom"
+      [translateValues]="{ week: data.currDate | fmtIsoWeek, date: data.currDate | fmtDate }"
+    ></div>
+  </bag-chart-legend>
+  <p class="weekly-report-hosp-capacity-icu-chart__meta">
+    {{ 'WeeklyReport.HospCapacityIcu.Card.DiagramTitle' | i18n }}
+  </p>
+  <bag-column-chart
+    [data]="data.absData"
+    [colors]="colors"
+    (elFocus)="showWeeklyCapTooltip($event, data, false)"
+    (diagramLeave)="hideTooltip()"
+    [xLabelFormatter]="yLabelFmt"
+  ></bag-column-chart>
+</ng-container>

@@ -1,0 +1,94 @@
+@use 'src/styles/col';
+@use 'src/styles/text';
+@use 'src/styles/layout';
+@use 'src/styles/var';
+@use 'src/styles/mix';
+
+bag-tooltip-list-content {
+  display: block;
+
+  .tooltip-list-content {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .tooltip-list-content__title {
+    @include text.tooltipTitle;
+  }
+
+  .tooltip-list-content__date {
+    @include text.tooltipDate;
+  }
+
+  .tooltip-list-content__empty {
+    @include text.tooltip;
+  }
+
+  .tooltip-list-content__values {
+    @include layout.dataListTable(0, false);
+
+    font-size: var(--fz-tooltip);
+    line-height: 12px;
+    letter-spacing: 0.1px;
+    color: var(--c-fg-tooltip-value);
+
+    dt,
+    dd {
+      padding: 2px 0;
+    }
+    dd {
+      padding-left: 16px;
+      white-space: nowrap;
+    }
+
+    .tooltip-list-content__colored {
+      &:before {
+        content: '';
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        background: var(--color);
+        margin: 0 8px 0 0;
+      }
+
+      &.tooltip-list-content__colored--mean:before {
+        height: 4px;
+        margin: 0 8px 2px 0;
+      }
+
+      &.tooltip-list-content__colored--ref-mean:before {
+        height: 2px;
+        margin: 0 8px 3px 0;
+      }
+
+      &.tooltip-list-content__colored--diagonal-line:before {
+        height: 2px;
+        margin: 0 8px 3px 0;
+        transform: rotate(-45deg);
+      }
+
+      &.tooltip-list-content__colored--dashed:before {
+        background-color: transparent;
+        background-image: linear-gradient(90deg, var(--color), var(--color) 75%, transparent 75%, transparent 100%);
+        background-size: 5px 2px;
+      }
+
+      &.tooltip-list-content__colored--pattern:before {
+        @include mix.boosterPattern(var(--color), #ffffff);
+      }
+    }
+    .tooltip-list-content__lighten {
+      color: var(--c-fg-meta);
+    }
+
+    .tooltip-list-content__border-below {
+      border-bottom: 1px solid var(--c-divider-light);
+      padding-bottom: 4px;
+
+      & + dt,
+      & + dt + dd {
+        padding-top: 4px;
+      }
+    }
+  }
+}

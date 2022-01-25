@@ -1,0 +1,15 @@
+bag-histogram-preview,
+bag-histogram-preview-re,
+bag-histogram-preview-lines {
+  display: block;
+
+  .histogram-preview--report {
+    margin-top: -6px;
+    .x-axis {
+      transform: translateY(-2px);
+    }
+    .y-axis text {
+      transform: translateY(1px);
+    }
+  }
+}

@@ -1,0 +1,19 @@
+<div
+  class="repro-legend"
+  aria-hidden="true"
+  [class.repro-legend--overview]="facet === 'overview'"
+  [class.repro-legend--table]="facet === 'table'"
+>
+  <div *ngIf="facet !== 'overview'" class="repro-legend__title" [translate]="titleKey"></div>
+  <div class="repro-legend__gradient">
+    <div class="repro-legend__gradient-part">
+      <div class="repro-legend__gradient-lbl">0</div>
+    </div>
+    <div class="repro-legend__gradient-part">
+      <div class="repro-legend__gradient-lbl">0,8</div>
+    </div>
+    <div class="repro-legend__gradient-part">
+      <div class="repro-legend__gradient-lbl">1</div>
+    </div>
+  </div>
+</div>

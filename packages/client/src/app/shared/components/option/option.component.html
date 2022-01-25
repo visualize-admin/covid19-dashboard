@@ -1,0 +1,15 @@
+<div
+  class="option"
+  [class.option--active]="active"
+  [class.option--disabled]="disabled"
+  [class.option--selected]="selected"
+  [class.option--no-selection-color]="noSelectionColor"
+  [class.option--multi]="forMulti"
+>
+  <button type="button" class="option__btn" tabindex="-1">
+    <span class="option__inner">
+      <ng-content></ng-content>
+    </span>
+    <sc-svg class="option__icon" *ngIf="selected" url="/assets/icon/ic_check.svg"></sc-svg>
+  </button>
+</div>

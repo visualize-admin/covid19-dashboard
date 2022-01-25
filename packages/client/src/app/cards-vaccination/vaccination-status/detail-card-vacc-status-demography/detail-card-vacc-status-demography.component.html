@@ -1,0 +1,110 @@
+<ng-template #noDataTpl>
+  <div class="detail-card-vacc-status-demography__no-data">
+    {{ 'Vaccination.Status.Card.ChFlDataOnly.Info' | i18n }}<br />
+    <button *ngIf="!hideResetBtn" class="detail-card-vacc-status-demography__no-data-btn" (click)="resetToChFl()">
+      {{ 'Vaccination.Status.Card.ChFlDataOnly.Btn' | i18n }}
+    </button>
+  </div>
+</ng-template>
+
+<bag-detail-card
+  titleKey="Vaccination.Status.Card.Demography.Title"
+  [infoKey]="infoKey$ | async"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: (data.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [hideInfo]="hideInfo"
+>
+  <div class="detail-card-vacc-status-demography">
+    <ng-container *ngIf="chartData$ | async as chartData; else noDataTpl">
+      <h5
+        class="detail-card-vacc-status-demography__title"
+        translate="Vaccination.Status.Card.Demography.SubTitle"
+      ></h5>
+      <div class="detail-card-vacc-status-demography__lr">
+        <!-- cumulative filter -->
+        <select
+          bag-select
+          [attr.aria-label]="'Vaccination.CumulativeFilter.Label' | i18n"
+          name="detailCumulativeFilter"
+          [formControl]="cumulativeFilterCtrl"
+        >
+          <ng-container *ngFor="let opt of cumulativeFilterOptions">
+            <option [ngValue]="opt.val" [attr.selected]="opt.val === cumulativeFilterCtrl.value ? '' : null">
+              {{ opt.key | i18n }}
+            </option>
+          </ng-container>
+        </select>
+
+        <!-- age range filter -->
+        <select
+          bag-select
+          [attr.aria-label]="'Vaccination.Status.Card.Demography.AgeRangeFilter.Label' | i18n"
+          name="detailAgeRangeFilter"
+          class="detail-card-vacc-status-demography__age-filter"
+          [formControl]="ageRangeFilterCtrl"
+        >
+          <ng-container *ngFor="let opt of ageRangeFilterOptions">
+            <option [ngValue]="opt.val" [attr.selected]="opt.val === ageRangeFilterCtrl.value ? '' : null">
+              {{ opt.key }}
+            </option>
+          </ng-container>
+        </select>
+
+        <!-- relativity filter -->
+        <bag-toggle-button-list
+          class="detail-card-vacc-status-demography__relativity-filter--toggle"
+          [attr.aria-label]="'RelativityFilter.Label' | i18n"
+          name="detailRelativityFilter"
+          [formControl]="relativityFilterCtrl"
+        >
+          <ng-container *ngFor="let opt of relativityFilterOptions">
+            <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+          </ng-container>
+        </bag-toggle-button-list>
+        <select
+          bag-select
+          class="detail-card-vacc-status-demography__relativity-filter--select"
+          [attr.aria-label]="'RelativityFilter.Label' | i18n"
+          name="detailRelativityFilter"
+          [formControl]="relativityFilterCtrl"
+        >
+          <ng-container *ngFor="let opt of relativityFilterOptions">
+            <option [ngValue]="opt.val" [attr.selected]="opt.val === relativityFilterCtrl.value ? '' : null">
+              {{ opt.key | i18n }}
+            </option>
+          </ng-container>
+        </select>
+      </div>
+
+      <div class="detail-card-vacc-status-demography__chart-intro">
+        <bag-chart-legend [itemGap]="16">
+          <div
+            *ngFor="let item of chartData.legendPairs"
+            bagChartLegendLine
+            [color]="item[0]"
+            [translate]="item[1]"
+            [dashed]="item[2]"
+            [length]="16"
+          ></div>
+        </bag-chart-legend>
+      </div>
+      <div class="detail-card-vacc-status-demography__chart-meta" [translate]="chartData.metaKey"></div>
+      <bag-histogram-line
+        [data]="chartData.lineData"
+        [showNoData]="chartData.showNoData"
+        [dashedLines]="chartData.dashedLines"
+        [focusPosYCenter]="true"
+        [withWeeklyValues]="true"
+        [colors]="chartData.colors"
+        [skipNoDataBlocksBefore]="chartData.skipNoDataBefore"
+        [strokeWidths]="2"
+        (elFocus)="showHistogramLineTooltip($event, chartData.legendPairs, chartData.cumulativeFilter, chartData.isInz)"
+        (diagramLeave)="hideTooltip()"
+      ></bag-histogram-line>
+    </ng-container>
+  </div>
+</bag-detail-card>

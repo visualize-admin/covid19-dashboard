@@ -1,0 +1,69 @@
+<ng-container *ngIf="viewData$ | async as data">
+  <!-- INZ -->
+  <h5 class="bag-weekly-report-geo-chart__chart-title">{{ parent.keys.inzTitle | i18n }}</h5>
+  <bag-chart-legend [itemGap]="16" class="bag-weekly-report-geo-chart__legend">
+    <div
+      bagChartLegendSquare
+      [color]="colors[0]"
+      translate="WeeklyReport.WeekFrom"
+      [translateValues]="{ week: data.prevDate | fmtIsoWeek, date: data.prevDate | fmtDate }"
+    ></div>
+    <div
+      bagChartLegendSquare
+      [color]="colors[1]"
+      translate="WeeklyReport.WeekFrom"
+      [translateValues]="{ week: data.currDate | fmtIsoWeek, date: data.currDate | fmtDate }"
+    ></div>
+    <div
+      bagChartLegendLine
+      [color]="refColors[0]"
+      [length]="16"
+      translate="WeeklyReport.Card.RefLineLabelChFl"
+      [translateValues]="{ week: data.prevDate | fmtIsoWeek, date: data.prevDate | fmtDate }"
+    ></div>
+    <div
+      bagChartLegendLine
+      [color]="refColors[1]"
+      [length]="16"
+      translate="WeeklyReport.Card.RefLineLabelChFl"
+      [translateValues]="{ week: data.currDate | fmtIsoWeek, date: data.currDate | fmtDate }"
+    ></div>
+  </bag-chart-legend>
+  <p class="bag-weekly-report-geo-chart__meta">{{ parent.keys.inzChartMeta | i18n }}</p>
+  <bag-column-chart
+    [data]="data.inzData"
+    [refValues]="data.refValues"
+    [colors]="colors"
+    [refColors]="refColors"
+    [direction]="(direction$ | async) || 'horizontal'"
+    [rotateXAxisLabels]="data.rotateXAxisLabels"
+    (elFocus)="showTooltip($event, data, true)"
+    (diagramLeave)="hideTooltip()"
+  ></bag-column-chart>
+
+  <!-- ABSOLUTE -->
+  <h5 class="bag-weekly-report-geo-chart__chart-title">{{ parent.keys.absTitle | i18n }}</h5>
+  <bag-chart-legend [itemGap]="16" class="bag-weekly-report-geo-chart__legend">
+    <div
+      bagChartLegendSquare
+      [color]="colors[0]"
+      translate="WeeklyReport.WeekFrom"
+      [translateValues]="{ week: data.prevDate | fmtIsoWeek, date: data.prevDate | fmtDate }"
+    ></div>
+    <div
+      bagChartLegendSquare
+      [color]="colors[1]"
+      translate="WeeklyReport.WeekFrom"
+      [translateValues]="{ week: data.currDate | fmtIsoWeek, date: data.currDate | fmtDate }"
+    ></div>
+  </bag-chart-legend>
+  <p class="bag-weekly-report-geo-chart__meta">{{ parent.keys.absChartMeta | i18n }}</p>
+  <bag-column-chart
+    [data]="data.absData"
+    [colors]="colors"
+    [direction]="(direction$ | async) || 'horizontal'"
+    [rotateXAxisLabels]="data.rotateXAxisLabels"
+    (elFocus)="showTooltip($event, data, false)"
+    (diagramLeave)="hideTooltip()"
+  ></bag-column-chart>
+</ng-container>

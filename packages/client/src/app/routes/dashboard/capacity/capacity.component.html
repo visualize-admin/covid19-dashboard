@@ -1,0 +1,20 @@
+<div class="capacity">
+  <bag-select-title
+    #geoSelectTitle
+    [formControl]="geoFilterCtrl"
+    [optionGroups]="detailGeoFilterGroups"
+    [useFullWidthShadow]="int.isIntersecting$ | async"
+    titleKey="HospCapacity.Title"
+    resetFilterKey="HospCapacity.ResetGeographyFilter"
+  ></bag-select-title>
+
+  <ng-template [bagMasterDetail]="detailMenuItems$" [stickyHeaderEl]="geoSelectTitle.element" let-item>
+    <bag-distribution-bar
+      class="capacity__distribution-bar"
+      [label]="item.distributionLabel"
+      [entries]="item.distributionData"
+    ></bag-distribution-bar>
+  </ng-template>
+
+  <div [bagIntersection]="{ offset: 0 }" #int="bagIntersection"></div>
+</div>

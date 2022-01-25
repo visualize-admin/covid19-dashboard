@@ -1,0 +1,197 @@
+@use './col';
+@use './text';
+@use './var';
+@use './layout';
+
+@mixin warning {
+  display: flex;
+  align-items: center;
+  padding: 8px 16px 8px 8px;
+  @include text.meta;
+  border-radius: var(--br-box-inside);
+  background-color: col.$warning-bg;
+  color: col.$warning-fg;
+
+  & > sc-svg {
+    flex: 0 0 24px;
+    margin-right: 8px;
+    width: 24px;
+    height: 24px;
+  }
+}
+
+@mixin noDetailCardContent {
+  text-align: center;
+  margin: 48px;
+  @include text.meta;
+  font-weight: var.$font-weight-bold;
+  color: var(--c-fg-no-content);
+}
+
+@mixin noDetailCardContentLink {
+  @include text.meta;
+  color: var(--c-fg-link);
+  cursor: pointer;
+  &:hover {
+    color: var(--c-fg-link-hover);
+    &:active {
+      color: var(--c-fg-link-active);
+    }
+  }
+}
+
+@mixin noDataChartOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--c-bg-no-data-overlay);
+  text-align: center;
+  padding: 48px;
+  @include text.meta;
+  font-weight: var.$font-weight-bold;
+  color: var(--c-fg-no-content);
+}
+
+@mixin geoInfoBox($bg: #{var(--c-bg-box-default)}) {
+  flex: 0 1 auto;
+  padding: 12px 16px;
+  background-color: $bg;
+  border-radius: var(--br-box-inside);
+}
+
+@mixin touchHint {
+  .choropleth__touch-hint {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    @include text.meta;
+    pointer-events: none;
+    user-select: none;
+    opacity: 0;
+    transition: opacity 350ms ease-in-out;
+  }
+  .choropleth__touch-hint--show {
+    opacity: 1;
+  }
+}
+
+@mixin choroplethZoom {
+  .choropleth__zoom {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    display: flex;
+    flex-direction: column;
+    transform: translate(1px, 1px);
+
+    &.choropleth__zoom--spaced {
+      bottom: var(--card-padding);
+      right: var(--card-padding);
+    }
+  }
+
+  .choropleth__zoom-btn {
+    cursor: pointer;
+    position: relative;
+    width: 32px;
+    height: 32px;
+    background-color: var(--c-bg-form-control);
+    border: 1px solid var(--c-border-form-control);
+    color: var(--c-fg-form-control);
+    justify-content: center;
+    border-radius: var(--br-form-control);
+    display: flex;
+    align-items: center;
+
+    sc-svg {
+      width: 18px;
+      height: 18px;
+      flex: 0 0 18px;
+    }
+
+    &:hover {
+      color: var(--c-fg-link-hover);
+
+      &:active {
+        color: var(--c-fg-link-active);
+      }
+    }
+
+    &.choropleth__zoom-btn--zoom-reset {
+      margin-bottom: 8px;
+    }
+
+    &.choropleth__zoom-btn--zoom-in {
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+    }
+
+    &.choropleth__zoom-btn--zoom-out {
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+      transform: translateY(-1px);
+    }
+  }
+}
+
+@mixin tooltipTitle {
+  @include text.tooltipTitle;
+  margin: 0 0 2px 0;
+}
+
+@mixin hideScrollbar {
+  scrollbar-width: none;
+  scrollbar-height: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+    width: 0 !important;
+    height: 0 !important;
+  }
+}
+
+@mixin cardFiltersMainLr {
+  @include layout.leftRight(-8px, 16px);
+}
+
+@mixin cardFiltersMainWithMultiSelectLr {
+  @include cardFiltersMainLr;
+  bag-multi-select {
+    margin-right: auto;
+  }
+}
+
+@mixin cardFiltersLegendLr {
+  @include layout.leftRight(-8px, 0px);
+}
+
+@mixin cardChartIntro {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+@mixin boosterPattern($bg-color, $dot-color, $border-color: transparent) {
+  // Dimensions
+  $dot-size: 1px;
+  $dot-space: 2px;
+  background-color: $bg-color;
+  background-image: radial-gradient(circle, $dot-color 1px, transparent 1px);
+  background-size: 2 * $dot-space 2 * $dot-space;
+  background-position: 0 0, 2 * $dot-size 2 * $dot-size;
+
+  border-right: 1px solid $border-color;
+  box-sizing: border-box;
+}

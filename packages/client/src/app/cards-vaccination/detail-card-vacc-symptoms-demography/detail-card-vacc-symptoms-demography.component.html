@@ -1,0 +1,61 @@
+<ng-template #noData>
+  <div class="detail-card-vacc-symptoms-demography__no-data">
+    {{ 'Vaccination.VaccSymptoms.Card.ChFlDataOnly.Info' | i18n }}<br />
+    <button *ngIf="!hideResetBtn" class="detail-card-vacc-symptoms-demography__no-data-btn" (click)="resetToChFl()">
+      {{ 'Vaccination.VaccSymptoms.Card.ChFlDataOnly.Btn' | i18n }}
+    </button>
+  </div>
+</ng-template>
+
+<bag-detail-card
+  titleKey="Vaccination.Card.Demography.Title"
+  [infoKey]="keys.info"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.Swissmedic', date: (data.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [hideInfo]="hideInfo"
+>
+  <ng-container *ngIf="demographyData$ | async as demoData; else noData">
+    <div class="detail-card-vacc-symptoms-demography__chart-list">
+      <div>
+        <h5 class="detail-card-vacc-symptoms-demography__subtitle">
+          {{ 'Vaccination.VaccSymptoms.Card.Demography.Age.Title' | i18n }}
+        </h5>
+
+        <div class="detail-card-vacc-symptoms-demography__lr">
+          <bag-multi-select
+            [formControl]="ageRangeFilterCtrl"
+            [labelFn]="demoViewMultiSelectFilterLabelFn"
+            [options]="ageRangeFilterOptions"
+          >
+          </bag-multi-select>
+        </div>
+
+        <div class="detail-card-vacc-symptoms-development__chart-intro">
+          <bag-chart-legend [itemGap]="16">
+            <ng-container *ngFor="let entry of demoData.histoLegendPairs">
+              <div bagChartLegendSquare [color]="entry[0]">{{ entry[1] | replaceHyphenWithEnDash: true }}</div>
+            </ng-container>
+          </bag-chart-legend>
+        </div>
+
+        <div class="detail-card-vacc-symptoms-demography__chart-meta">
+          {{ keys.meta | i18n }}
+        </div>
+        <bag-histogram-line
+          [data]="demoData.data"
+          [focusPosYCenter]="true"
+          [colors]="demoData.ageHistoColors"
+          [strokeWidths]="2"
+          [disableNoDataBlocks]="true"
+          [withWeeklyValues]="false"
+          (elFocus)="showCumulTooltip($event, demoData.histoLegendPairs)"
+          (diagramLeave)="hideTooltip()"
+        ></bag-histogram-line>
+      </div>
+    </div>
+  </ng-container>
+</bag-detail-card>

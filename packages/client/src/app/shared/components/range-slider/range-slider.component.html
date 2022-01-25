@@ -1,0 +1,35 @@
+<div
+  class="range-slider"
+  [class.range-slider--start]="relVal <= 0.5"
+  [class.range-slider--end]="relVal > 0.5"
+  [style.--position.%]="position"
+  [style.--item-width.%]="itemWidth"
+>
+  <div class="range-slider__tooltip">
+    <div class="range-slider__tooltip-container">
+      <h2 class="range-slider__tooltip-title">{{ titleTxt || '-' }}</h2>
+      <p class="range-slider__tooltip-desc">{{ descTxt || '-' }}</p>
+    </div>
+  </div>
+
+  <div class="range-slider__content" (click)="onContentClick($event)">
+    <ng-content></ng-content>
+  </div>
+
+  <div class="input-slider__input-wrapper">
+    <input
+      #inputElRef
+      class="range-slider__input"
+      name="rangeSlider"
+      [attr.aria-label]="labelKey | i18n"
+      type="range"
+      [attr.step]="step"
+      [min]="min"
+      [max]="max"
+      [value]="value"
+      (input)="sliderValueChanged($event)"
+    />
+  </div>
+
+  <div class="range-slider__runnable-track"></div>
+</div>

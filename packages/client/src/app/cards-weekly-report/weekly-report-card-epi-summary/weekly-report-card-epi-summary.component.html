@@ -1,0 +1,20 @@
+<bag-detail-card
+  titleKey="WeeklyReport.Card.EpiSummary.Title"
+  [infoKey]="keys.info"
+  [infoArgs]="{ sourceDate: (data.curr.sourceDate | toDate | fmtDate) }"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: (data.curr.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+>
+  <div class="weekly-report-card-epi-summary__view" *ngIf="currentValues$ | async as currentValues">
+    <p
+      *ngIf="!currentValues.tableData"
+      class="weekly-report-card-epi-summary__no-data g-content"
+      [translate]="'WeeklyReport.NoDataTextSeeArchive'"
+    ></p>
+    <bag-text-table-easy *ngIf="currentValues.tableData" [data]="currentValues.tableData"> </bag-text-table-easy>
+  </div>
+</bag-detail-card>

@@ -1,0 +1,152 @@
+<bag-detail-card
+  titleKey="Vaccination.Card.Demography.Title"
+  [infoKey]="keys.info"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', descKey: keys.sourceDesc, date: (data.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [hideInfo]="hideInfo"
+>
+  <ng-container *ngIf="demographyData$ | async as demoData">
+    <div class="detail-card-vacc-doses-demography__chart-list">
+      <div>
+        <h5 class="detail-card-vacc-doses-demography__subtitle detail-card-vacc-doses-demography__subtitle--age">
+          {{ 'Vaccination.Card.Demography.Age.Title' | i18n }}
+        </h5>
+
+        <div class="detail-card-vacc-doses-demography__lr">
+          <!-- cumulative filter -->
+          <select
+            bag-select
+            [attr.aria-label]="'Vaccination.CumulativeFilter.Label' | i18n"
+            name="detailCumulativeFilter"
+            [formControl]="cumulativeFilterCtrl"
+          >
+            <ng-container *ngFor="let opt of cumulativeFilterOptions">
+              <option [ngValue]="opt.val" [attr.selected]="opt.val === cumulativeFilterCtrl.value ? '' : null">
+                {{ opt.key | i18n }}
+              </option>
+            </ng-container>
+          </select>
+
+          <!-- ageRange filter -->
+          <bag-multi-select
+            *ngIf="demoData.showCumulative"
+            [formControl]="ageRangeFilterCtrl"
+            [labelFn]="demoViewMultiSelectFilterLabelFn"
+            [options]="ageRangeFilterOptions"
+          ></bag-multi-select>
+
+          <!-- relativity filter -->
+          <bag-toggle-button-list
+            class="detail-card-vacc-doses-demography__relativity-filter--toggle"
+            [attr.aria-label]="'Vaccination.RelativityFilter.Label' | i18n"
+            name="detailRelativityFilter"
+            [formControl]="vaccDosesRelativityFilterCtrl"
+          >
+            <ng-container *ngFor="let opt of vaccDosesRelativityFilterOptions">
+              <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+            </ng-container>
+          </bag-toggle-button-list>
+          <select
+            bag-select
+            class="detail-card-vacc-doses-demography__relativity-filter--select"
+            [attr.aria-label]="'Vaccination.RelativityFilter.Label' | i18n"
+            name="detailRelativityFilter"
+            [formControl]="vaccDosesRelativityFilterCtrl"
+          >
+            <ng-container *ngFor="let opt of vaccDosesRelativityFilterOptions">
+              <option [ngValue]="opt.val" [attr.selected]="opt.val === vaccDosesRelativityFilterCtrl.value ? '' : null">
+                {{ opt.key | i18n }}
+              </option>
+            </ng-container>
+          </select>
+        </div>
+
+        <!-- Age Distribution Chart -->
+        <ng-container *ngIf="demoData.showWeeklyValues">
+          <div class="detail-card-vacc-doses-demography__chart-intro">
+            <bag-color-legend
+              [min]="demoData.matrixData.age.min"
+              [max]="demoData.matrixData.age.max"
+              [titleKey]="demoData.isRel ? keys.metaRel : keys.metaAbs"
+              [noCasesKey]="demoData.matrixData.age.hasZeroValues ? keys.legendZero : null"
+              [noDataKey]="demoData.matrixData.age.hasNullValues ? 'Commons.NoData' : null"
+              [scaleColors]="heatmapScaleColors"
+              [colorTicks]="6"
+            ></bag-color-legend>
+          </div>
+          <bag-matrix-heatmap
+            [data]="demoData.matrixData.age.entries"
+            [fillFn]="demoData.matrixData.ageFillFn"
+            [yLabelMaxLength]="5"
+            (elFocus)="showMatrixTooltip($event, demoData.isRel)"
+            (diagramLeave)="hideTooltip()"
+            [yLabelFormatter]="matrixYLabelFmt"
+          ></bag-matrix-heatmap>
+        </ng-container>
+
+        <ng-container *ngIf="demoData.showCumulative">
+          <div class="detail-card-vacc-doses-demography__chart-intro">
+            <!-- AgeRange legend -->
+            <bag-chart-legend [itemGap]="16">
+              <div *ngFor="let pair of demoData.histogramData.histoLegendPairs" bagChartLegendSquare [color]="pair[0]">
+                {{ pair[1] | replaceHyphenWithEnDash }}
+              </div>
+            </bag-chart-legend>
+          </div>
+          <div class="detail-card-vacc-doses-demography__chart-meta">
+            {{ (demoData.isRel ? keys.metaRel : keys.metaAbs) | i18n }}
+          </div>
+          <bag-histogram-line
+            [data]="demoData.histogramData.data"
+            [focusPosYCenter]="true"
+            [colors]="demoData.histogramData.ageHistoColors"
+            [strokeWidths]="2"
+            [disableNoDataBlocks]="true"
+            [withWeeklyValues]="true"
+            (elFocus)="showCumulTooltip($event, demoData.isRel, demoData.histogramData.histoLegendPairs)"
+            (diagramLeave)="hideTooltip()"
+          ></bag-histogram-line>
+        </ng-container>
+      </div>
+
+      <!-- Gender distribution chart -->
+      <div>
+        <h5 class="detail-card-vacc-doses-demography__subtitle">
+          {{ 'Vaccination.Card.Demography.Sex.Title' | i18n }}
+        </h5>
+
+        <div class="detail-card-vacc-doses-demography__chart-intro">
+          <bag-chart-legend [itemGap]="16">
+            <div bagChartLegendSquare [color]="colorMale" translate="Commons.Male"></div>
+            <div bagChartLegendSquare [color]="colorUnknown" translate="Commons.Unknown"></div>
+            <div bagChartLegendSquare [color]="colorFemale" translate="Commons.Female"></div>
+            <div
+              *ngIf="demoData.matrixData.gender.hasBucketsAllZero"
+              bagChartLegendSquare
+              noCase
+              [translate]="keys.legendZero"
+            ></div>
+            <div
+              *ngIf="demoData.matrixData.gender.hasNullValues"
+              bagChartLegendSquare
+              noData
+              translate="Commons.NoData"
+            ></div>
+          </bag-chart-legend>
+        </div>
+        <bag-matrix-stack
+          [data]="demoData.matrixData.gender.entries"
+          [yLabelMaxLength]="5"
+          [bucketColors]="stackColors"
+          [rulerAt]="50"
+          (elFocus)="showStackTooltip($event)"
+          (diagramLeave)="hideTooltip()"
+        ></bag-matrix-stack>
+      </div>
+    </div>
+  </ng-container>
+</bag-detail-card>

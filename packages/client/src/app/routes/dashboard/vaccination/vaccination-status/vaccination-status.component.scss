@@ -1,0 +1,33 @@
+@use 'src/styles/dim';
+@use 'src/styles/var';
+@use 'src/styles/mix';
+
+:host {
+  .vaccination-status__filter {
+    display: flex;
+    margin-bottom: var(--d-page-side-gap);
+    pointer-events: none;
+  }
+
+  .vaccination-status__warning {
+    @include mix.warning;
+    margin-bottom: 16px;
+    max-width: 768px;
+  }
+
+  .vaccination-status__filter-field {
+    pointer-events: auto;
+    transition: box-shadow 250ms ease-in;
+  }
+
+  @media (min-height: #{dim.$bp-min-height-sticky}) {
+    .vaccination-status__filter {
+      position: sticky;
+      z-index: 2;
+      top: calc(var(--d-sticky-detail-filter-height) + var(--d-page-side-gap));
+    }
+    .vaccination-status__filter--shadow .vaccination-status__filter-field {
+      box-shadow: var(--bs-overlay);
+    }
+  }
+}

@@ -1,0 +1,97 @@
+bag-option {
+  display: block;
+  $option-height: 48px;
+  $option-side-padding: 16px;
+
+  .option {
+    text-align: left;
+    text-decoration: none; // necessary to reset anchor tags
+
+    // Required for Edge not to show scrollbars when setting the width manually. See #12112.
+    max-width: 100%;
+
+    &[disabled] {
+      cursor: default;
+    }
+
+    position: relative;
+    outline: none;
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    align-items: center;
+    -webkit-tap-highlight-color: transparent;
+
+    &[aria-disabled='true'] {
+      user-select: none;
+      cursor: default;
+    }
+
+    &:hover:not(.option--disabled) {
+      color: var(--c-fg-link-hover);
+      background-color: var(--c-bg-option-hover);
+    }
+
+    &.option--selected:not(.option--disabled) {
+      &:not(.option--no-selection-color) {
+        color: var(--c-fg-link);
+      }
+
+      &.option--multi {
+        .option__btn:before {
+          background-color: var(--c-fg-link);
+          border-color: var(--c-fg-link);
+        }
+      }
+    }
+
+    &.option--multi {
+      .option__btn:before {
+        flex: 0 0 auto;
+        content: '';
+        display: block;
+        border: 1px solid var(--c-divider);
+        border-radius: 2px;
+        width: 16px;
+        height: 16px;
+        margin-right: 8px;
+      }
+
+      .option__icon {
+        position: absolute;
+        left: 8px;
+        color: white;
+        width: 16px;
+        height: 16px;
+      }
+    }
+
+    &.option--active:not(.option--disabled) {
+      color: var(--c-fg-link-active);
+    }
+  }
+
+  .option__btn {
+    min-height: $option-height;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    color: inherit;
+    padding: 8px $option-side-padding;
+    cursor: pointer;
+    position: relative;
+    line-height: 1;
+  }
+
+  .option__inner {
+    flex: 1 1 0;
+    text-align: left;
+  }
+
+  .option__icon {
+    width: 24px;
+    height: 24px;
+    flex: 0 0 auto;
+    margin-left: 8px;
+  }
+}

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="24px" height="24px" viewBox="0 0 24 24" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>6BECCC98-724F-422D-A19E-BC4907F7271C</title>
+    <g id="mockups" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="3.5.2.2_geo-levels_regions_slider" transform="translate(-943.000000, -1337.000000)" fill="#FFFFFF">
+            <g id="rich" transform="translate(200.000000, 340.000000)">
+                <g id="timeline" transform="translate(43.000000, 895.000000)">
+                    <g id="slider" transform="translate(0.000000, 94.000000)">
+                        <g transform="translate(692.000000, 0.000000)" id="scrubber">
+                            <g id="icons/bund/ic_slide-horizontally" transform="translate(8.000000, 8.000000)">
+                                <polygon id="Icon" transform="translate(6.000000, 12.000000) scale(1, -1) rotate(90.000000) translate(-6.000000, -12.000000) " points="0 9 12 9 6 15"></polygon>
+                                <polygon id="Icon" transform="translate(18.000000, 12.000000) scale(-1, -1) rotate(90.000000) translate(-18.000000, -12.000000) " points="12 9 24 9 18 15"></polygon>
+                            </g>
+                        </g>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

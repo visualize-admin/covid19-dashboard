@@ -1,0 +1,136 @@
+@use 'src/styles/text';
+@use 'src/styles/dim';
+@use 'src/styles/layout';
+@use 'src/styles/mix';
+
+bag-detail-card-vacc-persons-demography {
+  display: block;
+
+  .detail-card-vacc-persons-demography__chart-list {
+    display: grid;
+    grid-gap: 48px;
+  }
+
+  .detail-card-vacc-persons-demography__lr {
+    justify-content: normal !important;
+    @include mix.cardFiltersMainWithMultiSelectLr;
+  }
+
+  .detail-card-vacc-persons-demography__gender-lr {
+    @include layout.leftRight(8px);
+  }
+
+  .detail-card-vacc-persons-demography__mr-auto {
+    margin-right: auto;
+  }
+
+  .detail-card-vacc-persons-demography__subtitle {
+    @include text.h3;
+    margin: 0 0 0;
+  }
+
+  .detail-card-vacc-persons-demography__infobox {
+    margin: 16px 0 32px 0;
+    @include mix.geoInfoBox(#{var(--c-bg-box-vacc)});
+  }
+
+  .detail-card-vacc-persons-demography__infobox-header {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    bag-chart-legend {
+      margin: 0 0 8px 0;
+    }
+  }
+
+  .detail-card-vacc-persons-demography__infobox-sub-title {
+    @include text.tooltipDate;
+    margin: 0 0 8px 0;
+    display: block;
+  }
+
+  .detail-card-vacc-persons-demography__infobox-title {
+    @include text.boxTitle;
+    margin: 0 0 8px 0;
+  }
+
+  .detail-card-vacc-persons-demography__infobox-buckets {
+    display: grid;
+    grid-gap: 8px 16px;
+    grid-auto-columns: 1fr;
+    grid-auto-flow: column;
+    grid-template-rows: 1fr 1fr 1fr;
+    @media (max-width: #{dim.$bp-max-md}) {
+      grid-gap: 8px 12px;
+      grid-template-rows: repeat(5, 1fr);
+    }
+    @media (max-width: #{dim.$bp-max-sm}) {
+      grid-template-rows: repeat(9, 1fr);
+    }
+
+    &.detail-card-vacc-persons-demography__infobox-buckets--vacc-strategy {
+      grid-template-rows: repeat(4, 1fr);
+      @media (max-width: #{dim.$bp-max-md}) {
+        grid-gap: 8px 12px;
+        grid-template-rows: repeat(4, 1fr);
+      }
+      @media (max-width: #{dim.$bp-max-sm}) {
+        grid-template-rows: repeat(4, 1fr);
+      }
+    }
+  }
+
+  .detail-card-vacc-persons-demography__infobox-bucket-header {
+    display: grid;
+    grid-gap: 2px 16px;
+    @media (max-width: #{dim.$bp-max-md}) {
+      grid-gap: 2px 12px;
+    }
+    grid-template-columns: auto max-content max-content max-content;
+    @include text.meta;
+    text-align: right;
+
+    > :first-child {
+      text-align: left;
+    }
+  }
+
+  .detail-card-vacc-persons-demography__chart-intro {
+    @include mix.cardChartIntro;
+  }
+
+  .detail-card-vacc-persons-demography__chart-meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .detail-card-vacc-persons-demography__relativity-filter--toggle {
+      display: none;
+    }
+  }
+
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .detail-card-vacc-persons-demography__relativity-filter--select[bag-select] {
+      display: none;
+    }
+  }
+
+  //  special breakpoints
+  @media (max-width: 888px) {
+    .detail-card-vacc-persons-demography__lr--is-detail {
+      bag-multi-select {
+        margin-right: 0 !important;
+      }
+    }
+  }
+
+  @media (max-width: 1172px) {
+    .detail-card-vacc-persons-demography__lr--is-not-detail {
+      bag-multi-select {
+        margin-right: 0 !important;
+      }
+    }
+  }
+}

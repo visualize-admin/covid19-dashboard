@@ -1,0 +1,43 @@
+@use 'src/styles/text';
+@use 'src/styles/col';
+@use 'src/styles/dim';
+@use 'src/styles/layout';
+@use 'src/styles/var';
+@use 'src/styles/mix';
+
+bag-detail-card-vacc-doses-location {
+  display: block;
+
+  .detail-card-vacc-doses-location__lr {
+    @include mix.cardFiltersMainWithMultiSelectLr;
+  }
+
+  .detail-card-vacc-doses-location__chart-intro {
+    @include mix.cardChartIntro;
+  }
+
+  .detail-card-vacc-doses-location__location-bucket {
+    margin-bottom: 24px;
+  }
+
+  .detail-card-vacc-doses-location__location-bucket-title {
+    @include text.h4;
+  }
+
+  .detail-card-vacc-doses-location__chart-meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .detail-card-vacc-doses-location__relativity-filter--toggle {
+      display: none;
+    }
+  }
+
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .detail-card-vacc-doses-location__relativity-filter--select[bag-select] {
+      display: none;
+    }
+  }
+}

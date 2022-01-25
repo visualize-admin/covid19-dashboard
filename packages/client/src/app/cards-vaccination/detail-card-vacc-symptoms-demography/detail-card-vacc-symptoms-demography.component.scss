@@ -1,0 +1,51 @@
+@use 'src/styles/text';
+@use 'src/styles/dim';
+@use 'src/styles/layout';
+@use 'src/styles/mix';
+
+bag-detail-card-vacc-symptoms-demography {
+  display: block;
+
+  .detail-card-vacc-symptoms-demography__no-data {
+    @include mix.noDetailCardContent;
+  }
+
+  .detail-card-vacc-symptoms-demography__no-data-btn {
+    @include mix.noDetailCardContentLink;
+  }
+
+  .detail-card-vacc-symptoms-demography__chart-list {
+    display: grid;
+    grid-gap: 48px;
+  }
+
+  .detail-card-vacc-symptoms-demography__lr {
+    @include mix.cardFiltersMainLr;
+  }
+
+  .detail-card-vacc-symptoms-development__chart-intro {
+    @include mix.cardChartIntro;
+  }
+
+  .detail-card-vacc-symptoms-demography__filter {
+    @media (max-width: #{dim.$bp-max-sm}) {
+      width: 100%;
+    }
+  }
+
+  .detail-card-vacc-symptoms-demography__subtitle {
+    @include text.h3;
+    margin: 0 0 16px 0;
+  }
+
+  .detail-card-vacc-symptoms-demography__chart-meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .detail-card-vacc-symptoms-demography__relativity-filter--toggle {
+      display: none;
+    }
+  }
+}

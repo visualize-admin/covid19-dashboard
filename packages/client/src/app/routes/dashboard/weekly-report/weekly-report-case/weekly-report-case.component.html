@@ -1,0 +1,21 @@
+<h3>{{ 'WeeklyReport.Case.DetailTitle' | i18n }}</h3>
+<p class="detail__title-desc">{{ titleDesc$ | async }}</p>
+
+<div class="detail__cards">
+  <bag-weekly-report-card-epi-summary
+    *ngIf="summaryData$ | async as summaryData"
+    [data]="summaryData"
+  ></bag-weekly-report-card-epi-summary>
+
+  <bag-weekly-report-card-geography
+    *ngIf="geoData$ | async as geoData"
+    [cantonGeoJson]="chflGeoJson"
+    [grGeoJson]="chflGrGeoJson"
+    [data]="geoData"
+  ></bag-weekly-report-card-geography>
+
+  <bag-weekly-report-card-demography
+    *ngIf="demData$ | async as demData"
+    [data]="demData"
+  ></bag-weekly-report-card-demography>
+</div>

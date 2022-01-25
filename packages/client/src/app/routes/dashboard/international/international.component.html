@@ -1,0 +1,37 @@
+<div class="international">
+  <bag-select-title
+    #geoSelectTitle
+    [formControl]="geoFilterCtrl"
+    [optionGroups]="geoFilterGroups"
+    [useFullWidthShadow]="int.isIntersecting$ | async"
+    titleKey="International.Title"
+    resetFilterKey="International.ResetGeographyFilter"
+  ></bag-select-title>
+
+  <ng-template [bagMasterDetail]="menuItems$" [stickyHeaderEl]="geoSelectTitle.element" let-item>
+    <ng-container *ngIf="item.type === 'quarantine'">
+      <div
+        class="international__quarantine-menu"
+        [class.international__quarantine-menu--without]="!item.hasQuarantineRegions"
+        [class.international__quarantine-menu--with]="item.hasQuarantineRegions"
+      >
+        <ng-container *ngIf="isBrowser">
+          <sc-svg
+            class="international__quarantine-menu-icon"
+            [url]="item.hasQuarantineRegions ? '/assets/icon/ic_warning.svg' : '/assets/icon/ic_check-round.svg'"
+          ></sc-svg>
+          {{ item.info }}
+        </ng-container>
+        <ng-container *ngIf="!isBrowser">
+          <sc-svg class="international__quarantine-menu-icon"></sc-svg>&nbsp;
+        </ng-container>
+      </div>
+    </ng-container>
+    <ng-container *ngIf="item.type === 'case'">
+      <bag-histogram-menu-line *ngIf="item.histoData" [data]="item.histoData"></bag-histogram-menu-line>
+      <p class="international__menu-no-data" *ngIf="!item.histoData">{{ 'Commons.NoData' | i18n }}</p>
+    </ng-container>
+  </ng-template>
+
+  <div [bagIntersection]="{ offset: 0 }" #int="bagIntersection"></div>
+</div>

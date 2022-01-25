@@ -1,0 +1,42 @@
+@use 'src/styles/col';
+@use 'src/styles/layout';
+@use 'src/styles/dim';
+@use 'src/styles/var';
+@use 'src/styles/text';
+
+:host {
+  display: block;
+
+  .international {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--c-divider);
+    background: var(--c-bg-page);
+  }
+
+  .international__quarantine-menu {
+    display: inline-flex;
+    align-items: center;
+    @include text.paragraph2;
+  }
+  .international__quarantine-menu--with {
+    color: col.$warnings-list-severity-high;
+  }
+  .international__quarantine-menu--without {
+    color: col.$warnings-list-info;
+    .international__quarantine-menu-icon {
+      color: col.$warnings-list-severity-zero;
+    }
+  }
+  .international__quarantine-menu-icon {
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+  }
+
+  .international__menu-no-data {
+    @include text.paragraph2;
+    color: col.$warnings-list-info;
+  }
+}

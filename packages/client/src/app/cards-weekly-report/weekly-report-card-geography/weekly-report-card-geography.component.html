@@ -1,0 +1,101 @@
+<bag-detail-card
+  titleKey="WeeklyReport.Card.Geography.Title"
+  [infoKey]="keys.info"
+  [warnKey]="warnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: (data.curr.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [infoAddOnKey]="infoAddOnKey"
+>
+  <div class="weekly-report-card-geo">
+    <!-- Blue Info Box -->
+    <div class="weekly-report-card-geo__static-box" *ngIf="infoBoxData$ | async as infoBoxData">
+      <h5 class="weekly-report-card-geo__static-box-title">{{ 'GeoFilter.CHFL' | i18n }}</h5>
+      <table>
+        <thead>
+          <tr>
+            <!-- <th></th> -->
+            <th scope="col" colspan="2">{{ 'Commons.Inz100K.Abbr' | i18n }}</th>
+            <th scope="col">{{ keys.absTitle | i18n }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">
+              {{ 'WeeklyReport.Card.TotalUntil' | i18n: { date: infoBoxData.total.date | fmtDate } }}
+            </th>
+            <td>{{ infoBoxData.total.inz | adminNum: 2 }}</td>
+            <td>{{ infoBoxData.total.abs | adminNum }}</td>
+          </tr>
+          <tr>
+            <th scope="row">
+              {{
+                'WeeklyReport.WeekFrom'
+                  | i18n: { week: infoBoxData.prevWeek.date | fmtIsoWeek, date: infoBoxData.prevWeek.date | fmtDate }
+              }}
+            </th>
+            <td>{{ infoBoxData.prevWeek.inz | adminNum: 2 }}</td>
+            <td>{{ infoBoxData.prevWeek.abs | adminNum }}</td>
+          </tr>
+          <tr>
+            <th scope="row">
+              {{
+                'WeeklyReport.WeekFrom'
+                  | i18n: { week: infoBoxData.currWeek.date | fmtIsoWeek, date: infoBoxData.currWeek.date | fmtDate }
+              }}
+            </th>
+            <td>{{ infoBoxData.currWeek.inz | adminNum: 2 }}</td>
+            <td>{{ infoBoxData.currWeek.abs | adminNum }}</td>
+          </tr>
+          <tr>
+            <th scope="row">{{ 'WeeklyReport.Difference' | i18n }}</th>
+            <td>{{ infoBoxData.diff | adminNum: 1 }}%</td>
+            <td>{{ infoBoxData.diff | adminNum: 1 }}%</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-container *ngIf="currentValues$ | async as currentValues">
+      <p *ngIf="currentValues.noCantonData" class="weekly-report-card-geo__no-data">
+        {{ geoKeys.noCantonData | i18n }}
+      </p>
+
+      <ng-container *ngIf="!currentValues.noCantonData">
+        <!-- Filters -->
+        <div class="weekly-report-card-geo__lr">
+          <select
+            bag-select
+            name="regionsFilter"
+            [attr.aria-label]="'WeeklyReport.Card.RegionsFilter.Label' | i18n"
+            [formControl]="regionsFilterCtrl"
+          >
+            <ng-container *ngFor="let opt of regionsFilterOptions">
+              <option [ngValue]="opt.val" [attr.selected]="opt.val === regionsFilterCtrl.value ? '' : null">
+                {{ opt.key | i18n }}
+              </option>
+            </ng-container>
+          </select>
+
+          <bag-toggle-button-list
+            [formControl]="geoViewFilterCtrl"
+            [attr.aria-label]="'WeeklyReport.Card.Geography.ViewFilter.Label' | i18n"
+          >
+            <bag-toggle-button *ngFor="let opt of geoViewFilterOptions" [value]="opt.val">{{
+              opt.key | i18n
+            }}</bag-toggle-button>
+          </bag-toggle-button-list>
+        </div>
+
+        <!-- Content -->
+        <ng-container [ngSwitch]="currentValues.viewFilter">
+          <bag-weekly-report-geo-map *ngSwitchCase="WeeklyReportGeoViewFilter.MAP"></bag-weekly-report-geo-map>
+          <bag-weekly-report-geo-chart *ngSwitchCase="WeeklyReportGeoViewFilter.CHART"></bag-weekly-report-geo-chart>
+          <bag-weekly-report-geo-table *ngSwitchCase="WeeklyReportGeoViewFilter.TABLE"></bag-weekly-report-geo-table>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </div>
+</bag-detail-card>

@@ -1,0 +1,26 @@
+<div class="styleguide__card">
+  <h2>Heatmap Row</h2>
+
+  <div class="sg-heatmap-row__row">
+    <label for="sg-heatmap-row-start-date">StartDate:</label>
+    <select bag-select [formControl]="startDateCtrl" id="sg-heatmap-row-start-date">
+      <option *ngFor="let date of startDates" [ngValue]="date">{{ date | fmtDate }}</option>
+    </select>
+  </div>
+
+  <bag-range-slider
+    *ngIf="data$ | async as data"
+    [titleTxt]="data.selected.date | fmtDate"
+    [descTxt]="'Wert: ' + data.selected.color"
+    [min]="data.min"
+    [max]="data.max"
+    [formControl]="sliderCtrl"
+  >
+    <bag-heatmap-row [entries]="data.entries" [selectedIndex]="data.selectedIx"></bag-heatmap-row>
+  </bag-range-slider>
+
+  <div class="sg-heatmap-row__legend" *ngIf="startDate$ | async as startDate">
+    <span>{{ startDate | fmtDate }}</span>
+    <span>{{ endDate | fmtDate }}</span>
+  </div>
+</div>

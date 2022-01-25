@@ -1,0 +1,17 @@
+@use 'src/styles/text';
+
+:host {
+  display: block;
+
+  .epidemiologic {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--c-divider);
+    background: var(--c-bg-page);
+  }
+
+  .epidemiologic__menu-item-hint {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+}

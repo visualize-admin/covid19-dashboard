@@ -1,0 +1,26 @@
+<bag-overview-card
+  titleKey="OverviewCardTest.Title"
+  [sourceDate]="data.sourceDate | toDate"
+  [facet]="facet"
+  [moreLinkArgs]="moreLink"
+  [warnKey]="warningKey$ | async"
+>
+  <bag-overview-card-warning *bagOverviewCardWarning key="OverviewCardTest.HiddenWarning"></bag-overview-card-warning>
+
+  <p *bagOverviewCardInfo bagOverviewCardHint>{{ 'OverviewCardTest.InfoText.Top' | i18n }}</p>
+
+  <bag-key-value-list
+    *ngIf="keyValueList$ | async as keyValueList"
+    [data]="keyValueList"
+    [showInfo]="(overviewCard?.showInfo$ | async) || false"
+  ></bag-key-value-list>
+
+  <ng-container *ngIf="histogram$ | async as histogram">
+    <bag-chart-legend [itemGap]="16" class="card__legend" [justifyContentFlexEnd]="true">
+      <div bagChartLegendLine color="#183458" [length]="16" translate="Overview.Legend.Mean.Short"></div>
+    </bag-chart-legend>
+    <bag-histogram-preview [barColors]="barColors" [data]="histogram"></bag-histogram-preview>
+  </ng-container>
+
+  <p *bagOverviewCardInfo bagOverviewCardHint>{{ 'OverviewCardTest.InfoText.Bottom' | i18n }}</p>
+</bag-overview-card>

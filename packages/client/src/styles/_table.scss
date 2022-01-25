@@ -1,0 +1,75 @@
+@use 'src/styles/col';
+@use 'src/styles/var';
+@use 'src/styles/text';
+
+$defaultCellPadding: 4px 12px;
+$largeCellPadding: 12px 12px;
+$defaultRowGap: 4px;
+$largeRowGap: 16px;
+
+@mixin tableDefinition {
+  display: grid;
+  @include text.paragraph2;
+
+  thead,
+  tbody,
+  tr {
+    display: contents;
+  }
+
+  td,
+  th {
+    line-height: 20px;
+    padding: $defaultCellPadding;
+    color: col.$table-header-text;
+  }
+}
+
+@mixin rowTitleCell {
+  display: flex;
+  align-items: center;
+  text-align: left;
+  font-weight: var.$font-weight-bold;
+}
+
+@mixin valueWithBarCell {
+  text-align: left;
+  white-space: nowrap;
+  position: relative;
+  z-index: 0;
+
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: var(--w);
+    z-index: -1;
+  }
+}
+
+@mixin barCell0 {
+  &:before {
+    background-color: col.$compare-table-bar-0;
+  }
+}
+
+@mixin barCell1 {
+  &:before {
+    background-color: col.$compare-table-bar-1;
+  }
+}
+
+@mixin diffCell {
+  text-align: right;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  sc-svg {
+    width: 12px;
+    height: 12px;
+    margin-left: 8px;
+    color: col.$compare-table-bar-1;
+  }
+}

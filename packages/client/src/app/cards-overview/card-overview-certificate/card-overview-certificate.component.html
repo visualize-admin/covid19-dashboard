@@ -1,0 +1,36 @@
+<bag-overview-card
+  titleKey="OverviewCardCertificate.Title"
+  [sourceDate]="data.sourceDate | toDate"
+  sourceKey="Commons.Source.BIT"
+  [facet]="facet"
+  [warnKey]="warningKey$ | async"
+>
+  <div bagOverviewCardHint [translate]="'OverviewCardCertificate.CardHint'"></div>
+  <p
+    *bagOverviewCardInfo
+    class="g-content"
+    bagOverviewCardHint
+    [translate]="'OverviewCardCertificate.InfoText.Top'"
+  ></p>
+
+  <bag-key-value-list
+    *ngIf="keyValueList$ | async as keyValueList"
+    [data]="keyValueList"
+    [showInfo]="(overviewCard?.showInfo$ | async) || false"
+  ></bag-key-value-list>
+
+  <ng-container *ngIf="histogram$ | async as histogram">
+    <bag-histogram-preview-lines
+      [data]="histogram"
+      [colors]="previewLineColors"
+      [strokeWidths]="[2, 2, 2]"
+    ></bag-histogram-preview-lines>
+
+    <p
+      *bagOverviewCardInfo
+      class="g-content"
+      bagOverviewCardHint
+      [translate]="'OverviewCardCertificate.InfoText.Bottom'"
+    ></p>
+  </ng-container>
+</bag-overview-card>

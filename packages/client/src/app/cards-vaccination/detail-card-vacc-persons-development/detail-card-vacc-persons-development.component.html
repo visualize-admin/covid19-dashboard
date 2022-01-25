@@ -1,0 +1,135 @@
+<bag-detail-card
+  titleKey="Vaccination.Card.Development.Title"
+  [infoKey]="keys.info"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="sources"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [hideInfo]="hideInfo"
+>
+  <div class="detail-card-vacc-persons-development" *ngIf="hasData$ | async as hasData">
+    <div class="detail-card-vacc-persons-development__lr">
+      <!-- cumulative filter -->
+      <select
+        bag-select
+        [attr.aria-label]="'Vaccination.CumulativeFilter.Development.Label' | i18n"
+        name="detailCumulativeFilter"
+        [formControl]="cumulativeFilterCtrl"
+      >
+        <ng-container *ngFor="let opt of cumulativeFilterOptions">
+          <option [ngValue]="opt.val" [attr.selected]="opt.val === cumulativeFilterCtrl.value ? '' : null">
+            {{ opt.key | i18n }}
+          </option>
+        </ng-container>
+      </select>
+      <!-- relativity filter -->
+      <bag-toggle-button-list
+        class="detail-card-vacc-persons-development__relativity-filter--toggle"
+        [attr.aria-label]="'RelAbsFilter.Label' | i18n"
+        name="detailRelativityFilter"
+        [formControl]="vaccPersonsRelativityFilterCtrl"
+      >
+        <ng-container *ngFor="let opt of vaccPersonsRelativityFilterOptions">
+          <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+        </ng-container>
+      </bag-toggle-button-list>
+      <select
+        bag-select
+        class="detail-card-vacc-persons-development__relativity-filter--select"
+        [attr.aria-label]="'RelAbsFilter.Label' | i18n"
+        name="detailRelativityFilter"
+        [formControl]="vaccPersonsRelativityFilterCtrl"
+      >
+        <ng-container *ngFor="let opt of vaccPersonsRelativityFilterOptions">
+          <option [ngValue]="opt.val" [attr.selected]="opt.val === vaccPersonsRelativityFilterCtrl.value ? '' : null">
+            {{ opt.key | i18n }}
+          </option>
+        </ng-container>
+      </select>
+    </div>
+    <ng-container *ngIf="cumulativeData$ | async as cumulData">
+      <bag-chart-legend class="detail-card-vacc-persons-development__chart-intro" [itemGap]="24">
+        <ng-container *ngFor="let entry of cumulData.legendPairs">
+          <div bagChartLegendSquare [pattern]="entry[2]" [color]="entry[0]">{{ entry[1] | i18n }}</div>
+        </ng-container>
+      </bag-chart-legend>
+
+      <p class="detail-card-vacc-persons-development__meta">
+        {{ cumulData.isInz ? (keys.metaInz | i18n) : (keys.metaAbs | i18n) }}
+      </p>
+
+      <bag-histogram-area
+        [data]="cumulData.data"
+        [colors]="cumulData.colors"
+        [yLabelFormatter]="cumulData.isInz ? yLabelFmt : undefined"
+        [focusPosYCenter]="true"
+        [disableNoDataBlocks]="true"
+        [lineColors]="['#FFF', 'transparent', 'transparent']"
+        [strokeWidths]="[1, 0, 0]"
+        [showLines]="true"
+        [hideFocusDots]="true"
+        (elFocus)="showAreaTooltip($event, cumulData.isInz)"
+        (diagramLeave)="hideTooltip()"
+      ></bag-histogram-area>
+    </ng-container>
+
+    <ng-container *ngIf="dailyData$ | async as dailyData">
+      <bag-chart-legend class="detail-card-vacc-persons-development__chart-intro" [itemGap]="24">
+        <div bagChartLegendMeanLines>
+          <div bagChartLegendMeanLine [color]="colorFirstDose"></div>
+          <div bagChartLegendMeanLine [color]="colorFullyVacced"></div>
+          <div bagChartLegendMeanLine [color]="colorBooster"></div>
+          <div>
+            {{ 'Vaccination.Card.Development.Legend.Mean' | i18n }}
+          </div>
+        </div>
+        <div bagChartLegendSquare [color]="colorFirstDose">{{ 'Vaccination.Card.VaccPersons.First' | i18n }}</div>
+        <div bagChartLegendSquare [color]="colorFullyVacced">{{ 'Vaccination.Card.VaccPersons.Full' | i18n }}</div>
+        <div bagChartLegendSquare [color]="colorBooster">{{ 'Vaccination.Card.VaccPersons.Booster' | i18n }}</div>
+      </bag-chart-legend>
+
+      <p class="detail-card-vacc-persons-development__meta">
+        {{ dailyData.isInz ? (keys.metaInz | i18n) : (keys.metaAbs | i18n) }}
+      </p>
+
+      <bag-histogram-detail
+        [data]="dailyData.data"
+        [yLabelFormatter]="dailyData.isInz ? yLabelFmt : undefined"
+        (elFocus)="showDailyChartTooltip($event, dailyData.isInz)"
+        (diagramLeave)="hideTooltip()"
+        [barColors]="[colorBooster, colorFullyVacced, colorFirstDose]"
+        [lineColors]="[colorBooster, colorFullyVacced, colorFirstDose]"
+        [barOpacity]="0.5"
+        [lineThickness]="[2, 2, 2]"
+      ></bag-histogram-detail>
+    </ng-container>
+
+    <ng-container *ngIf="meanData$ | async as meanData">
+      <bag-chart-legend class="detail-card-vacc-persons-development__chart-intro" [itemGap]="24">
+        <div bagChartLegendGroup>
+          <span>{{ 'Vaccination.CumulativeFilter.Development.Mean' | i18n }}:</span>
+          <div bagChartLegendSquare [color]="colorFirstDose">{{ 'Vaccination.Card.VaccPersons.First' | i18n }}</div>
+          <div bagChartLegendSquare [color]="colorFullyVacced">{{ 'Vaccination.Card.VaccPersons.Full' | i18n }}</div>
+          <div bagChartLegendSquare [color]="colorBooster">{{ 'Vaccination.Card.VaccPersons.Booster' | i18n }}</div>
+        </div>
+      </bag-chart-legend>
+
+      <p class="detail-card-vacc-persons-development__meta">
+        {{ meanData.isInz ? (keys.metaInz | i18n) : (keys.metaAbs | i18n) }}
+      </p>
+
+      <bag-histogram-line
+        [data]="meanData.data"
+        [yLabelFormatter]="meanData.isInz ? yLabelFmt : undefined"
+        [focusPosYCenter]="true"
+        [strokeWidths]="[4, 4, 4]"
+        [disableNoDataBlocks]="true"
+        [colors]="[colorFullyVacced, colorFirstDose, colorBooster]"
+        (elFocus)="showMeanTooltip($event, meanData.isInz)"
+        (diagramLeave)="hideTooltip()"
+      ></bag-histogram-line>
+    </ng-container>
+  </div>
+</bag-detail-card>

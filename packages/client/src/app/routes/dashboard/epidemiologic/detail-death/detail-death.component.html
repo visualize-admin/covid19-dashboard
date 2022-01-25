@@ -1,0 +1,15 @@
+<h3>{{ 'DetailDeath.Title' | i18n }}</h3>
+<p [translate]="'DetailDeath.Intro'"></p>
+
+<bag-detail-filter></bag-detail-filter>
+
+<div class="detail__cards" *ngIf="data$ | async as data">
+  <bag-detail-card-epidemiologic-geography
+    [data]="data.geography"
+    [geoJson]="chflGeoJson"
+  ></bag-detail-card-epidemiologic-geography>
+
+  <bag-detail-card-epidemiologic-development [data]="data.development"></bag-detail-card-epidemiologic-development>
+
+  <bag-detail-card-epidemiologic-demography [data]="data.demography"></bag-detail-card-epidemiologic-demography>
+</div>

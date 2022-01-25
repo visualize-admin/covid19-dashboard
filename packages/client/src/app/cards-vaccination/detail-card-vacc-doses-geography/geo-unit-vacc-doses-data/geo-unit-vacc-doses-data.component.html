@@ -1,0 +1,47 @@
+<div class="geo-unit-vacc-doses-data" [class.geo-unit-vacc-doses-data--tooltip]="isTooltip">
+  <h5 class="geo-unit-vacc-doses-data__title">{{ title }}</h5>
+  <table class="geo-unit-vacc-doses-data__table">
+    <thead>
+      <tr>
+        <th colspan="2">{{ 'Commons.Per100Inhabitants' | i18n }}</th>
+        <th>{{ 'Commons.AbsoluteNumbers' | i18n }}</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr [class.geo-unit-vacc-doses-data__row--lowlight]="lowlight">
+        <th>{{ 'Vaccination.Card.DosesContingent' | i18n }}</th>
+        <td>{{ data.VaccDosesContingent.inzTotal | adminNum: 2 }}</td>
+        <td>{{ data.VaccDosesContingent.total | adminNum }}</td>
+      </tr>
+      <tr [class.geo-unit-vacc-doses-data__row--lowlight]="lowlight">
+        <th>{{ 'Vaccination.Card.DosesDelivered' | i18n }}</th>
+        <td>{{ data.VaccDosesDeliv.inzTotal | adminNum: 2 }}</td>
+        <td>{{ data.VaccDosesDeliv.total | adminNum }}</td>
+      </tr>
+      <tr>
+        <th>{{ 'Vaccination.Card.DosesAdministered' | i18n }}</th>
+        <td>{{ data.VaccDosesAdmin.inzTotal | adminNum: 2 }}</td>
+        <td>{{ data.VaccDosesAdmin.total | adminNum }}</td>
+      </tr>
+      <ng-container *ngIf="additionalData">
+        <tr class="geo-unit-vacc-doses-data__divider">
+          <th colspan="3"></th>
+        </tr>
+        <tr class="geo-unit-vacc-doses-data__additional">
+          <th colspan="3">{{ 'Vaccination.VaccDoses.Card.Geography.Army' | i18n }}</th>
+        </tr>
+        <tr>
+          <th>{{ 'Vaccination.Card.DosesDelivered' | i18n }}</th>
+          <td>{{ additionalData.VaccDosesDeliv.inzTotal | adminNum: 2 }}</td>
+          <td>{{ additionalData.VaccDosesDeliv.total | adminNum }}</td>
+        </tr>
+        <tr>
+          <th>{{ 'Vaccination.Card.DosesAdministered' | i18n }}</th>
+          <td>{{ additionalData.VaccDosesAdmin.inzTotal | adminNum: 2 }}</td>
+          <td>{{ additionalData.VaccDosesAdmin.total | adminNum }}</td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

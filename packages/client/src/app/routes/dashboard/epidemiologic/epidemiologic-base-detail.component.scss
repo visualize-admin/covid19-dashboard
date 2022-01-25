@@ -1,0 +1,16 @@
+@use 'src/styles/text';
+@use 'src/styles/dim';
+
+:host {
+  & > bag-detail-filter {
+    margin-bottom: var(--d-page-side-gap);
+  }
+
+  @media (min-height: #{dim.$bp-min-height-sticky}) {
+    & > bag-detail-filter {
+      position: sticky;
+      z-index: 2;
+      top: calc(var(--d-sticky-detail-filter-height) + var(--d-page-side-gap));
+    }
+  }
+}

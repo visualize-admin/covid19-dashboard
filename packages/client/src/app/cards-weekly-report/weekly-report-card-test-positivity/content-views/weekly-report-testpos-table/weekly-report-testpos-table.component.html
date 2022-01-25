@@ -1,0 +1,90 @@
+<bag-chart-legend class="bag-weekly-report-testpos-table__legend" [itemGap]="16">
+  <div bagChartLegendSquare [color]="colors[0]" translate="Commons.Tests.PCR"></div>
+  <div bagChartLegendSquare [color]="colors[1]" translate="Commons.Tests.Antigen"></div>
+</bag-chart-legend>
+
+<ng-template #noDataTxtTpl>{{ 'Commons.NoData.Abbr' | i18n }}</ng-template>
+
+<ng-container *ngIf="tableData$ | async as tableData">
+  <table class="weekly-report-testpos-table__table">
+    <thead>
+      <tr class="weekly-report-testpos-table__table-header-row">
+        <td></td>
+        <th>
+          {{
+            'WeeklyReport.WeekFrom'
+              | i18n
+                : {
+                    week: tableData.prevWeekDate | fmtIsoWeek,
+                    date: tableData.prevWeekDate | fmtDate
+                  }
+          }}
+        </th>
+        <th>
+          {{
+            'WeeklyReport.WeekFrom'
+              | i18n
+                : {
+                    week: tableData.currWeekDate | fmtIsoWeek,
+                    date: tableData.currWeekDate | fmtDate
+                  }
+          }}
+        </th>
+        <th>{{ 'WeeklyReport.Difference' | i18n }} (pp)</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let entry of tableData.entries; let ix = index">
+        <tr
+          class="weekly-report-testpos-table__table-row weekly-report-testpos-table__table-row--1"
+          [class.weekly-report-testpos-table__table-row--top-gap]="ix === 3"
+          [class.weekly-report-testpos-table__table-row--large]="ix === 0"
+          *ngIf="entry.row1 as row"
+        >
+          <th class="weekly-report-testpos-table__table-title-cell" rowspan="2" scope="rowgroup">{{ entry.label }}</th>
+
+          <th class="weekly-report-testpos-table__table-hidden-cell" scope="row">PCR</th>
+          <td class="weekly-report-testpos-table__table-val-cell" [style.--w.%]="row.w1">
+            <ng-container *ngIf="row.val1 | isDefined; else noDataTxtTpl">
+              {{ row.val1 | adminNum: 1:'%' }}
+            </ng-container>
+          </td>
+          <td class="weekly-report-testpos-table__table-val-cell" [style.--w.%]="row.w2">
+            <ng-container *ngIf="row.val2 | isDefined; else noDataTxtTpl">
+              {{ row.val2 | adminNum: 1:'%' }}
+            </ng-container>
+          </td>
+          <td class="weekly-report-testpos-table__table-diff-cell">
+            <span>{{ row.diff && row.diff > 0 ? '+' : '' }}{{ row.diff | adminNum: 1 }}</span>
+            <!--            <sc-svg *ngIf="row.diffIcon === 'incr'" url="/assets/icon/ic_change-incr.svg"></sc-svg>-->
+            <!--            <sc-svg *ngIf="row.diffIcon === 'same'" url="/assets/icon/ic_change-same.svg"></sc-svg>-->
+            <!--            <sc-svg *ngIf="row.diffIcon === 'decr'" url="/assets/icon/ic_change-decr.svg"></sc-svg>-->
+          </td>
+        </tr>
+        <tr
+          class="weekly-report-testpos-table__table-row weekly-report-testpos-table__table-row--2"
+          [class.weekly-report-testpos-table__table-row--large]="ix === 0"
+          *ngIf="entry.row2 as row"
+        >
+          <th class="weekly-report-testpos-table__table-hidden-cell" scope="row">ANTIGEN</th>
+          <td class="weekly-report-testpos-table__table-val-cell" [style.--w.%]="row.w1">
+            <ng-container *ngIf="row.val1 | isDefined; else noDataTxtTpl">
+              {{ row.val1 | adminNum: 1:'%' }}
+            </ng-container>
+          </td>
+          <td class="weekly-report-testpos-table__table-val-cell" [style.--w.%]="row.w2">
+            <ng-container *ngIf="row.val2 | isDefined; else noDataTxtTpl">
+              {{ row.val2 | adminNum: 1:'%' }}
+            </ng-container>
+          </td>
+          <td class="weekly-report-testpos-table__table-diff-cell">
+            <span>{{ row.diff && row.diff > 0 ? '+' : '' }}{{ row.diff | adminNum: 1 }}</span>
+            <!--            <sc-svg *ngIf="row.diffIcon === 'incr'" url="/assets/icon/ic_change-incr.svg"></sc-svg>-->
+            <!--            <sc-svg *ngIf="row.diffIcon === 'same'" url="/assets/icon/ic_change-same.svg"></sc-svg>-->
+            <!--            <sc-svg *ngIf="row.diffIcon === 'decr'" url="/assets/icon/ic_change-decr.svg"></sc-svg>-->
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</ng-container>

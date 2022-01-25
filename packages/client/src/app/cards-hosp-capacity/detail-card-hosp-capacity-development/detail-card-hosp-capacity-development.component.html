@@ -1,0 +1,99 @@
+<bag-detail-card
+  titleKey="HospCapacity.Card.Development.Title"
+  [sources]="[{ sourceKey: 'Commons.Source.KSD', date: (data.sourceDate | toDate) }]"
+  [infoKey]="infoKey"
+  [infoAddOnKey]="infoAddOnKey"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [hideInfo]="hideInfo"
+>
+  <div class="detail-card-capacity-development">
+    <div class="detail-card-capacity-development__lr">
+      <select
+        bag-select
+        name="TimeFilter"
+        [attr.aria-label]="'TimeSlotFilter.Label' | i18n"
+        [formControl]="timeSlotFilerCtrl"
+      >
+        <ng-container *ngFor="let opt of timeSlotFilterOptions">
+          <option [ngValue]="opt.val" [attr.selected]="opt.val === timeSlotFilerCtrl.value ? '' : null">
+            {{ opt.key | i18n }}
+          </option>
+        </ng-container>
+      </select>
+      <bag-toggle-button-list
+        class="detail-card-capacity-development__filter-buttons"
+        [formControl]="relAbsFilterCtrl"
+        [attr.aria-label]="'RelAbsFilter.Label' | i18n"
+      >
+        <bag-toggle-button *ngFor="let opt of relAbsFilterOptions" [value]="opt.val">{{
+          opt.key | i18n
+        }}</bag-toggle-button>
+      </bag-toggle-button-list>
+      <select
+        class="detail-card-capacity-development__filter-select"
+        bag-select
+        name="RelAbsFilter"
+        [attr.aria-label]="'RelAbsFilter.Label' | i18n"
+        [formControl]="relAbsFilterCtrl"
+      >
+        <ng-container *ngFor="let opt of relAbsFilterOptions">
+          <option [ngValue]="opt.val" [attr.selected]="opt.val === timeSlotFilerCtrl.value ? '' : null">
+            {{ opt.key | i18n }}
+          </option>
+        </ng-container>
+      </select>
+    </div>
+
+    <ng-container *ngIf="noHospKey$ | async as noHospKey">
+      <p class="detail-card-capacity-development__no-hosp">{{ noHospKey | i18n }}</p>
+    </ng-container>
+
+    <ng-container *ngIf="diagramData$ | async as histo">
+      <div class="detail-card-capacity-development__legend">
+        <bag-chart-legend [itemGap]="16">
+          <!-- only show 15-day legend if absolute graph -->
+          <ng-container *ngIf="!histo.isRelative">
+            <div bagChartLegendMeanLines tooltipKey="HospCapacity.Card.Mean15Days.InfoText">
+              <div *ngFor="let pair of legendSquarePairs" bagChartLegendMeanLine [color]="pair[0]"></div>
+              <div>
+                {{ 'HospCapacity.Card.Mean15Days.Label' | i18n }}
+              </div>
+            </div>
+          </ng-container>
+          <div
+            *ngFor="let pair of legendSquarePairs"
+            bagChartLegendSquare
+            [color]="pair[0]"
+            [translate]="pair[1]"
+          ></div>
+          <div
+            *ngIf="histo.hasNotExistingItem"
+            bagChartLegendSquare
+            [length]="32"
+            [color]="noCaseColor"
+            [translate]="noneAbbrKey"
+          ></div>
+          <div *ngIf="histo.hasNoData" bagChartLegendSquare noData [length]="32" translate="Commons.NoData"></div>
+        </bag-chart-legend>
+      </div>
+      <p class="detail-card-capacity-development__meta">
+        {{ 'HospCapacity.Card.Development.DiagramTitle' | i18n }}
+      </p>
+
+      <bag-histogram-detail
+        [data]="histo.entries"
+        [domainMax]="histo.isRelative ? 100 : undefined"
+        [yLabelFormatter]="histo.isRelative ? percentageFmt : undefined"
+        [barColors]="barColors"
+        [lineColors]="lineColors"
+        [lineThickness]="[2, 2, 2]"
+        [barOpacity]="0.5"
+        (elFocus)="showTooltip($event, histo.isRelative)"
+        (diagramLeave)="hideTooltip()"
+      ></bag-histogram-detail>
+    </ng-container>
+  </div>
+</bag-detail-card>

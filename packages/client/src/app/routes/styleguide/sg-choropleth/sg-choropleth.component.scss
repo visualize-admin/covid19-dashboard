@@ -1,0 +1,64 @@
+@use 'src/styles/text';
+@use 'src/styles/col';
+
+:host {
+  display: block;
+  background-color: white;
+
+  .geo-map-container {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    max-width: 800px;
+
+    bag-paginator {
+      margin-bottom: 24px;
+      align-self: center;
+    }
+
+    bag-choropleth-canvas {
+      margin-bottom: 24px;
+    }
+  }
+
+  .geo-map-legend {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 24px;
+    align-self: flex-end;
+  }
+
+  .geo-map-legend-title {
+    @include text.meta();
+    color: var(--c-fg-meta);
+  }
+
+  h2 {
+    @include text.h1;
+  }
+}
+
+.detail-card-geography-tooltip {
+  display: flex;
+  flex-direction: column;
+  white-space: nowrap;
+}
+.detail-card-geography-tooltip__title {
+  @include text.boxTitle;
+}
+.detail-card-geography-tooltip__value,
+.detail-card-geography-tooltip__period {
+  grid-column-end: span 2;
+  @include text.paragraph2;
+  color: var(--c-fg-tooltip-value);
+}
+.detail-card-geography-tooltip__period {
+  color: var(--c-fg-tooltip-header);
+}
+
+.test-histogram {
+  height: 50px;
+  width: 100%;
+  background-image: linear-gradient(180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 1)), url('/assets/icon/ic_sc.svg');
+  background-attachment: fixed;
+}

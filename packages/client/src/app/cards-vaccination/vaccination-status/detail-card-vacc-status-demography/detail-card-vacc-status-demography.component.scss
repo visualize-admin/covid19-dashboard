@@ -1,0 +1,55 @@
+@use 'src/styles/text';
+@use 'src/styles/mix';
+@use 'src/styles/dim';
+
+bag-detail-card-vacc-status-demography {
+  display: block;
+
+  .detail-card-vacc-status-demography {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-card-vacc-status-demography__lr {
+    justify-content: normal !important;
+    @include mix.cardFiltersMainLr;
+  }
+
+  .detail-card-vacc-status-demography__no-data {
+    @include mix.noDetailCardContent;
+  }
+
+  .detail-card-vacc-status-demography__no-data-btn {
+    @include mix.noDetailCardContentLink;
+  }
+
+  .detail-card-vacc-status-demography__title {
+    @include text.h3;
+    margin: 0 0 16px 0;
+  }
+
+  .detail-card-vacc-status-demography__age-filter {
+    margin-right: auto;
+  }
+
+  .detail-card-vacc-status-demography__chart-intro {
+    @include mix.cardChartIntro;
+  }
+
+  .detail-card-vacc-status-demography__chart-meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .detail-card-vacc-status-demography__relativity-filter--toggle {
+      display: none;
+    }
+  }
+
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .detail-card-vacc-status-demography__relativity-filter--select[bag-select] {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,103 @@
+@use 'src/styles/var';
+@use 'src/styles/col';
+@use 'src/styles/text';
+
+bag-inz14d-sum-legend {
+  display: block;
+
+  .inz14d-sum-legend {
+    padding-bottom: 18px;
+    @include text.meta;
+    line-height: 1;
+  }
+
+  .inz14d-sum-legend__title {
+    color: var(--c-fg-meta);
+    margin-bottom: 4px;
+  }
+
+  .inz14d-sum-legend__row {
+    display: flex;
+  }
+
+  .inz14d-sum-legend__gradient {
+    display: flex;
+  }
+  .inz14d-sum-legend__gradient-part {
+    height: 8px;
+    position: relative;
+    &:before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      bottom: -4px;
+      border-left: 1px solid #000;
+    }
+
+    &:nth-child(1) {
+      width: 30px;
+      background-color: col.$datavis-range-1;
+    }
+
+    &:nth-child(2) {
+      width: 30px;
+      background-color: col.$datavis-range-2;
+    }
+
+    &:nth-child(3) {
+      width: 60px;
+      background-color: col.$datavis-range-3;
+    }
+
+    &:nth-child(4) {
+      width: 24px;
+      margin-right: 4px;
+      background-color: col.$datavis-range-4;
+      &:after {
+        content: '';
+        display: block;
+        position: absolute;
+        border: {
+          width: 4px;
+          style: solid;
+          color: transparent transparent transparent col.$datavis-range-4;
+        }
+        width: 4px;
+        height: 4px;
+        left: 100%;
+      }
+    }
+  }
+  .inz14d-sum-legend__gradient-lbl {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    padding-top: 4px;
+    transform: translateX(calc(-50% + 1px));
+  }
+
+  .inz14d-sum-legend__entry {
+    display: flex;
+    flex-direction: column;
+    margin-left: 8px;
+    position: relative;
+    &:before {
+      content: '';
+      display: block;
+      width: 24px;
+      height: 8px;
+    }
+  }
+  .inz14d-sum-legend__entry-lbl {
+    padding-top: 4px;
+    margin-top: -16px;
+    transform: translateY(100%);
+  }
+  .inz14d-sum-legend__entry--no-case:before {
+    background: col.$datavis-no-case;
+  }
+  .inz14d-sum-legend__entry--no-data:before {
+    background: var.$no-data-background;
+  }
+}

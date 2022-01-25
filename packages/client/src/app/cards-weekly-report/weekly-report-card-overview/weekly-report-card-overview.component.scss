@@ -1,0 +1,112 @@
+@use 'src/styles/col';
+@use 'src/styles/dim';
+@use 'src/styles/var';
+@use 'src/styles/text';
+@use 'src/styles/layout';
+
+bag-weekly-report-card-overview {
+  display: block;
+
+  .weekly-report-card-overview__lr {
+    @include layout.leftRight(-8px);
+  }
+
+  .weekly-report-card-overview__view {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .weekly-report-card-overview__table {
+    --column-gap: 2px;
+    --row-gap: 4px;
+
+    display: grid;
+    grid-template-columns: auto repeat(3, minmax(min-content, 1fr)) min-content;
+    grid-gap: var(--row-gap) var(--column-gap);
+    @include text.paragraph2;
+
+    thead,
+    tbody,
+    tr {
+      display: contents;
+    }
+
+    thead {
+      th {
+        font-weight: var.$font-weight-normal;
+        text-align: right;
+      }
+    }
+
+    tbody {
+      th {
+        text-align: left;
+      }
+
+      td {
+        text-align: right;
+        white-space: nowrap;
+      }
+
+      td,
+      th {
+        background-color: col.$overview-table-bg;
+        font-weight: var.$font-weight-bold;
+      }
+    }
+
+    td,
+    th {
+      padding: 12px 16px;
+    }
+  }
+
+  .weekly-report-card-overview__secondary-row {
+    td,
+    th {
+      color: col.$overview-table-col-light;
+      font-weight: var.$font-weight-normal !important;
+      margin-top: calc(var(--row-gap) * -1);
+      padding-top: 0;
+    }
+  }
+
+  .weekly-report-card-overview__row-no-bottom-padding {
+    td,
+    th {
+      padding-bottom: 0;
+    }
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .weekly-report-card-overview__table {
+      --column-gap: 2px;
+      --row-gap: 0;
+
+      grid-template-columns: repeat(3, minmax(1px, 1fr)) max-content;
+
+      td,
+      th {
+        padding: 6px 6px;
+      }
+
+      thead th {
+        @include text.meta;
+      }
+
+      thead td {
+        display: none;
+      }
+
+      tbody th {
+        grid-column: 1 / span 4;
+        background-color: transparent;
+        margin-top: 4px;
+      }
+
+      tbody td {
+        @include text.meta;
+      }
+    }
+  }
+}

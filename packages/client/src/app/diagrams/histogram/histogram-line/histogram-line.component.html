@@ -1,0 +1,10 @@
+<div class="histogram-line__title" *ngIf="titleKey">{{ titleKey | i18n }}</div>
+<!-- dimension from prototype -->
+<bag-d3-svg
+  class="histogram-line"
+  [minHeight]="svgMinHeight"
+  [maxHeight]="svgMaxHeight"
+  [ratio]="svgRatio"
+></bag-d3-svg>
+
+<div *ngIf="showNoData" class="histogram-line__no-data-overlay">{{ showNoDataKey | i18n }}</div>

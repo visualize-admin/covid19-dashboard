@@ -1,0 +1,15 @@
+<div class="single-select">
+  <div class="single-select__label" aria-hidden="true">
+    <span>{{ valueLabelKey | i18n }}</span>
+    <!--  those labels are used to correctly size the container  -->
+    <span *ngFor="let opt of options">{{ opt.key | i18n }}</span>
+  </div>
+
+  <sc-svg class="single-select__icon" url="/assets/icon/ic_chevron_down.svg"></sc-svg>
+
+  <select class="single-select__select" [attr.aria-label]="labelKey | i18n" (change)="onSelectValueChanged($event)">
+    <ng-container *ngFor="let opt of options; let ix = index">
+      <option [attr.value]="ix" [attr.selected]="opt.val === value ? 'selected' : null">{{ opt.key | i18n }}</option>
+    </ng-container>
+  </select>
+</div>

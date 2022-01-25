@@ -1,0 +1,27 @@
+@use 'src/styles/col';
+@use 'src/styles/text';
+@use 'src/styles/var';
+@use 'src/styles/layout';
+
+bag-weekly-report-testpos-chart {
+  display: flex;
+  flex-direction: column;
+
+  .weekly-report-testpos-chart__legend {
+    align-self: flex-end;
+    margin-bottom: 8px;
+  }
+  .weekly-report-testpos-chart__chart-title {
+    @include text.paragraph1;
+    font-weight: var.$font-weight-bold;
+    margin: 16px 0 8px 0;
+
+    &.weekly-report-testpos-chart__chart-title--secondary {
+      margin-top: 40px;
+    }
+  }
+  .weekly-report-testpos-chart__meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+}

@@ -1,0 +1,153 @@
+<bag-detail-card
+  [titleKey]="titleKey"
+  [infoKey]="hideInfo ? null : infoKey"
+  [infoAddOnKey]="hideInfo ? null : infoAddOnKey"
+  [warnKey]="hideInfo ? null : warnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: data.sourceDate | toDate }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+>
+  <div class="detail-card-geography__filter-lr" *ngIf="facet !== 'print' && !hideInfo">
+    <bag-toggle-button-list [formControl]="geoViewFilterCtrl" [attr.aria-label]="'GeoViewFilter.Label' | i18n">
+      <ng-container *ngFor="let opt of geoViewFilterOptions">
+        <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+      </ng-container>
+    </bag-toggle-button-list>
+  </div>
+  <ng-container *ngIf="geoMapData$ | async as data">
+    <div class="detail-card-geography__lr">
+      <ng-container *ngIf="selectedUnitData$ | async as selectedData">
+        <div class="detail-card-geography__selected-unit">
+          <h5 class="detail-card-geography__selected-unit-title">{{ selectedData.title }}</h5>
+          <p *ngIf="selectedData.noData" translate="Commons.NoData"></p>
+          <dl *ngIf="!selectedData.noData" class="detail-card-geography__selected-unit-values">
+            <dt>{{ selectedData.value[0] }}</dt>
+            <dd>{{ selectedData.value[1] }}</dd>
+            <ng-container *ngFor="let addVal of selectedData.additionalValues">
+              <dt>{{ addVal[0] }}</dt>
+              <dd>{{ addVal[1] }}</dd>
+            </ng-container>
+          </dl>
+        </div>
+      </ng-container>
+      <bag-color-legend
+        [min]="data.min"
+        [max]="data.max"
+        [titleKey]="data.isInz ? metaInzKey : metaAbsKey"
+        [noCasesKey]="legendZeroKey"
+        [noDataKey]="data.hasNoData ? 'Commons.NoData' : undefined"
+        [scaleColors]="scaleColors"
+      ></bag-color-legend>
+    </div>
+    <bag-choropleth
+      [facet]="facet"
+      [extendedFeatureCollection]="data.featureCollection"
+      [fillFn]="data.fillFn"
+      [selectedGeoUnit]="data.geoUnit"
+      (elMouseEnter)="showTooltip($event)"
+      (diagramMouseLeave)="hideTooltip()"
+    ></bag-choropleth>
+  </ng-container>
+
+  <ng-container *ngIf="geoTableData$ | async as geoTableData">
+    <table class="detail-card-geography-table" [class.detail-card-geography-table--tests]="geoTableData.isTest">
+      <thead>
+        <tr class="detail-card-geography-table__h1">
+          <td><!-- row title col --></td>
+          <th colspan="2" scope="colgroup">{{ topicKey | i18n }}</th>
+          <th *ngIf="geoTableData.isTest" colspan="2" scope="colgroup">{{ 'Commons.PositivityRate' | i18n }}</th>
+        </tr>
+        <tr class="detail-card-geography-table__h2">
+          <td><!-- row title col --></td>
+          <th class="detail-card-geography-table__h2-bar" scope="col">{{ 'Commons.Inz100K.Abbr' | i18n }}</th>
+          <th class="detail-card-geography-table__h2-val" scope="col">{{ 'Commons.Absolute' | i18n }}</th>
+          <ng-container *ngIf="geoTableData.isTest">
+            <th class="detail-card-geography-table__h2-bar" scope="col">
+              {{ 'Commons.Tests.PCR' | i18n }}
+            </th>
+            <th class="detail-card-geography-table__h2-val detail-card-geography-table__th-antigen" scope="col">
+              {{ 'Commons.Tests.Antigen' | i18n }}
+            </th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of geoTableData.rows; trackBy: identifyRowItem; let ix = index">
+          <tr
+            [style.--row]="ix + 1"
+            class="detail-card-geography-table__row"
+            [class.detail-card-geography-table__row--large-padding]="ix === 0"
+            [class.detail-card-geography-table__row--large-gap]="ix === 2"
+          >
+            <td
+              class="detail-card-geography-table__overlay"
+              [class.detail-card-geography-table__overlay--selected]="row.isSelected"
+            >
+              <!-- todo: make link accessible -->
+              <a
+                class="detail-card-geography-table__overlay-link"
+                (click)="scrollToDevelopmentCard(row.isSelected)"
+                [routerLink]="['.']"
+                [queryParams]="row.queryParams"
+                queryParamsHandling="merge"
+              ></a>
+            </td>
+            <th class="detail-card-geography-table__title-cell" scope="row">{{ row.key | i18n }}</th>
+            <td class="detail-card-geography-table__bar-cell" [style.--w.%]="row.set.barVal">
+              {{ row.set.rel | adminNum: 2 }}
+            </td>
+            <td class="detail-card-geography-table__val-cell" [style.--w.%]="row.set.bar2Val">
+              {{ row.set.abs | adminNum }}
+            </td>
+            <ng-container *ngIf="geoTableData.isTest && row.setTestPositivity">
+              <td
+                class="detail-card-geography-table__bar-cell detail-card-geography-table__bar-cell--secondary"
+                [style.--w.%]="row.setTestPositivity.pcr"
+              >
+                {{ row.setTestPositivity.pcr | adminNum: '%' }}
+              </td>
+              <td
+                class="detail-card-geography-table__val-cell detail-card-geography-table__val-cell--secondary"
+                [style.--w.%]="row.setTestPositivity.antigen"
+              >
+                {{ row.setTestPositivity.antigen | adminNum: '%' }}
+              </td>
+            </ng-container>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </ng-container>
+
+  <!-- only for CASES we show the additional geo units link  -->
+  <ng-container *ngIf="showAdditionalGeoUnitsBox && facet !== 'print'">
+    <div class="detail-card-geography__additional-units" *bagDetailCardAddon>
+      <sc-svg
+        class="detail-card-geography__additional-units-icon"
+        url="/assets/icon/ic_map-choropleth-anim.svg"
+      ></sc-svg>
+      <div>
+        <h5
+          class="detail-card-geography__additional-units-title"
+          [attr.id]="'detail-card-geography__additional-units-title-' + instanceId"
+          #ctoTitleEl
+        >
+          {{ 'DetailCardGeo.RegionsBox.Title' | i18n }}
+        </h5>
+        <p>
+          {{ 'DetailCardGeo.RegionsBox.Info' | i18n }}
+        </p>
+        <a
+          class="detail-card-geography__additional-units-link g-default-icon"
+          [attr.aria-describedby]="ctoTitleEl.id"
+          [routerLink]="geoRegionsUrl$ | async"
+          fragment="detail-card-geo-regions"
+          >{{ 'DetailCardGeo.RegionsBox.Cto' | i18n }}
+          <sc-svg url="/assets/icon/ic_chevron_right.svg"></sc-svg>
+        </a>
+      </div>
+    </div>
+  </ng-container>
+</bag-detail-card>

@@ -1,0 +1,114 @@
+<bag-detail-card
+  titleKey="Vaccination.Card.Development.Title"
+  [infoKey]="infoKey$ | async"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="(sources$ | async) || []"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [hideInfo]="hideInfo"
+>
+  <div class="detail-card-vacc-doses-development" *ngIf="hasData$ | async as hasData">
+    <div class="detail-card-vacc-doses-development__lr">
+      <!-- cumulative filter -->
+      <select
+        bag-select
+        [attr.aria-label]="'Vaccination.CumulativeFilter.Development.Label' | i18n"
+        name="detailCumulativeFilter"
+        [formControl]="cumulativeFilterCtrl"
+      >
+        <ng-container *ngFor="let opt of cumulativeFilterOptions">
+          <option [ngValue]="opt.val" [attr.selected]="opt.val === cumulativeFilterCtrl.value ? '' : null">
+            {{ opt.key | i18n }}
+          </option>
+        </ng-container>
+      </select>
+      <!-- relativity filter -->
+      <bag-toggle-button-list
+        class="detail-card-vacc-doses-development__relativity-filter--toggle"
+        [attr.aria-label]="'Vaccination.RelativityFilter.Label' | i18n"
+        name="detailRelativityFilter"
+        [formControl]="vaccDosesRelativityFilterCtrl"
+      >
+        <ng-container *ngFor="let opt of vaccDosesRelativityFilterOptions">
+          <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+        </ng-container>
+      </bag-toggle-button-list>
+      <select
+        bag-select
+        class="detail-card-vacc-doses-development__relativity-filter--select"
+        [attr.aria-label]="'Vaccination.RelativityFilter.Label' | i18n"
+        name="detailRelativityFilter"
+        [formControl]="vaccDosesRelativityFilterCtrl"
+      >
+        <ng-container *ngFor="let opt of vaccDosesRelativityFilterOptions">
+          <option [ngValue]="opt.val" [attr.selected]="opt.val === vaccDosesRelativityFilterCtrl.value ? '' : null">
+            {{ opt.key | i18n }}
+          </option>
+        </ng-container>
+      </select>
+    </div>
+    <ng-container *ngIf="cumulativeData$ | async as cumulData">
+      <bag-chart-legend [itemGap]="16" class="detail-card-vacc-doses-development__chart-intro">
+        <div
+          *ngFor="let pair of cumulData.legendPairs"
+          bagChartLegendLine
+          [dashed]="pair[2]"
+          [length]="16"
+          [thickness]="2"
+          [color]="pair[0]"
+        >
+          {{ pair[1] | i18n }}
+        </div>
+      </bag-chart-legend>
+
+      <p class="detail-card-vacc-doses-development__meta">
+        {{ cumulData.isInz ? (keys.metaInz | i18n) : (keys.metaAbs | i18n) }}
+      </p>
+
+      <bag-histogram-line
+        [data]="cumulData.data"
+        [focusPosYCenter]="true"
+        [spanGaps]="[true, true, true, true]"
+        [dashedLines]="cumulData.dashedLines"
+        [strokeWidths]="[2, 2, 2, 2]"
+        [disableNoDataBlocks]="true"
+        [colors]="cumulData.colors"
+        (elFocus)="showTooltip($event, cumulData.isInz, cumulData.geoUnit)"
+        (diagramLeave)="hideTooltip()"
+      ></bag-histogram-line>
+    </ng-container>
+
+    <ng-container *ngIf="dailyData$ | async as dailyData">
+      <bag-chart-legend [itemGap]="16" class="detail-card-vacc-doses-development__chart-intro">
+        <div
+          *ngFor="let pair of dailyData.legendPairs"
+          bagChartLegendSquare
+          [color]="pair[0]"
+          [translate]="pair[1]"
+        ></div>
+        <div
+          bagChartLegendLine
+          [length]="16"
+          [thickness]="4"
+          [color]="mean7dColor"
+          translate="Vaccination.Card.Development.Legend.Mean"
+        ></div>
+      </bag-chart-legend>
+
+      <p class="detail-card-vacc-doses-development__meta">
+        {{ dailyData.isInz ? (keys.metaDailyInz | i18n) : (keys.metaDailyAbs | i18n) }}
+      </p>
+
+      <bag-histogram-detail
+        [data]="dailyData.data"
+        (elFocus)="showDailyChartTooltip($event, dailyData.isInz)"
+        (diagramLeave)="hideTooltip()"
+        [barColors]="[dailyBarColor]"
+        [lineColors]="[mean7dColor]"
+        [lineThickness]="[4, 2]"
+      ></bag-histogram-detail>
+    </ng-container>
+  </div>
+</bag-detail-card>

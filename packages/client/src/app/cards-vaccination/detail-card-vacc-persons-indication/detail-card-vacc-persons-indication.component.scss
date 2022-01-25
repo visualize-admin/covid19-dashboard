@@ -1,0 +1,41 @@
+@use 'src/styles/text';
+@use 'src/styles/dim';
+@use 'src/styles/layout';
+@use 'src/styles/mix';
+
+bag-detail-card-vacc-persons-indication {
+  display: block;
+
+  .detail-card-vacc-persons-indication__lr {
+    @include mix.cardFiltersMainWithMultiSelectLr;
+  }
+
+  .detail-card-vacc-persons-indication__chart-intro {
+    @include mix.cardChartIntro;
+  }
+
+  .detail-card-vacc-persons-indication__location-bucket {
+    margin-bottom: 24px;
+  }
+
+  .detail-card-vacc-persons-indication__location-bucket-title {
+    @include text.h4;
+  }
+
+  .detail-card-vacc-persons-indication__chart-meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .detail-card-vacc-persons-indication__relativity-filter--toggle {
+      display: none;
+    }
+  }
+
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .detail-card-vacc-persons-indication__relativity-filter--select[bag-select] {
+      display: none;
+    }
+  }
+}

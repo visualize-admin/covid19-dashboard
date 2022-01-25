@@ -1,0 +1,16 @@
+@use 'src/styles/text';
+@use 'src/styles/var';
+
+bag-weekly-report-demo-table {
+  display: flex;
+  flex-direction: column;
+
+  .weekly-report-demo-table__title {
+    @include text.paragraph1;
+    font-weight: var.$font-weight-bold;
+    margin: 16px 0 8px 0;
+  }
+  bag-weekly-compare-table:not(:last-child) {
+    margin-bottom: 24px;
+  }
+}

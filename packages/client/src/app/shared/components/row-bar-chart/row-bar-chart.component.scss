@@ -1,0 +1,52 @@
+@use 'src/styles/text';
+@use 'src/styles/col';
+
+bag-row-bar-chart {
+  display: block;
+
+  .row-bar-chart {
+    font-size: var(--fz-meta);
+  }
+  .row-bar-chart__title {
+    margin-bottom: 8px;
+    padding-left: var(--label-width);
+    // needs to be nested within a span, since we depend on the font-size for the padding
+    & > span {
+      @include text.paragraph2;
+      color: col.$datavis-bar-chart-title;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+  .row-bar-chart__grid {
+    display: grid;
+    grid-template-columns: var(--label-width) calc(100% - var(--label-width));
+    grid-row-gap: 2px;
+    line-height: 24px;
+  }
+  .row-bar-chart__row-label {
+    text-align: right;
+    color: col.$datavis-bar-chart-label;
+    font-weight: normal;
+    padding-right: 1ch;
+  }
+  .row-bar-chart__row-bar {
+    height: 24px;
+    display: flex;
+    justify-items: flex-start;
+
+    div {
+      height: 24px;
+      background: col.$datavis-bar-chart-primary;
+      width: calc((100% - var(--val-width)) * var(--width));
+    }
+
+    span {
+      padding-left: 1ch;
+      width: var(--val-width);
+      text-align: left;
+      color: col.$datavis-bar-chart-primary;
+      font-weight: bold;
+    }
+  }
+}

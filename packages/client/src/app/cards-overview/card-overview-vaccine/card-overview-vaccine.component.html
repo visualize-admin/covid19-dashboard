@@ -1,0 +1,30 @@
+<bag-overview-card
+  titleKey="OverviewCardVaccine.VaccPersonsTitle"
+  [sourceDate]="sourceDate | toDate"
+  [facet]="facet"
+  [moreLinkArgs]="moreLink"
+  [warnKey]="warningKey$ | async"
+>
+  <p *bagOverviewCardInfo class="g-content" bagOverviewCardHint [translate]="'OverviewCardVaccine.InfoText.Top'"></p>
+
+  <bag-key-value-list *ngIf="keyValueList$ | async as keyValueList" [data]="keyValueList"></bag-key-value-list>
+
+  <ng-container *ngIf="histogram$ | async as histogram">
+    <bag-histogram-preview-area
+      [data]="histogram"
+      [yLabelFormatter]="valFmt"
+      [colors]="previewLineColors"
+      [lineColors]="['#FFF', 'transparent', 'transparent']"
+      [strokeWidths]="[1, 0, 0]"
+      [showLines]="true"
+    >
+    </bag-histogram-preview-area>
+
+    <p
+      *bagOverviewCardInfo
+      class="g-content"
+      bagOverviewCardHint
+      [translate]="'OverviewCardVaccine.InfoText.Bottom.VaccPersons'"
+    ></p>
+  </ng-container>
+</bag-overview-card>

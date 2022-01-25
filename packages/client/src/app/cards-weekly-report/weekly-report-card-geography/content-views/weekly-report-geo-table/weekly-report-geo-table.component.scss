@@ -1,0 +1,17 @@
+@use 'src/styles/dim';
+@use 'src/styles/col';
+@use 'src/styles/text';
+@use 'src/styles/var';
+
+bag-weekly-report-geo-table {
+  display: block;
+
+  .bag-weekly-report-geo-table__subtitle {
+    @include text.paragraph1;
+    font-weight: var.$font-weight-bold;
+  }
+
+  .bag-weekly-report-geo-table__subtitle--second {
+    margin-top: 48px;
+  }
+}

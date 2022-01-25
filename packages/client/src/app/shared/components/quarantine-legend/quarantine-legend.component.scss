@@ -1,0 +1,58 @@
+@use 'src/styles/col';
+@use 'src/styles/text';
+@use 'src/styles/var';
+
+bag-quarantine-legend {
+  display: block;
+
+  .quarantine-legend {
+    display: flex;
+    flex-wrap: wrap;
+    --item-gap: 12px;
+    --square-size: 8px;
+    --spacing: 6px;
+    --mb-line: 3px;
+    @include text.meta;
+    color: var(--c-fg-legend);
+
+    > *:not(:last-child) {
+      margin-right: var(--item-gap);
+    }
+  }
+
+  %before {
+    content: '';
+    display: inline-block;
+    width: var(--square-size);
+    height: var(--square-size);
+    margin-right: var(--spacing);
+  }
+
+  .quarantine-legend__quarantine {
+    &:before {
+      @extend %before;
+      background-color: col.$datavis-quarantine;
+    }
+  }
+
+  .quarantine-legend__quarantine-to {
+    &:before {
+      @extend %before;
+      background-color: col.$datavis-quarantine-to;
+    }
+  }
+
+  .quarantine-legend__quarantine-from {
+    &:before {
+      @extend %before;
+      background-color: col.$datavis-quarantine-from;
+    }
+  }
+
+  .quarantine-legend__no-quarantine {
+    &:before {
+      @extend %before;
+      background-color: col.$datavis-no-quarantine;
+    }
+  }
+}

@@ -1,0 +1,122 @@
+<ng-template #chFlDataOnly>
+  <div class="detail-card-vacc-persons-vaccine__no-data">
+    {{ 'Vaccination.Card.Vaccine.ChFlDataOnly.Info' | i18n }}<br />
+    <button *ngIf="!hideResetBtn" class="detail-card-vacc-persons-vaccine__no-data-btn" (click)="resetToChFl()">
+      {{ 'Vaccination.Card.Vaccine.ChFlDataOnly.Btn' | i18n }}
+    </button>
+  </div>
+</ng-template>
+
+<bag-detail-card
+  titleKey="Vaccination.Card.Vaccine.Title"
+  [infoKey]="keys.info"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: (data.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [hideInfo]="hideInfo"
+>
+  <ng-container *ngIf="vaccineData$ | async as vaccineData; else chFlDataOnly">
+    <div class="detail-card-vacc-persons-vaccine__lr">
+      <!-- cumulative filter -->
+      <select
+        bag-select
+        [attr.aria-label]="'Vaccination.CumulativeFilter.Label' | i18n"
+        name="detailCumulativeFilter"
+        [formControl]="cumulativeCtrl"
+      >
+        <ng-container *ngFor="let opt of cumulativeFilterOptions">
+          <option [ngValue]="opt.val" [attr.selected]="opt.val === cumulativeCtrl.value ? '' : null">
+            {{ opt.key | i18n }}
+          </option>
+        </ng-container>
+      </select>
+
+      <!-- vaccine filter -->
+      <bag-multi-select
+        [formControl]="vaccineFilterCtrl"
+        [labelFn]="vaccineMultiSelectFilterLabelFn"
+        [options]="vaccineFilterOptions"
+      >
+      </bag-multi-select>
+
+      <!-- relativity filter -->
+      <bag-toggle-button-list
+        class="detail-card-vacc-persons-vaccine__relativity-filter--toggle"
+        [attr.aria-label]="'Vaccination.RelativityFilter.Label' | i18n"
+        name="detailRelativityFilter"
+        [formControl]="vaccPersonsRelativityFilterCtrl"
+      >
+        <ng-container *ngFor="let opt of vaccPersonsRelativityFilterOptions">
+          <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+        </ng-container>
+      </bag-toggle-button-list>
+      <select
+        bag-select
+        class="detail-card-vacc-persons-vaccine__relativity-filter--select"
+        [attr.aria-label]="'Vaccination.RelativityFilter.Label' | i18n"
+        name="detailRelativityFilter"
+        [formControl]="vaccPersonsRelativityFilterCtrl"
+      >
+        <ng-container *ngFor="let opt of vaccPersonsRelativityFilterOptions">
+          <option [ngValue]="opt.val" [attr.selected]="opt.val === vaccPersonsRelativityFilterCtrl.value ? '' : null">
+            {{ opt.key | i18n }}
+          </option>
+        </ng-container>
+      </select>
+    </div>
+
+    <ng-container *ngIf="vaccineData.showDailyValues && vaccineData.dailyData">
+      <div class="detail-card-vacc-persons-vaccine__chart-intro">
+        <bag-chart-legend [itemGap]="24">
+          <div bagChartLegendMeanLines>
+            <div *ngFor="let pair of vaccineData.histoLegendPairs" bagChartLegendMeanLine [color]="pair[0]"></div>
+            <div>{{ 'Vaccination.Card.Vaccine.Daily.Legend.Mean' | i18n }}</div>
+          </div>
+          <ng-container *ngFor="let pair of vaccineData.histoLegendPairs">
+            <div bagChartLegendSquare [color]="pair[0]">{{ pair[1] }}</div>
+          </ng-container>
+        </bag-chart-legend>
+      </div>
+      <div class="detail-card-vacc-persons-vaccine__chart-meta">
+        {{ (vaccineData.isRel ? keys.metaRel : keys.metaAbs) | i18n }}
+      </div>
+      <bag-histogram-detail
+        [data]="vaccineData.dailyData.entries"
+        [barColors]="vaccineData.histoColors"
+        [lineColors]="vaccineData.histoColors"
+        [yLabelFormatter]="vaccineData.isRel ? yLabelFmt : undefined"
+        [lineThickness]="vaccineData.dailyData.lineThickness"
+        [skipNoDataBlocksBefore]="vaccineData.dailyData.skipNoDataBefore"
+        [barOpacity]="0.5"
+        (elFocus)="showDailyTooltip($event, vaccineData.isRel)"
+        (diagramLeave)="hideTooltip()"
+      ></bag-histogram-detail>
+    </ng-container>
+
+    <ng-container *ngIf="vaccineData.showCumulative && vaccineData.cumulativeData">
+      <div class="detail-card-vacc-persons-vaccine__chart-intro">
+        <bag-chart-legend [itemGap]="16">
+          <div *ngFor="let pair of vaccineData.histoLegendPairs" bagChartLegendSquare [color]="pair[0]">
+            {{ pair[1] }}
+          </div>
+        </bag-chart-legend>
+      </div>
+      <div class="detail-card-vacc-persons-vaccine__chart-meta">
+        {{ (vaccineData.isRel ? keys.metaRel : keys.metaAbs) | i18n }}
+      </div>
+      <bag-histogram-line
+        [data]="vaccineData.cumulativeData.entries"
+        [focusPosYCenter]="true"
+        [colors]="vaccineData.histoColors"
+        [yLabelFormatter]="vaccineData.isRel ? yLabelFmt : undefined"
+        [strokeWidths]="2"
+        [disableNoDataBlocks]="true"
+        (elFocus)="showCumulTooltip($event, vaccineData.isRel, vaccineData.histoLegendPairs)"
+        (diagramLeave)="hideTooltip()"
+      ></bag-histogram-line>
+    </ng-container>
+  </ng-container>
+</bag-detail-card>

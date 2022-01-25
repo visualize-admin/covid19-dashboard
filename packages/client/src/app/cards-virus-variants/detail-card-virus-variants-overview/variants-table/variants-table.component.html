@@ -1,0 +1,37 @@
+<table class="variants-table">
+  <thead>
+    <tr>
+      <th scope="col" class="variants-table__h1-cell">
+        {{ 'Epidemiologic.VirusVariants.Card.Overview.VariantName' | i18n }}
+      </th>
+      <th scope="col" class="variants-table__h1-cell variants-table__h1-cell--ident">
+        <bag-info-tooltip [text]="'Epidemiologic.VirusVariants.MSys.Description' | i18n">{{
+          'Epidemiologic.VirusVariants.MSys.Label' | i18n
+        }}</bag-info-tooltip>
+      </th>
+      <th scope="col" class="variants-table__h1-cell variants-table__h1-cell--ident">
+        <bag-info-tooltip [text]="'Epidemiologic.VirusVariants.WGS.Description' | i18n">{{
+          'Epidemiologic.VirusVariants.WGS.Label' | i18n
+        }}</bag-info-tooltip>
+      </th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <tr *ngFor="let entry of entries">
+      <th scope="row">
+        {{ entry.name }}
+        <p class="variants-table__description">{{ entry.description }}</p>
+      </th>
+
+      <td class="variants-table__value">
+        <p class="variants-table__th-mobile">{{ 'Epidemiologic.VirusVariants.MSys.Label' | i18n }}</p>
+        {{ entry.msys | adminNum }}
+      </td>
+      <td class="variants-table__value">
+        <p class="variants-table__th-mobile">{{ 'Epidemiologic.VirusVariants.WGS.Label' | i18n }}</p>
+        {{ entry.wgs | adminNum }}
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,70 @@
+<div
+  class="select-title"
+  [class.select-title--no-border]="facet === 'noBorder'"
+  [class.select-title--shadow]="!(int1.isIntersecting$ | async)"
+  [class.select-title--full-width]="useFullWidthShadow"
+>
+  <div class="select-title__intersection">
+    <div [bagIntersection]="{ offset: 1 }" #int1="bagIntersection"></div>
+  </div>
+  <div class="select-title__inner">
+    <div class="select-title__main">
+      <h2 class="select-title__title" #titleElRef>
+        {{ titleKey | i18n }}<span *ngIf="!hideComma" class="select-title__addon">,</span>
+        <bag-search-filter
+          class="select-title__filter-search"
+          [attr.aria-label]="filterLabelKey | i18n"
+          [formControl]="control"
+          [groupedOptions]="optionGroups"
+          [noGrouping]="noGrouping"
+        >
+          <span class="select-title__filter-search-value">{{ (searchFilter.selectedOption$ | async)?.label }}</span>
+        </bag-search-filter>
+      </h2>
+
+      <div class="select-title__filter-select-hamburger">
+        <label id="select-title-filter-label" class="cdk-visually-hidden">{{ filterLabelKey | i18n }}</label>
+        <select
+          class="select-title__filter-select"
+          bag-select
+          name="detailGeoFilter"
+          aria-labelledby="select-title-filter-label"
+          [formControl]="control"
+        >
+          <ng-container *ngFor="let group of optionGroups">
+            <ng-template #groupOptions>
+              <option
+                *ngFor="let opt of group.options"
+                [attr.selected]="opt.value === control.value ? '' : null"
+                [ngValue]="opt.value"
+              >
+                {{ opt.label }}
+              </option>
+            </ng-template>
+            <optgroup *ngIf="!noGrouping; else groupOptions" [attr.label]="group.label">
+              <ng-template [ngTemplateOutlet]="groupOptions"></ng-template>
+            </optgroup>
+          </ng-container>
+        </select>
+
+        <button
+          *ngIf="!(int1.isIntersecting$ | async)"
+          class="select-title__hamburger-btn"
+          cdkMonitorElementFocus
+          type="button"
+          (click)="toggleNavBoard()"
+        >
+          <sc-svg
+            url="/assets/icon/ic_menu-close-anim.svg"
+            [bagSvgAnimate]="{ '#anim-close': navBoardService.isOpen, '#anim-menu': !navBoardService.isOpen }"
+          ></sc-svg>
+        </button>
+      </div>
+    </div>
+    <ng-container *ngIf="(searchFilter.selectedOption$ | async)?.value !== null">
+      <button type="button" class="g-default-icon select-title__reset" (click)="reset()">
+        {{ resetFilterKey | i18n }}
+      </button>
+    </ng-container>
+  </div>
+</div>

@@ -1,0 +1,40 @@
+<div class="search-list-modal" cdkTrapFocus>
+  <div class="search-list-modal__search-field" tabindex="-1">
+    <sc-svg class="search-list-modal__search-field__icon" url="/assets/icon/ic_search.svg"></sc-svg>
+    <label [for]="searchInputId" class="cdk-visually-hidden">{{ 'Commons.Search' | i18n }}</label>
+    <input
+      #inputField
+      class="search-list-modal__search-field__input"
+      type="search"
+      name="search"
+      [id]="searchInputId"
+      autocomplete="off"
+      [formControl]="searchCtrl"
+      placeholder="{{ 'Commons.Search' | i18n }}"
+    />
+  </div>
+
+  <div class="search-list-modal__items">
+    <ng-container *ngFor="let group of filteredGroups$ | async">
+      <ng-template #options>
+        <bag-option
+          *ngFor="let opt of group.options"
+          [value]="opt"
+          (selectionChange)="onOptionSelected($event)"
+          [selected]="data.selected === opt.value"
+        >
+          {{ opt.label }}
+        </bag-option>
+      </ng-template>
+
+      <bag-option-group *ngIf="!data.noGrouping; else options" [label]="group.label">
+        <ng-container [ngTemplateOutlet]="options"></ng-container>
+      </bag-option-group>
+    </ng-container>
+  </div>
+
+  <button class="search-list-modal__hidden-btn" cdkMonitorElementFocus (click)="ref.close({ focusSelf: true })">
+    <sc-svg url="/assets/icon/ic_close.svg"></sc-svg>
+    <span class="cdk-visually-hidden">{{ 'Commons.Close' | i18n }}</span>
+  </button>
+</div>

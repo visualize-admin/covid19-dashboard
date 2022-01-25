@@ -1,0 +1,91 @@
+@use 'src/styles/mix';
+@use 'src/styles/col';
+@use 'src/styles/text';
+@use 'src/styles/var';
+
+bag-tweet-preparation {
+  display: block;
+  width: 100%;
+
+  & > h3 {
+    @include text.h3;
+    margin-bottom: 4px;
+  }
+
+  .text-prep {
+    align-self: stretch;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: var(--d-page-side-gap);
+    padding-bottom: 24px;
+    margin-bottom: 48px;
+    border-bottom: 1px solid var(--c-divider);
+  }
+
+  .text-prep__args {
+    @include text.meta;
+    color: var(--c-fg-meta);
+    display: grid;
+    grid-template-columns: max-content 16px max-content;
+    grid-column-gap: 2px;
+    button {
+      font-weight: var.$font-weight-bold;
+      text-align: right;
+      cursor: pointer;
+      position: relative;
+
+      &:before {
+        content: 'copy';
+        display: none;
+        position: absolute;
+        right: 100%;
+        font-weight: var.$font-weight-normal;
+        font-style: italic;
+        font-size: 8px;
+        padding: 0 4px;
+      }
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.2);
+
+        &:before {
+          display: block;
+        }
+      }
+    }
+
+    .icon {
+      align-self: center;
+      justify-self: center;
+      left: calc(100% - 3px);
+      height: 16px;
+      width: 16px;
+      color: #0d8600;
+      opacity: 0;
+    }
+  }
+
+  .text-prep__output {
+    @include mix.geoInfoBox;
+    position: relative;
+  }
+
+  .text-prep__output-text {
+  }
+
+  .text-prep__output-btn {
+    @include text.meta;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    padding: 4px 12px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    cursor: pointer;
+    transition: background-color 150ms ease-in-out;
+
+    &:active {
+      background-color: rgba(0, 0, 0, 0.9);
+    }
+  }
+}

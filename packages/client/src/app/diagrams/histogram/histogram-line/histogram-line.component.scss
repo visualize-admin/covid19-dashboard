@@ -1,0 +1,23 @@
+@use 'src/styles/text';
+@use 'src/styles/mix';
+
+bag-histogram-line,
+bag-histogram-line-ref,
+bag-histogram-line-ref-re,
+bag-histogram-line-ref-inz14d,
+bag-histogram-line-virus-variants {
+  display: block;
+  position: relative;
+  .histogram-line {
+    width: calc(100% + 8px);
+    margin-right: -8px;
+  }
+  .histogram-line__title {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  .histogram-line__no-data-overlay {
+    @include mix.noDataChartOverlay;
+  }
+}

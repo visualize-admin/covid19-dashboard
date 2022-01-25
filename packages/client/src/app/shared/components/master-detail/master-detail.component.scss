@@ -1,0 +1,177 @@
+@use 'src/styles/col';
+@use 'src/styles/layout';
+@use 'src/styles/dim';
+@use 'src/styles/var';
+@use 'src/styles/text';
+
+bag-master-detail {
+  display: block;
+  background-color: var(--c-bg-card-container);
+  min-height: 100vh;
+
+  --container-tpl-cols: 1fr;
+  --item-inner-padding: 16px 12px 16px 16px;
+  --item-active-border-color: transparent;
+  --item-content-top-margin: 0;
+
+  .master-detail {
+    @include layout.container(dim.$detail-container, 0);
+  }
+
+  .master-detail__container {
+    display: grid;
+    grid-template-columns: var(--container-tpl-cols);
+    position: relative;
+    z-index: 1;
+  }
+
+  .master-detail__content {
+    padding: 32px var(--d-page-side-gap) var(--d-general-spacing);
+    position: relative;
+  }
+
+  .master-detail__menu-item {
+    --item-bg-active: var(--c-bg-menu-default);
+    --item-fg-active: var(--c-fg-menu-default);
+
+    border: {
+      width: 1px 0;
+      style: solid;
+      color: var(--c-divider-light);
+    }
+    background: var(--c-bg-page);
+    margin-top: -1px;
+    cursor: pointer;
+    direction: ltr; // reset from menu
+    @media (hover: hover) {
+      &:hover {
+        background-color: var(--item-bg-active);
+
+        &:active {
+          background-color: var(--item-bg-active);
+        }
+      }
+    }
+
+    &.master-detail__menu-item--vaccine {
+      --item-bg-active: var(--c-bg-menu-vacc);
+      --item-fg-active: var(--c-fg-menu-vacc);
+    }
+  }
+
+  .master-detail__menu-item-inner {
+    margin: -1px 0; // place the right border over the top/bottom borders
+    padding: var(--item-inner-padding);
+    display: grid;
+    grid-template-columns: 1fr min-content;
+  }
+
+  .master-detail__menu-item--active {
+    background-color: var(--item-bg-active);
+    --item-active-border-color: var(--item-fg-active);
+  }
+
+  .master-detail__menu-item-title {
+    @include text.h4;
+  }
+
+  .master-detail__menu-item-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 200ms ease-in-out;
+  }
+
+  .master-detail__menu-item-content {
+    margin-top: var(--item-content-top-margin);
+    grid-column-end: span 2;
+  }
+
+  @media (max-width: #{dim.$bp-max-sm}) {
+    .master-detail__menu,
+    .master-detail__menu-inner {
+      // use display contents for the mobile ordering to work
+      display: contents;
+    }
+    .master-detail__menu-item-inner {
+      border-bottom: 4px solid var(--item-active-border-color);
+    }
+    .master-detail__menu-item-icon {
+      transform: rotate(90deg);
+      transition: transform 250ms ease-in-out;
+    }
+    .master-detail__menu-item--mobile-active {
+      &.master-detail__menu-item--active {
+        .master-detail__menu-item {
+          border-bottom: 0;
+        }
+        .master-detail__menu-item-icon {
+          transform: rotate(-90deg);
+        }
+      }
+    }
+    .master-detail__content {
+      order: var(--order);
+
+      &:not(.master-detail__content--show) {
+        display: none;
+      }
+    }
+  }
+
+  @media (min-width: #{dim.$bp-min-md}) {
+    --item-inner-padding: 16px 12px 16px 24px;
+    --container-tpl-cols: var(--d--md-menu-width) 1fr;
+    --item-content-top-margin: 10px;
+
+    .master-detail__menu {
+      background: var(--c-bg-page);
+      align-self: stretch;
+      grid-row-end: span calc(var(--row-span) + 1);
+      border-left: 1px solid var(--c-divider);
+      margin-left: -1px;
+      // sticky
+      height: calc(100vh - var(--d-sticky-detail-filter-height));
+      position: sticky;
+      top: var(--d-sticky-detail-filter-height);
+      overflow: hidden;
+
+      // scroll indicator
+      &:before {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        height: 24px;
+        pointer-events: none;
+        top: -24px;
+        transition: box-shadow 250ms ease-in;
+      }
+    }
+    .master-detail__menu--scroll-indicator-top:before {
+      box-shadow: var(--bs-overlay);
+    }
+    .master-detail__menu--scroll-indicator-bottom:after {
+      opacity: 1;
+    }
+    .master-detail__menu-inner {
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      overflow-y: auto;
+      direction: rtl; // put scrollbar to the left
+    }
+    .master-detail__menu-item-inner {
+      border-right: 4px solid var(--item-active-border-color);
+    }
+    .master-detail__content {
+      grid-column-start: 2;
+      grid-row-start: 1;
+      border-left: 1px solid var(--c-divider);
+      grid-row-end: span calc(var(--row-span) + 1); // plus one so there is an empty row to stretch
+    }
+  }
+
+  @media (min-width: #{dim.$bp-min-lg}) {
+    --item-inner-padding: 16px 24px 16px 32px;
+  }
+}

@@ -1,0 +1,41 @@
+@use 'src/styles/text';
+@use 'src/styles/dim';
+@use 'src/styles/mix';
+
+bag-detail-card-vacc-doses-vaccine {
+  display: block;
+
+  .detail-card-vacc-doses-vaccine__no-data {
+    @include mix.noDetailCardContent;
+  }
+
+  .detail-card-vacc-doses-vaccine__no-data-btn {
+    @include mix.noDetailCardContentLink;
+  }
+
+  .detail-card-vacc-doses-vaccine__lr {
+    justify-content: normal !important;
+    @include mix.cardFiltersMainWithMultiSelectLr;
+  }
+
+  .detail-card-vacc-doses-vaccine__chart-intro {
+    @include mix.cardChartIntro;
+  }
+
+  .detail-card-vacc-doses-vaccine__chart-meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .detail-card-vacc-doses-vaccine__relativity-filter--toggle {
+      display: none;
+    }
+  }
+
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .detail-card-vacc-doses-vaccine__relativity-filter--select[bag-select] {
+      display: none;
+    }
+  }
+}

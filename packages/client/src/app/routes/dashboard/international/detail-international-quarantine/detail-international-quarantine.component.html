@@ -1,0 +1,9 @@
+<h3>{{ 'International.Quarantine.DetailTitle' | i18n }}</h3>
+<p class="g-content" [translate]="'International.Quarantine.DetailIntro'"></p>
+
+<div class="detail__cards">
+  <bag-detail-card-international-quarantine-geography
+    [data]="quarantineGeoData"
+    [geoJson]="worldGeoJson"
+  ></bag-detail-card-international-quarantine-geography>
+</div>

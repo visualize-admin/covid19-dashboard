@@ -1,0 +1,150 @@
+<ng-template #noDataTpl>
+  <div class="detail-card-vacc-status-vaccine__no-data">
+    {{ 'Vaccination.Status.Card.ChFlDataOnly.Info' | i18n }}<br />
+    <button *ngIf="!hideResetBtn" class="detail-card-vacc-status-vaccine__no-data-btn" (click)="resetToChFl()">
+      {{ 'Vaccination.Status.Card.ChFlDataOnly.Btn' | i18n }}
+    </button>
+  </div>
+</ng-template>
+
+<bag-detail-card
+  titleKey="Vaccination.Status.Card.Vaccine.Title"
+  [infoKey]="infoKey$ | async"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: (data.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [hideInfo]="hideInfo"
+>
+  <div class="detail-card-vacc-status-vaccine">
+    <ng-container *ngIf="chartData$ | async as chartData; else noDataTpl">
+      <div
+        *ngIf="'Vaccination.Status.Card.Vaccine.Warning' | i18nCheckKey"
+        class="detail-card-vacc-status-vaccine__warning"
+      >
+        <sc-svg url="/assets/icon/ic_alert.svg"></sc-svg>
+        <p translate="Vaccination.Status.Card.Vaccine.Warning"></p>
+      </div>
+      <h5 class="detail-card-vacc-status-vaccine__title" [translate]="chartData.titleKey"></h5>
+      <div class="detail-card-vacc-status-vaccine__lr">
+        <!-- cumulative filter -->
+        <select
+          bag-select
+          [attr.aria-label]="'Vaccination.CumulativeFilter.Development.Label' | i18n"
+          name="detailCumulativeFilter"
+          [formControl]="cumulativeFilterCtrl"
+        >
+          <ng-container *ngFor="let opt of cumulativeFilterOptions">
+            <option [ngValue]="opt.val" [attr.selected]="opt.val === cumulativeFilterCtrl.value ? '' : null">
+              {{ opt.key | i18n }}
+            </option>
+          </ng-container>
+        </select>
+
+        <!-- indication filter -->
+        <bag-multi-select
+          [formControl]="vaccineStatusFilterCtrl"
+          [labelFn]="vaccineStatusMultiSelectFilterLabelFn"
+          [options]="vaccineStatusFilterOptions"
+        >
+        </bag-multi-select>
+
+        <!-- relativity filter -->
+        <bag-toggle-button-list
+          class="detail-card-vacc-status-vaccine__relativity-filter--toggle"
+          [attr.aria-label]="'RelativityFilter.Label' | i18n"
+          name="detailRelativityFilter"
+          [formControl]="relativityFilterCtrl"
+        >
+          <ng-container *ngFor="let opt of relativityFilterOptions">
+            <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+          </ng-container>
+        </bag-toggle-button-list>
+        <select
+          bag-select
+          class="detail-card-vacc-status-vaccine__relativity-filter--select"
+          [attr.aria-label]="'RelativityFilter.Label' | i18n"
+          name="detailRelativityFilter"
+          [formControl]="relativityFilterCtrl"
+        >
+          <ng-container *ngFor="let opt of relativityFilterOptions">
+            <option [ngValue]="opt.val" [attr.selected]="opt.val === relativityFilterCtrl.value ? '' : null">
+              {{ opt.key | i18n }}
+            </option>
+          </ng-container>
+        </select>
+      </div>
+
+      <!--  main chart  -->
+      <ng-container *ngIf="chartData.mainChartData as chartData">
+        <div class="detail-card-vacc-status-vaccine__chart-intro">
+          <bag-chart-legend [itemGap]="16">
+            <ng-container *ngIf="chartData.legendGroupLabel">
+              <div bagChartLegendGroup [itemGap]="16">
+                <span>{{ chartData.legendGroupLabel }}</span>
+                <div *ngFor="let item of chartData.legendPairs" bagChartLegendSquare [color]="item[0]">
+                  {{ item[1] | i18n }}
+                </div>
+              </div>
+            </ng-container>
+            <ng-container *ngIf="!chartData.legendGroupLabel">
+              <div *ngFor="let item of chartData.legendPairs" bagChartLegendSquare [color]="item[0]">
+                {{ item[1] | i18n }}
+              </div>
+            </ng-container>
+          </bag-chart-legend>
+        </div>
+        <div class="detail-card-vacc-status-vaccine__chart-meta" [translate]="chartData.metaKey"></div>
+
+        <bag-histogram-line
+          [data]="chartData.lineData"
+          [colors]="chartData.colors"
+          [showNoData]="chartData.showNoData"
+          [focusPosYCenter]="true"
+          [skipNoDataBlocksBefore]="chartData.skipNoDataBefore"
+          [skipNoDataBlocksAfter]="chartData.skipNoDataAfter"
+          [strokeWidths]="2"
+          (elFocus)="showHistogramLineTooltip($event, chartData.legendPairs, chartData.isInz)"
+          (diagramLeave)="hideTooltip()"
+        ></bag-histogram-line>
+      </ng-container>
+
+      <!--  secondary charts    -->
+      <div class="detail-card-vacc-status-vaccine__chart">
+        <h5
+          class="detail-card-vacc-status-vaccine__chart-title detail-card-vacc-status-vaccine__chart-title--spaced"
+          translate="Vaccination.Status.Card.Vaccine.Chart.Population.Title"
+        ></h5>
+        <div class="detail-card-vacc-status-vaccine__chart-intro">
+          <bag-chart-legend [itemGap]="16">
+            <div
+              *ngFor="let item of chartData.populationData.legendPairs"
+              bagChartLegendSquare
+              [color]="item[0]"
+              [translate]="item[1]"
+            ></div>
+          </bag-chart-legend>
+        </div>
+        <div
+          class="detail-card-vacc-status-vaccine__chart-meta"
+          translate="Vaccination.Status.Card.Development.Chart.Population.Meta"
+        ></div>
+
+        <bag-histogram-area
+          [data]="chartData.populationData.entries"
+          [colors]="chartData.populationData.colors"
+          [yLabelFormatter]="fmtPercentage"
+          [yTickCount]="2"
+          [domainMax]="100"
+          [maxHeight]="150"
+          [focusPosYCenter]="true"
+          [showLines]="false"
+          (elFocus)="showPopulationTooltip($event, chartData.populationData.legendPairs, true)"
+          (diagramLeave)="hideTooltip()"
+        ></bag-histogram-area>
+      </div>
+    </ng-container>
+  </div>
+</bag-detail-card>

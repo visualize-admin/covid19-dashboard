@@ -1,0 +1,14 @@
+<h3>{{ 'WeeklyReport.HospCapacityIcu.DetailTitle' | i18n }}</h3>
+<p class="detail__title-desc">{{ titleDesc$ | async }}</p>
+
+<div class="detail__cards">
+  <bag-weekly-report-card-summary
+    *ngIf="summaryData$ | async as summaryData"
+    [data]="summaryData"
+  ></bag-weekly-report-card-summary>
+
+  <bag-weekly-report-card-hosp-capacity-icu
+    *ngIf="hospCapacityData$ | async as hospCapacityData"
+    [data]="hospCapacityData"
+  ></bag-weekly-report-card-hosp-capacity-icu>
+</div>

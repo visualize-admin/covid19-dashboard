@@ -1,0 +1,17 @@
+@use 'src/styles/col';
+@use 'src/styles/dim';
+
+bag-matrix-stack {
+  display: block;
+
+  .matrix-stack {
+    svg {
+      shape-rendering: crispEdges;
+
+      rect.focus-guide {
+        pointer-events: none;
+        transition: opacity 200ms ease-in-out;
+      }
+    }
+  }
+}

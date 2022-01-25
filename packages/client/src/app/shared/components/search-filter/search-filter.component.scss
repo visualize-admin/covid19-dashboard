@@ -1,0 +1,34 @@
+@use 'src/styles/col';
+@use 'src/styles/text';
+
+bag-search-filter {
+  display: inline;
+  cursor: pointer;
+
+  .bag-search-filter {
+    @include text.button;
+    display: inline-flex;
+    align-items: center;
+    color: var(--c-fg-link);
+    border-radius: var(--br-form-control);
+    padding: 0 8px;
+
+    &:hover {
+      background-color: var(--c-bg-option-hover);
+      &:active {
+        background-color: var(--c-bg-option-active);
+      }
+    }
+
+    & > sc-svg {
+      display: inline-flex;
+      height: 24px;
+      width: 24px;
+      margin-left: 8px;
+      position: relative;
+    }
+  }
+  .bag-search-filter--open {
+    background-color: var(--c-bg-option-hover);
+  }
+}

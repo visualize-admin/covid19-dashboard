@@ -1,0 +1,71 @@
+<div class="tooltip-table-content">
+  <h6 class="tooltip-table-content__title">{{ title }}</h6>
+
+  <ng-template #noDataTpl>
+    <span class="tooltip-table-content__no-data">{{ noDataKey | i18n }}</span>
+  </ng-template>
+
+  <table class="tooltip-table-content__table" *ngIf="!noData; else noDataTpl">
+    <thead *ngIf="data.col2Key">
+      <tr>
+        <td *ngIf="hasLabelColor"></td>
+        <th *ngIf="withCol1" scope="col" colspan="2">
+          <span *ngIf="data.col1Key" [class.cdk-visually-hidden]="data.col1LabelHidden">{{ data.col1Key | i18n }}</span>
+        </th>
+        <th *ngIf="withCol2" scope="col" [attr.colspan]="withCol1 ? null : 2">{{ data.col2Key | i18n }}</th>
+      </tr>
+    </thead>
+
+    <ng-template #noDataCellTpl>
+      <td>{{ 'Commons.NoData.Abbr' | i18n }}&nbsp;<span class="tooltip-table-content__no-data"></span></td>
+    </ng-template>
+
+    <tbody>
+      <ng-container *ngFor="let row of data.entries; trackBy: identifyRowItem">
+        <tr [class.--light]="row.lighten">
+          <td *ngIf="hasLabelColor" class="--legend">
+            <span class="tooltip-table-content__square" [style.--c]="row.color"></span>
+          </td>
+          <th scope="row">{{ row.key | i18n }}</th>
+          <ng-container *ngIf="withCol1">
+            <td *ngIf="row.col1.value !== null; else noDataCellTpl" [class.--bold]="data.col1Bold">
+              {{ row.col1.value }}
+              <ng-container *ngIf="has1stColColor"
+                >&nbsp;<span
+                  [class.tooltip-table-content__line]="row.col1.type !== 'square'"
+                  [class.tooltip-table-content__dashed]="row.col1.dashed"
+                  [class.tooltip-table-content__pattern]="row.col1.pattern"
+                  [class.tooltip-table-content__square]="row.col1.type === 'square'"
+                  [style.--c]="row.col1.color"
+                ></span
+              ></ng-container>
+            </td>
+          </ng-container>
+          <ng-container *ngIf="withCol2">
+            <td *ngIf="row.col2.value !== null; else noDataCellTpl" [class.--bold]="data.col2Bold">
+              {{ row.col2.value }}
+              <ng-container *ngIf="has2ndColColor"
+                >&nbsp;<span class="tooltip-table-content__square" [style.--c]="row.col2.color"></span
+              ></ng-container>
+            </td>
+          </ng-container>
+        </tr>
+      </ng-container>
+    </tbody>
+
+    <tfoot *ngIf="hasFoot">
+      <ng-container *ngFor="let row of data.footer; trackBy: identifyRowItem">
+        <tr [class.--light]="row.lighten">
+          <td *ngIf="hasLabelColor"></td>
+          <th scope="row">{{ row.key | i18n }}</th>
+          <td *ngIf="withCol1" [class.--pad-right]="has1stColColor" [class.--bold]="data.col1Bold">
+            {{ row.col1.value !== null ? row.col1.value : ('Commons.NoData.Abbr' | i18n) }}
+          </td>
+          <td *ngIf="withCol2" [class.--pad-right]="has2ndColColor" [class.--bold]="data.col2Bold">
+            {{ row.col2.value !== null ? row.col2.value : ('Commons.NoData.Abbr' | i18n) }}
+          </td>
+        </tr>
+      </ng-container>
+    </tfoot>
+  </table>
+</div>

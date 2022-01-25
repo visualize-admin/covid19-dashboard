@@ -1,0 +1,46 @@
+@use 'src/styles/text';
+@use 'src/styles/col';
+@use 'src/styles/layout';
+@use 'src/styles/dim';
+
+bag-page-notification {
+  display: block;
+
+  .page-notification {
+    display: grid;
+    grid-template-columns: 24px 1fr;
+    grid-gap: 16px;
+    padding: 16px 24px;
+    color: col.$page-hint-border;
+    border-radius: var(--br-card);
+    align-items: center;
+  }
+  .page-notification--full,
+  .page-notification--info {
+    background-color: col.$page-hint-bg;
+    color: col.$page-hint-fg;
+  }
+
+  .page-notification--full {
+    border-radius: 0;
+    grid-template-columns: 1fr;
+    @include layout.container();
+    padding: 16px 0;
+    height: 100%;
+  }
+
+  .page-notification__icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: bottom;
+  }
+  .page-notification__text {
+    @include text.paragraph1;
+  }
+
+  @media (max-width: #{dim.$bp-max-sm}) {
+    .page-notification__text {
+      @include text.paragraph2;
+    }
+  }
+}

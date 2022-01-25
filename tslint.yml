@@ -1,0 +1,82 @@
+extends:
+  - tslint:latest
+  - tslint-config-prettier
+rules:
+  #
+  # override rules from tslint:recommended
+  #
+  interface-name:
+    - true
+    - never-prefix
+  member-access:
+    - true
+    - no-public
+  member-ordering: # order: "statics-first"
+    - true
+    - order:
+        - public-static-field
+        - private-static-field
+        - public-instance-field
+        - private-instance-field
+        - public-static-method
+        - private-static-method
+        - constructor
+        - public-instance-method
+        - private-instance-method
+  no-angle-bracket-type-assertion: false # true - use «<Type>» instead of «as Type» for casting
+  object-literal-sort-keys: false
+  quotemark:
+    - true
+    - single
+    - avoid-escape
+  triple-equals: # true - allow for != null check to catch null & undefined
+    - true
+    - allow-null-check
+  no-string-literal: false
+  no-empty: false
+  no-switch-case-fall-through: true
+  semicolon:
+    - true
+    - never
+
+  #
+  # override rules from tslint:latest
+  #
+  no-object-literal-type-assertion: false
+  no-submodule-imports:
+    - true
+    - "aws-sdk"
+    - "rxjs/operators"
+    - "@angular"
+    - "zone.js"
+    - "core-js"
+    - "fs/promises"
+  prefer-conditional-expression: false
+  no-implicit-dependencies:
+    - true
+    - dev
+    - ["aws-lambda"]
+  variable-name:
+    - true
+    - ban-keywords
+    - check-format
+    - allow-leading-underscore
+
+  #
+  # additional rules
+  #
+  no-inferrable-types:
+    - true
+    - ignore-params
+  no-non-null-assertion: true
+  no-unnecessary-callback-wrapper: true
+  no-unnecessary-type-assertion: true
+  # gives deprecated warning, but still necessary
+  no-unused-variable:
+    - true
+    - { "ignore-pattern": "^_" }
+  no-redundant-jsdoc: true
+  deprecation: false
+  import-blacklist:
+    - true
+    - rxjs/Rx

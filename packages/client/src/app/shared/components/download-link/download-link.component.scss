@@ -1,0 +1,25 @@
+@use 'src/styles/col';
+@use 'src/styles/text';
+
+bag-download-link {
+  display: inline-block;
+
+  .bag-download-link {
+    @include text.button;
+    display: flex;
+    color: var(--c-fg-link);
+    align-items: center;
+    height: 48px;
+    padding: 0;
+    cursor: pointer;
+    text-align: left;
+
+    outline: none;
+
+    sc-svg {
+      height: 24px;
+      width: 24px;
+      margin-right: 8px;
+    }
+  }
+}

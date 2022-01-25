@@ -1,0 +1,48 @@
+@use 'src/styles/var';
+@use 'src/styles/col';
+@use 'src/styles/text';
+
+bag-weekly-report-info-box-data {
+  display: block;
+
+  .weekly-report-info-box-data {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .weekly-report-info-box-data__table {
+    thead {
+      th {
+        @include text.meta;
+        font-weight: var.$font-weight-normal;
+        color: var(--c-fg-meta);
+        text-align: right;
+        padding-left: 16px;
+        vertical-align: bottom;
+      }
+    }
+
+    tbody {
+      @include text.paragraph2;
+      color: var(--c-fg-box-default);
+
+      tr {
+        &:first-child {
+          border-bottom: 1px solid var(--c-divider-light);
+        }
+      }
+
+      th {
+        text-align: left;
+        font-weight: var.$font-weight-normal;
+      }
+
+      td {
+        text-align: right;
+        font-weight: var.$font-weight-bold;
+        padding-left: 16px;
+        white-space: nowrap;
+      }
+    }
+  }
+}

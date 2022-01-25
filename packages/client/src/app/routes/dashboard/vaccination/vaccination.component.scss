@@ -1,0 +1,30 @@
+@use 'src/styles/text';
+
+:host {
+  display: block;
+
+  .vaccination {
+    display: flex;
+    flex-direction: column;
+    border-top: 1px solid var(--c-divider);
+    background: var(--c-bg-page);
+  }
+
+  .vaccination__menu-item {
+    @include text.meta;
+    color: var(--c-fg-intro);
+
+    &.vaccination__menu-item--no-data {
+      color: var(--c-fg-meta);
+    }
+  }
+
+  .vaccination__menu-item-meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  .vaccination__distribution-bar {
+    padding: 14px 0 16px 0;
+  }
+}

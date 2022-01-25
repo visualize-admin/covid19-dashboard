@@ -1,0 +1,111 @@
+@use 'src/styles/var';
+@use 'src/styles/col';
+@use 'src/styles/text';
+@use 'src/styles/mix';
+@use 'src/styles/dim';
+
+bag-geo-unit-vacc-persons-data {
+  display: block;
+
+  .geo-unit-vacc-persons-data {
+    display: flex;
+    flex-direction: column;
+
+    &.geo-unit-vacc-persons-data--tooltip {
+      .geo-unit-vacc-persons-data__title {
+        @include mix.tooltipTitle;
+      }
+
+      .geo-unit-vacc-persons-data__table {
+        margin: 0;
+        width: 100%;
+        @include text.tooltip;
+        @media (max-width: #{dim.$bp-max-sm}) {
+          @include text.meta;
+        }
+
+        th {
+          padding-left: 0;
+        }
+        td {
+          padding-right: 0;
+        }
+      }
+
+      .geo-unit-vacc-persons-data__main {
+        @include text.tooltip;
+      }
+    }
+  }
+
+  .geo-unit-vacc-persons-data__title {
+    @include text.boxTitle;
+    margin: 0 0 0 0;
+  }
+
+  .geo-unit-vacc-persons-data__sub-title {
+    @include text.tooltipDate;
+    margin: 0 0 8px 0;
+  }
+
+  .geo-unit-vacc-persons-data__main {
+    @include text.paragraph2;
+    margin-bottom: 4px;
+  }
+
+  .geo-unit-vacc-persons-data__chart {
+    margin-bottom: 4px;
+  }
+
+  .geo-unit-vacc-persons-data__table {
+    $padding: 16px;
+    margin: 0 -16px;
+    align-self: flex-start;
+    width: calc(100% + 32px);
+    @include text.meta;
+
+    th {
+      padding-left: 16px;
+      text-align: left;
+      font-weight: var.$font-weight-normal;
+    }
+    td {
+      white-space: nowrap;
+      padding-left: 12px;
+      text-align: right;
+      &:last-of-type {
+        font-weight: var.$font-weight-bold;
+        padding-right: 16px;
+      }
+    }
+  }
+
+  .geo-unit-vacc-persons-data__box {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin-right: 8px;
+    background-color: var(--color);
+  }
+
+  .geo-unit-vacc-persons-data__box--pattern {
+    @include mix.boosterPattern(var(--color), var(--pattern-color));
+  }
+
+  .geo-unit-vacc-persons-data__divider {
+    th {
+      padding-left: 0;
+      padding-top: 10px;
+    }
+    border-bottom: solid var(--c-bg-page) 3px;
+  }
+
+  .geo-unit-vacc-persons-data__additional {
+    th {
+      @include text.paragraph2;
+      font-weight: var.$font-weight-bold;
+      padding-top: 10px;
+      padding-right: 16px;
+    }
+  }
+}

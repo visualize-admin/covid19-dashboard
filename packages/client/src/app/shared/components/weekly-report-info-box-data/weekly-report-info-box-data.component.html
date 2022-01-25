@@ -1,0 +1,28 @@
+<div class="weekly-report-info-box-data">
+  <table class="weekly-report-info-box-data__table">
+    <thead>
+      <tr>
+        <!--        <th></th>-->
+        <th scope="col" colspan="2">{{ titleAbsKey | i18n }}</th>
+        <th scope="col">{{ titleRelKey | i18n }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr class="row-total">
+        <th scope="row">{{ totalKey | i18n }}</th>
+        <td>{{ data.total | adminNum }}</td>
+        <td>{{ data.totalInz | adminNum }}</td>
+      </tr>
+      <tr>
+        <th scope="row">{{ 'WeeklyReport.WeekFrom' | i18n: { date: data.week2 } }}</th>
+        <td>{{ data.prev | adminNum }}</td>
+        <td>{{ data.prevInz | adminNum }}</td>
+      </tr>
+      <tr>
+        <th scope="row">{{ 'WeeklyReport.WeekFrom' | i18n: { date: data.week1 } }}</th>
+        <td>{{ data.week | adminNum }}</td>
+        <td>{{ data.weekInz | adminNum }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

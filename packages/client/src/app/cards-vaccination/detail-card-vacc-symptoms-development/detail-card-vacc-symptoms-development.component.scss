@@ -1,0 +1,36 @@
+@use 'src/styles/text';
+@use 'src/styles/mix';
+
+bag-detail-card-vacc-symptoms-development {
+  display: block;
+
+  .detail-card-vacc-symptoms-development__no-data {
+    @include mix.noDetailCardContent;
+  }
+
+  .detail-card-vacc-symptoms-development__no-data-btn {
+    @include mix.noDetailCardContentLink;
+  }
+
+  .detail-card-vacc-symptoms-development {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-card-vacc-symptoms-development__lr {
+    @include mix.cardFiltersMainLr;
+  }
+
+  .detail-card-vacc-symptoms-development__chart-intro {
+    @include mix.cardChartIntro;
+  }
+
+  .detail-card-vacc-symptoms-development__meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+
+    &.detail-card-vacc-symptoms-development__meta--admin {
+      margin-top: 48px;
+    }
+  }
+}

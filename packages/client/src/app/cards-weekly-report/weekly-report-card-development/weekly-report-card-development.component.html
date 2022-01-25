@@ -1,0 +1,98 @@
+<bag-detail-card
+  titleKey="WeeklyReport.Card.Development.Title"
+  infoKey="WeeklyReport.Card.Development.Info"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: (data.curr.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+>
+  <div class="weekly-report-card-development__view" *ngIf="currentValues$ | async as currentValues">
+    <!--  charts for cases, hosp and death  -->
+    <ng-container *ngFor="let chart of currentValues.simpleChartData; let ix = index">
+      <h5 class="weekly-report-card-development__chart-title" [class.weekly-report-card-development__spacer]="ix !== 0">
+        {{ chart.titleKey | i18n }}
+      </h5>
+      <p class="weekly-report-card-development__meta">{{ chart.metaKey | i18n }}</p>
+      <bag-histogram-detail
+        [withWeeklyXLabels]="true"
+        [margin]="{ top: 20, bottom: 32, left: 0, right: 8 }"
+        [xWeeklyLabelFormatter]="xWeeklyLabelFmt"
+        [xWeeklySubLabelFormatter]="xWeeklySubLabelFmt"
+        [withWeeklyValues]="true"
+        [maxHeight]="200"
+        [data]="chart.entries"
+        [yLabelsMaxLength]="7"
+        (elFocus)="showSimpleTooltip($event, chart.tooltipKey)"
+        (diagramLeave)="hideTooltip()"
+        [barColors]="chart.barColors"
+      ></bag-histogram-detail>
+    </ng-container>
+
+    <!--  charts for test  -->
+    <h5
+      class="weekly-report-card-development__chart-title weekly-report-card-development__spacer"
+      translate="WeeklyReport.Card.Development.Test.Title"
+    ></h5>
+    <bag-chart-legend [itemGap]="16" class="weekly-report-card-development__legend">
+      <div
+        bagChartLegendSquare
+        [color]="currentValues.testChartData.colors[0]"
+        translate="DetailTest.Development.Legend.PCR"
+      ></div>
+      <div
+        bagChartLegendSquare
+        [color]="currentValues.testChartData.colors[1]"
+        translate="DetailTest.Development.Legend.ANTIGEN"
+      ></div>
+    </bag-chart-legend>
+    <p class="weekly-report-card-development__meta" translate="WeeklyReport.Card.Development.Test.Meta"></p>
+    <bag-histogram-detail
+      [withWeeklyXLabels]="true"
+      [margin]="{ top: 20, bottom: 32, left: 0, right: 8 }"
+      [xWeeklyLabelFormatter]="xWeeklyLabelFmt"
+      [xWeeklySubLabelFormatter]="xWeeklySubLabelFmt"
+      [withWeeklyValues]="true"
+      [maxHeight]="200"
+      [yLabelsMaxLength]="7"
+      [data]="currentValues.testChartData.entries"
+      (elFocus)="showTestTooltip($event)"
+      (diagramLeave)="hideTooltip()"
+      [barColors]="currentValues.testChartData.colors"
+    ></bag-histogram-detail>
+
+    <bag-chart-legend
+      [itemGap]="16"
+      class="weekly-report-card-development__spacer weekly-report-card-development__legend"
+    >
+      <div
+        bagChartLegendSquare
+        [color]="currentValues.testChartData.colors[0]"
+        translate="DetailTest.PositivityRate.PCR.Label"
+      ></div>
+      <div
+        bagChartLegendSquare
+        [color]="currentValues.testChartData.colors[1]"
+        translate="DetailTest.PositivityRate.ANTIGEN.Label"
+      ></div>
+    </bag-chart-legend>
+    <p class="weekly-report-card-development__meta" translate="WeeklyReport.Card.Development.Test.MetaPos"></p>
+    <bag-histogram-line
+      [withWeeklyXLabels]="true"
+      [margin]="{ top: 20, bottom: 32, left: 0, right: 8 }"
+      [xWeeklyLabelFormatter]="xWeeklyLabelFmt"
+      [xWeeklySubLabelFormatter]="xWeeklySubLabelFmt"
+      [withWeeklyValues]="true"
+      [focusPosYCenter]="true"
+      [colors]="currentValues.testChartData.colors"
+      [yLabelFormatter]="yLabelFmt"
+      [yLabelsMaxLength]="7"
+      [strokeWidths]="[2, 2]"
+      [maxHeight]="200"
+      [data]="currentValues.testChartData.posEntries"
+      (diagramLeave)="hideTooltip()"
+      (elFocus)="showTestPosTooltip($event)"
+    ></bag-histogram-line>
+  </div>
+</bag-detail-card>

@@ -1,0 +1,19 @@
+# we use tslint instead of ng lint, because we can't use --project (tsconfig specifying files with include, exclude )
+# and --files argument pointing to other files
+src/{{**/,}!(*.+(spec|test)).ts,!test.ts}:
+  - yarn prettier:staged
+  - yarn lint:app --fix
+"{server,ssr-local,ssr-fn}.ts":
+  - yarn prettier:staged
+  - yarn lint:server --fix
+test/{**/,}*.ts,src/{{**/,}*.+(spec|test).ts,test.ts}:
+  - yarn prettier:staged
+  - yarn lint:tests --fix
+# prettify html (everything with .component.html will be prettified using the angular parser, html parser otherwise)
+src/**/*.html:
+  - yarn prettier:staged
+src/**/*.scss:
+  - yarn prettier:staged
+# sort package.json keys
+./package.json:
+  - sort-package-json

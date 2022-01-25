@@ -1,0 +1,30 @@
+<bag-detail-card
+  titleKey="Epidemiologic.VirusVariants.Card.Overview.Title"
+  infoKey="Epidemiologic.VirusVariants.Card.Overview.InfoText"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="[
+    { sourceKey: 'Commons.Source.MSys', date: (data.variantsSourceDates.msys | toDate) },
+    { sourceKey: 'Commons.Source.WGS', date: (data.variantsSourceDates.wgs | toDate) }
+  ]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+>
+  <div class="detail-card-virus-variants-overview">
+    <!--  showing on sm and print -->
+    <div class="detail-card__text detail-card__text--md-and-print">
+      <p>
+        {{ 'Epidemiologic.VirusVariants.MSys.Label' | i18n }}:
+        {{ 'Epidemiologic.VirusVariants.MSys.Description' | i18n }}
+      </p>
+      <p>
+        {{ 'Epidemiologic.VirusVariants.WGS.Label' | i18n }}: {{ 'Epidemiologic.VirusVariants.WGS.Description' | i18n }}
+      </p>
+    </div>
+
+    <ng-container *ngIf="currentValues$ | async as cv">
+      <bag-variants-table [variants]="cv.variants" [msysEntry]="cv.msys" [wgsEntry]="cv.wgs"></bag-variants-table>
+    </ng-container>
+  </div>
+</bag-detail-card>

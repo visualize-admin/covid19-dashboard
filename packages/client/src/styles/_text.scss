@@ -1,0 +1,102 @@
+@use './var';
+@use './col';
+
+@mixin giga {
+  font-size: var(--fz-giga);
+  line-height: var(--lh-giga);
+  letter-spacing: 0.1px;
+  font-weight: 200;
+}
+
+@mixin h1 {
+  font-size: var(--fz-h1);
+  line-height: 1.5;
+  letter-spacing: 0.1px;
+}
+
+@mixin h2 {
+  font-size: var(--fz-h2);
+  line-height: var(--lh-h2);
+  letter-spacing: 0.1px;
+}
+
+@mixin h3 {
+  font-size: var(--fz-h3);
+  line-height: var(--lh-h3);
+  letter-spacing: 0.1px;
+  font-weight: bold;
+}
+
+@mixin h4 {
+  font-size: var(--fz-h4);
+  line-height: var(--lh-h4);
+  letter-spacing: 0.1px;
+  font-weight: var.$font-weight-bold;
+}
+
+@mixin lead {
+  font-size: var(--fz-lead);
+  line-height: var(--lh-lead);
+  letter-spacing: 0.2px;
+}
+
+@mixin paragraph1 {
+  font-size: var(--fz-paragraph1);
+  line-height: var(--lh-paragraph1);
+  letter-spacing: 0.1px;
+}
+
+@mixin paragraph2 {
+  font-size: var(--fz-paragraph2);
+  line-height: var(--lh-paragraph2);
+  letter-spacing: 0.1px;
+}
+
+@mixin meta {
+  font-size: var(--fz-meta);
+  line-height: var(--lh-meta);
+  letter-spacing: 0.1px;
+}
+
+@mixin button {
+  font-size: var(--fz-button);
+  line-height: var(--lh-button);
+  letter-spacing: 0.1px;
+}
+
+@mixin link-button {
+  font-size: var(--fz-link-button);
+  line-height: var(--lh-link-button);
+  letter-spacing: 0.1px;
+}
+@mixin boxTitle {
+  font-size: var(--fz-paragraph1);
+  line-height: var(--lh-paragraph1);
+  letter-spacing: 0.1px;
+  font-weight: var.$font-weight-bold;
+}
+
+@mixin tooltipTitle {
+  font-size: var(--fz-tooltip-title);
+  line-height: var(--lh-tooltip-title);
+  letter-spacing: 0.1px;
+  font-weight: var.$font-weight-bold;
+}
+
+@mixin tooltipDate {
+  @include tooltip;
+  color: var(--c-fg-meta);
+}
+
+@mixin tooltip {
+  font-size: var(--fz-tooltip);
+  line-height: var(--lh-tooltip);
+  letter-spacing: 0.1px;
+}
+
+@mixin overviewCardTitle {
+  font-size: var(--fz-overview-card-title);
+  line-height: var(--lh-overview-card-title);
+  letter-spacing: 0.1px;
+  font-weight: bold;
+}

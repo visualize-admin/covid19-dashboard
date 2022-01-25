@@ -1,0 +1,42 @@
+@use 'src/styles/text';
+@use 'src/styles/col';
+@use 'src/styles/mix';
+
+bag-distribution-bar {
+  display: block;
+
+  .distribution-bar {
+  }
+
+  .distribution-bar__label {
+    @include text.meta;
+    margin-bottom: 8px;
+  }
+
+  .distribution-bar__bars {
+    display: flex;
+    width: 100%;
+    height: var(--bar-height);
+    position: relative;
+  }
+
+  .distribution-bar__bar {
+    height: 100%;
+    background-color: var(--bg-color);
+    width: var(--width);
+  }
+
+  .distribution-bar__bar--overlay {
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    @include mix.boosterPattern(var(--bg-color), var(--pattern-color), var(--pattern-color));
+  }
+
+  --bar-height: 32px;
+
+  .distribution-bar--narrow {
+    --bar-height: 16px;
+  }
+}

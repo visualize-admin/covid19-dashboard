@@ -1,0 +1,40 @@
+<ng-template #tooltip let-title="title" let-value="value">
+  <div style="min-width: 200px">
+    <div>{{ title }}</div>
+    <div>{{ value | adminNum: 2 }}</div>
+  </div>
+</ng-template>
+
+<h2>Matrix Heatmap</h2>
+<p>{{ heatmapMatrixData.min }} - {{ heatmapMatrixData.max }}</p>
+<bag-matrix-heatmap
+  [data]="heatmapMatrixData.entries"
+  [fillFn]="heatmapMatrixData.fillFn"
+  (elFocus)="showHeatmapTooltip($event)"
+  (diagramLeave)="hideTooltip()"
+></bag-matrix-heatmap>
+
+<h2>Matrix Stack</h2>
+<bag-matrix-stack
+  [data]="stackMatrixData"
+  [rulerAt]="50"
+  (elFocus)="showStackTooltip($event)"
+  (diagramLeave)="hideTooltip()"
+  [bucketColors]="['#fc0', '#cf0', '#0cf']"
+></bag-matrix-stack>
+
+<h2>Matrix Single Bucket</h2>
+<p>{{ singleBucketMatrixData.min }} - {{ singleBucketMatrixData.max }}</p>
+<br />
+<p>{{ singleBucketMatrixData.entries[0].buckets[0].bucketName }}</p>
+<bag-matrix-heatmap
+  [data]="singleBucketMatrixData.entries"
+  [fillFn]="singleBucketMatrixData.fillFn"
+  [hideYAxis]="true"
+  (elFocus)="showHeatmapTooltip($event)"
+  (diagramLeave)="hideTooltip()"
+></bag-matrix-heatmap>
+
+<br />
+<hr />
+<button (click)="changeData()">update data</button>

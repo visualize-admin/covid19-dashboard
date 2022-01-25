@@ -1,0 +1,63 @@
+export enum RoutePaths {
+  STYLEGUIDE = 'styleguide',
+
+  SOCIAL_MEDIA_EXPORT = 'bag-social-media-export',
+
+  EXPORT = 'export',
+  EXPORT_REPORT = 'report',
+  EXPORT_OVERVIEW = 'overview',
+  EXPORT_TWITTER_IMAGES = 'twitter-images',
+
+  DASHBOARD = '',
+  DASHBOARD_OVERVIEW = 'overview',
+
+  DASHBOARD_EPIDEMIOLOGIC = 'epidemiologic',
+  DASHBOARD_EPIDEMIOLOGIC_CASE = 'case',
+  DASHBOARD_EPIDEMIOLOGIC_HOSP = 'hosp',
+  DASHBOARD_EPIDEMIOLOGIC_DEATH = 'death',
+  DASHBOARD_EPIDEMIOLOGIC_TEST = 'test',
+  DASHBOARD_EPIDEMIOLOGIC_REPRO = 'repro',
+  DASHBOARD_EPIDEMIOLOGIC_VIRUS_VARIANTS = 'virus-variants',
+
+  DASHBOARD_VACCINATION = 'vaccination',
+  DASHBOARD_VACCINATION_DOSES = 'doses',
+  DASHBOARD_VACCINATION_PERSONS = 'persons',
+  DASHBOARD_VACCINATION_SYMPTOMS = 'symptoms',
+  DASHBOARD_VACCINATION_STATUS = 'status',
+
+  DETAIL = 'd',
+  SHARE_DEMOGRAPHY = 'demography',
+  SHARE_DEVELOPMENT = 'development',
+  SHARE_SEGMENTATION = 'segmentation',
+  SHARE_GEOGRAPHY = 'geography',
+  SHARE_TEST_POSITIVITY = 'test-positivity',
+  SHARE_QUARANTINE_GEOGRAPHY = 'quarantine',
+  SHARE_SUMMARY = 'summary',
+  SHARE_EPI_SUMMARY = 'epi-summary',
+  SHARE_OVERVIEW = 'overview',
+  SHARE_HOSP_CAPACITY_ICU = 'hosp-capacity-icu',
+  SHARE_HOSP_CAPACITY_ICU_SUMMARY = 'hosp-capacity-icu-summary',
+
+  SHARE_VACC_LOCATION = 'location',
+  SHARE_VACC_INDICATION = 'indication',
+  SHARE_VACC_GRP_RATIO = 'group-ratio',
+  SHARE_VACC_VACCINE = 'vaccine',
+  SHARE_GEO_REGIONS = 'geo-regions',
+
+  DASHBOARD_CAPACITY = 'hosp-capacity',
+  DASHBOARD_CAPACITY_ICU = 'icu',
+  DASHBOARD_CAPACITY_TOTAL = 'total',
+
+  DASHBOARD_INTERNATIONAL = 'international',
+  DASHBOARD_INTERNATIONAL_QUARANTINE = 'quarantine',
+  DASHBOARD_INTERNATIONAL_CASE = 'case',
+
+  DASHBOARD_WEEKLY_REPORT = 'weekly-report',
+  DASHBOARD_WEEKLY_REPORT_SITUATION = 'situation',
+  DASHBOARD_WEEKLY_REPORT_CASE = 'case',
+  DASHBOARD_WEEKLY_REPORT_HOSP = 'hosp',
+  DASHBOARD_WEEKLY_REPORT_DEATH = 'death',
+  DASHBOARD_WEEKLY_REPORT_TEST = 'test',
+  DASHBOARD_WEEKLY_REPORT_HOSP_CAPACITY_ICU = 'hosp-capacity-icu',
+  DASHBOARD_WEEKLY_REPORT_METHODS_AND_SOURCES = 'methods-and-sources',
+}

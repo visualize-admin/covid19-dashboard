@@ -1,0 +1,110 @@
+<bag-detail-card
+  titleKey="WeeklyReport.Card.TestPositivity.Title"
+  [infoKey]="keys.info"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: (data.curr.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [infoAddOnKey]="infoAddOnKey"
+>
+  <div class="weekly-report-card-testpos">
+    <!-- Box-->
+    <div class="weekly-report-card-testpos__box" *ngIf="boxInfo$ | async as box">
+      <h5 class="weekly-report-card-testpos__box-title">{{ 'GeoFilter.CHFL' | i18n }}</h5>
+      <table class="weekly-report-card-testpos__box-table">
+        <thead>
+          <tr>
+            <td></td>
+            <th scope="col">{{ 'Commons.Tests.PCR' | i18n }}</th>
+            <th scope="col">{{ 'Commons.Tests.Antigen' | i18n }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <th scope="row">{{ 'WeeklyReport.Card.TotalUntil' | i18n: { date: box.total.date | fmtDate } }}</th>
+            <td>{{ box.total.pcr | adminNum: 1:'%' }}</td>
+            <td>{{ box.total.antigen | adminNum: 1:'%' }}</td>
+          </tr>
+          <tr>
+            <th scope="row">
+              {{
+                'WeeklyReport.WeekFrom'
+                  | i18n
+                    : {
+                        week: box.prev.date | fmtIsoWeek,
+                        date: box.prev.date | fmtDate
+                      }
+              }}
+            </th>
+            <td>{{ box.prev.pcr | adminNum: 1:'%' }}</td>
+            <td>{{ box.prev.antigen | adminNum: 1:'%' }}</td>
+          </tr>
+          <tr>
+            <th scope="row">
+              {{
+                'WeeklyReport.WeekFrom'
+                  | i18n
+                    : {
+                        week: box.curr.date | fmtIsoWeek,
+                        date: box.curr.date | fmtDate
+                      }
+              }}
+            </th>
+            <td>{{ box.curr.pcr | adminNum: 1:'%' }}</td>
+            <td>{{ box.curr.antigen | adminNum: 1:'%' }}</td>
+          </tr>
+
+          <tr>
+            <th scope="row">{{ 'WeeklyReport.Difference' | i18n }}</th>
+            <td>{{ box.diff.pcr | adminNum: 'pp' }}</td>
+            <td>{{ box.diff.antigen | adminNum: 'pp' }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <ng-container *ngIf="currentValues$ | async as currentValues">
+      <p *ngIf="currentValues.noCantonData" class="weekly-report-card-testpos__no-data">
+        {{ 'WeeklyReport.Test.Card.TestPositivity.NoCantonData' | i18n }}
+      </p>
+
+      <ng-container *ngIf="!currentValues.noCantonData">
+        <!-- Filters -->
+        <div class="weekly-report-card-testpos__lr">
+          <select
+            bag-select
+            name="regionsFilter"
+            [attr.aria-label]="'WeeklyReport.Card.RegionsFilter.Label' | i18n"
+            [formControl]="regionsFilterCtrl"
+          >
+            <ng-container *ngFor="let opt of regionsFilterOptions">
+              <option [ngValue]="opt.val" [attr.selected]="opt.val === regionsFilterCtrl.value ? '' : null">
+                {{ opt.key | i18n }}
+              </option>
+            </ng-container>
+          </select>
+
+          <bag-toggle-button-list
+            [formControl]="testPosViewFilterCtrl"
+            [attr.aria-label]="'WeeklyReport.Card.TestPositivity.ViewFilter.Label' | i18n"
+          >
+            <bag-toggle-button *ngFor="let opt of testPosViewFilterOptions" [value]="opt.val">{{
+              opt.key | i18n
+            }}</bag-toggle-button>
+          </bag-toggle-button-list>
+        </div>
+
+        <!-- Content -->
+        <ng-container [ngSwitch]="currentValues.viewFilter">
+          <bag-weekly-report-testpos-chart
+            *ngSwitchCase="WeeklyReportTestPositivityViewFilter.CHART"
+          ></bag-weekly-report-testpos-chart>
+          <bag-weekly-report-testpos-table
+            *ngSwitchCase="WeeklyReportTestPositivityViewFilter.TABLE"
+          ></bag-weekly-report-testpos-table>
+        </ng-container>
+      </ng-container>
+    </ng-container>
+  </div>
+</bag-detail-card>

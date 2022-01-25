@@ -1,0 +1,12 @@
+<span
+  #btnElRef
+  role="button"
+  tabindex="0"
+  class="bag-search-filter"
+  [class.bag-search-filter--open]="isOpen$ | async"
+  (click)="toggle()"
+>
+  <ng-content></ng-content>
+  <sc-svg *ngIf="!(isOpen$ | async)" url="/assets/icon/ic_chevron_down.svg"></sc-svg>
+  <sc-svg *ngIf="isOpen$ | async" url="/assets/icon/ic_chevron_up.svg"></sc-svg>
+</span>

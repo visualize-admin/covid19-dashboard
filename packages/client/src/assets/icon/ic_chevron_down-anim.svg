@@ -1,0 +1,8 @@
+<svg width="24" height="24" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+  <polyline points="5.75,8.75 12,14.65 18.25,8.75" fill="none" stroke="currentColor" stroke-width="2">
+    <animate id="chevron-anim-down" begin="indefinite" fill="freeze" attributeName="points" dur="200ms" to="5.75,8.75 12,14.65 18.25,8.75" />
+    <animate id="chevron-anim-up" begin="indefinite" fill="freeze" attributeName="points" dur="200ms" to="5.75,14.65 12,8.75 18.25,14.65"/>
+  </polyline>
+</svg>
+
+

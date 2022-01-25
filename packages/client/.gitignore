@@ -1,0 +1,11 @@
+# profiling files
+chrome-profiler-events*.json
+speed-measure-plugin*.json
+
+# misc
+/.angular/cache
+/.sass-cache
+
+# special
+src/base-runtime-config.json
+src/client-config

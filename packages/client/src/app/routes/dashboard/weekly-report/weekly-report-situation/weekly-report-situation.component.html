@@ -1,0 +1,18 @@
+<h3>{{ 'WeeklyReport.Situation.DetailTitle' | i18n }}</h3>
+<p class="detail__title-desc">{{ titleDesc$ | async }}</p>
+<p class="g-content" [translate]="'WeeklyReport.Situation.DetailIntro'"></p>
+
+<div class="detail__cards">
+  <bag-weekly-report-card-summary
+    *ngIf="summaryData$ | async as summaryData"
+    [data]="summaryData"
+  ></bag-weekly-report-card-summary>
+  <bag-weekly-report-card-overview
+    *ngIf="overviewData$ | async as overviewData"
+    [data]="overviewData"
+  ></bag-weekly-report-card-overview>
+  <bag-weekly-report-card-development
+    *ngIf="developmentData$ | async as developmentData"
+    [data]="developmentData"
+  ></bag-weekly-report-card-development>
+</div>

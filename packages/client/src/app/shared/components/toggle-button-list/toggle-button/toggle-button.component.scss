@@ -1,0 +1,104 @@
+@use 'src/styles/col';
+@use 'src/styles/var';
+@use 'src/styles/text';
+@use 'src/styles/dim';
+
+bag-toggle-button {
+  --btn-padding: 0 16px;
+  $border: 1px solid var(--c-border-form-control);
+  $btnHeight: 46px;
+
+  flex: 1 1 auto;
+
+  @media (max-width: #{dim.$bp-max-sm}) {
+    --btn-padding: 0 12px;
+  }
+
+  &.toggle-button--standalone {
+    position: relative;
+    display: inline-flex;
+    flex-direction: row;
+    white-space: nowrap;
+    overflow: hidden;
+    border: $border;
+    border-radius: var(--br-form-control);
+  }
+
+  &.toggle-button {
+    position: relative;
+    background-color: var(--c-bg-toggle);
+    color: var(--c-fg-toggle);
+    outline: none;
+    overflow: hidden;
+
+    &:first-child {
+      border-radius: var(--br-form-control) 0 0 var(--br-form-control);
+    }
+
+    &:last-child {
+      border-radius: 0 var(--br-form-control) var(--br-form-control) 0;
+    }
+
+    + .toggle-button {
+      border-left: $border;
+    }
+
+    &:not(.toggle-button--disabled):not(.toggle-button--checked) {
+      &:hover {
+        background-color: var(--c-bg-toggle-hover);
+
+        &:active {
+          background-color: var(--c-bg-toggle-active);
+        }
+      }
+    }
+  }
+
+  .toggle-button__label-content {
+    user-select: none;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    max-width: 100%;
+    display: inline-block;
+    text-align: center;
+
+    > * {
+      vertical-align: middle;
+    }
+  }
+
+  &.toggle-button--checked {
+    background-color: var(--c-bg-toggle-selected);
+    color: var(--c-fg-toggle-selected);
+  }
+
+  &.toggle-button--disabled {
+    .toggle-button__button {
+      cursor: default;
+    }
+  }
+
+  .toggle-button__button {
+    border: 0;
+    background: none;
+    color: inherit;
+    padding: var(--btn-padding);
+    margin: 0;
+    outline: none;
+    width: 100%; // Stretch the button in case the consumer set a custom width.
+    height: 100%;
+    cursor: pointer;
+    min-height: $btnHeight;
+    border-radius: var(--br-form-control);
+    @include text.button;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    // Remove the extra focus outline that is added by Firefox on native buttons.
+    &::-moz-focus-inner {
+      border: 0;
+    }
+  }
+}

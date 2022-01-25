@@ -1,0 +1,12 @@
+<h3 [translate]="'Reproduction.DetailTitle'"></h3>
+<p [translate]="'Reproduction.DetailIntro'" class="g-content"></p>
+
+<div class="detail__cards">
+  <ng-container *ngIf="geographyData$ | async as geoData">
+    <bag-detail-card-repro-geography [geoJson]="chflGeoJson" [data]="geoData"></bag-detail-card-repro-geography>
+  </ng-container>
+
+  <ng-container *ngIf="developmentData$ | async as devData">
+    <bag-detail-card-repro-development [data]="devData.data"></bag-detail-card-repro-development>
+  </ng-container>
+</div>

@@ -1,0 +1,115 @@
+<ng-template #tooltip let-title="title" let-value="value">
+  <div class="detail-card-international-quarantine-geography-tooltip">
+    <span class="detail-card-international-quarantine-geography-tooltip__title">{{ title }}</span>
+    <span class="detail-card-international-quarantine-geography-tooltip__value" [innerHTML]="value"></span>
+  </div>
+</ng-template>
+
+<bag-detail-card
+  titleKey="International.Quarantine.Card.Geography.Title"
+  infoKey="International.Quarantine.Card.Geography.Info"
+  [description]="description$ | async"
+  [sources]="[{ sourceKey: 'International.Quarantine.Card.DataSource', date: (data.sourceDate | toDate) }]"
+  [facet]="facet"
+  [infoAddOnKey]="infoAddOnKey"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+>
+  <ng-container *ngIf="isBrowser">
+    <div
+      *ngIf="choroplethData$ | async as choroplethData"
+      class="detail-card-international-quarantine-geography__legend"
+    >
+      <bag-quarantine-legend
+        [labelQuarantine]="'International.Quarantine.Card.Quarantine' | i18n"
+        [labelQuarantineTo]="
+          choroplethData.quarantineToDate
+            ? ('International.Quarantine.Card.QuarantineTo'
+              | i18n: { end: (choroplethData.quarantineToDate | date) || '' })
+            : null
+        "
+        [labelQuarantineFrom]="
+          choroplethData.quarantineFromDate
+            ? ('International.Quarantine.Card.QuarantineFrom'
+              | i18n: { start: (choroplethData.quarantineFromDate | date) || '' })
+            : null
+        "
+        [labelNoQuarantine]="'International.Quarantine.Card.NoQuarantine' | i18n"
+      ></bag-quarantine-legend>
+    </div>
+
+    <div class="detail-card-international-quarantine-geography__map" *ngIf="choroplethData$ | async as choroplethData">
+      <ng-container *ngIf="choroplethData.geoUnit === null && facet !== 'print'">
+        <bag-toggle-button-list
+          [formControl]="mapZoomFilterCtrl"
+          [attr.aria-label]="'International.MapZoomFilter.Label' | i18n"
+          class="detail-card-international-quarantine-geography__filter-buttons"
+        >
+          <ng-container *ngFor="let opt of mapZoomFilterOptions">
+            <bag-toggle-button *ngIf="opt.val !== null" [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+          </ng-container>
+        </bag-toggle-button-list>
+        <select
+          bag-select
+          name="OccupancyFilter"
+          [attr.aria-label]="'International.MapZoomFilter.Label' | i18n"
+          [formControl]="mapZoomFilterCtrl"
+          class="detail-card-international-quarantine-geography__filter-select"
+        >
+          <ng-container *ngFor="let opt of mapZoomFilterOptions">
+            <option [ngValue]="opt.val" [attr.selected]="opt.val === mapZoomFilterCtrl.value ? '' : null">
+              {{ opt.key | i18n }}
+            </option>
+          </ng-container>
+        </select>
+      </ng-container>
+      <bag-choropleth
+        [facet]="facet"
+        [extendedFeatureCollection]="choroplethData.featureCollection"
+        [fillFn]="getFill"
+        [countriesWithRegion]="countriesWithRegion"
+        [selectedGeoUnit]="choroplethData.geoUnit"
+        [zoomGeoUnit]="choroplethData.zoomGeoUnit"
+        [zoomToSelection]="true"
+        [zoomMaxExtent]="choroplethData.zoomMaxExtent"
+        [hideDropShadowFilter]="true"
+        (elMouseEnter)="showTooltip($event)"
+        (diagramMouseLeave)="hideTooltip()"
+        (zoomedOrMoved)="mapZoomedOrMoved($event)"
+        [zoomFacet]="'spaced'"
+      ></bag-choropleth>
+    </div>
+
+    <p class="detail-card-international-quarantine-geography__map-source">
+      {{ 'International.Quarantine.Card.Geography.MapSource' | i18n }}
+    </p>
+
+    <ng-container *ngIf="quarantineItems$ | async as items">
+      <bag-warnings-list
+        *ngIf="items.current.length"
+        [title]="'International.Quarantine.Card.QuarantineListCurrent' | i18n"
+        [entries]="items.current"
+      ></bag-warnings-list>
+      <bag-warnings-list
+        *ngIf="items.future.length && items.nextListUpdate"
+        [title]="
+          'International.Quarantine.Card.QuarantineListNext' | i18n: { start: (items.nextListUpdate | date) || '' }
+        "
+        [entries]="items.future"
+      ></bag-warnings-list>
+
+      <bag-warnings-list
+        *ngIf="!(items.current.length || items.future.length || items.noLonger.length) && items.none.length"
+        [entries]="items.none"
+      ></bag-warnings-list>
+
+      <bag-warnings-list
+        *ngIf="items.noLonger.length"
+        [title]="
+          items.noLonger.length > 1 ? ('International.Quarantine.Card.QuarantineListNoLonger' | i18n) : undefined
+        "
+        [entries]="items.noLonger"
+      ></bag-warnings-list>
+    </ng-container>
+  </ng-container>
+</bag-detail-card>

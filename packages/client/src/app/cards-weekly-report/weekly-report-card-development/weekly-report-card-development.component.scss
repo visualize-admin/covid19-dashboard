@@ -1,0 +1,33 @@
+@use 'src/styles/col';
+@use 'src/styles/text';
+@use 'src/styles/var';
+@use 'src/styles/layout';
+@use 'src/styles/dim';
+
+bag-weekly-report-card-development {
+  display: block;
+
+  .weekly-report-card-development__view {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .weekly-report-card-development__chart-title {
+    @include text.paragraph2;
+    font-weight: var.$font-weight-bold;
+    margin: 8px 0;
+  }
+
+  .weekly-report-card-development__spacer {
+    margin-top: 48px;
+  }
+
+  .weekly-report-card-development__legend {
+    align-self: flex-end;
+  }
+
+  .weekly-report-card-development__meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+}

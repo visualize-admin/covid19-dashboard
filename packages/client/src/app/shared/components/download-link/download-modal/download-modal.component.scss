@@ -1,0 +1,98 @@
+@use 'src/styles/col';
+@use 'src/styles/var';
+@use 'src/styles/text';
+@use 'src/styles/dim';
+
+bag-download-modal {
+  display: block;
+  background-color: var(--c-bg-overlay);
+  border: 1px solid var(--c-border-overlay);
+  border-radius: var(--br-overlay);
+  box-shadow: var(--bs-overlay);
+  overflow: hidden;
+
+  .download-modal {
+    @include text.button;
+    padding: 4px;
+    position: relative;
+
+    &.download-modal--share,
+    &.download-modal--daily-report {
+      .download-modal__inner {
+        flex-direction: column;
+      }
+      .download-modal__item {
+        margin: 0 12px 12px 12px;
+      }
+    }
+  }
+
+  .download-modal__inner {
+    display: flex;
+  }
+
+  .download-modal__label,
+  .download-modal__item {
+    display: inline-block;
+    margin: 12px;
+    outline: none;
+  }
+  .download-modal__item {
+    & > * {
+      display: block;
+    }
+  }
+
+  .download-modal__item--daily-report {
+    & > * {
+      display: flex;
+      align-items: center;
+      text-align: left;
+
+      sc-svg {
+        height: 24px;
+        width: 24px;
+        margin-right: 8px;
+      }
+    }
+  }
+
+  .download-modal__hidden-btn {
+    border: 0;
+    background: transparent;
+    position: absolute;
+    right: 2px;
+    padding: 0;
+    top: 16px;
+    &:not(.cdk-keyboard-focused):not(.cdk-program-focused) {
+      clip: rect(0 0 0 0);
+      height: 1px;
+      margin: -1px;
+      overflow: hidden;
+      width: 1px;
+    }
+
+    &.cdk-keyboard-focused,
+    &.cdk-program-focused {
+      width: 24px;
+      height: 24px;
+    }
+
+    & > sc-svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  @media (max-width: #{dim.$bp-max-sm}) {
+    width: calc(100vw - 32px);
+    margin: 16px;
+    .download-modal {
+      flex-direction: column;
+      padding: 12px 16px;
+    }
+    .download-modal__txt {
+      margin: 6px 0;
+    }
+  }
+}

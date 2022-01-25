@@ -1,0 +1,77 @@
+<div class="detail-card">
+  <div *ngIf="!hideInfo" class="detail-card__header">
+    <h4 class="detail-card__title">{{ titleKey | i18n }}</h4>
+
+    <!-- innerHTML needed because description parts are span tags -->
+    <p class="detail-card__description" *ngIf="description" [innerHTML]="description"></p>
+
+    <div
+      *ngIf="infoKey | i18nCheckKey"
+      class="detail-card__info g-content"
+      [translate]="infoKey"
+      [translateValues]="infoArgs"
+    ></div>
+    <div *ngIf="infoMoreKey | i18nCheckKey" class="g-content">
+      <div
+        *ngIf="showMore || isFacetPrint"
+        [translate]="infoMoreKey"
+        class="detail-card__info detail-card__info--more"
+      ></div>
+      <button class="detail-card__show-more-btn" (click)="toggleMoreInfo()">
+        <span>{{ (showMore ? 'Commons.ShowLess' : 'Commons.ShowMore') | i18n }}</span>
+        <sc-svg [url]="showMore ? '/assets/icon/ic_chevron_up.svg' : '/assets/icon/ic_chevron_down.svg'"></sc-svg>
+      </button>
+    </div>
+
+    <div *ngIf="infoAddOnKey" class="detail-card__info g-content" [translate]="infoAddOnKey"></div>
+
+    <div *ngIf="warnKey" class="detail-card__warning">
+      <sc-svg url="/assets/icon/ic_alert.svg"></sc-svg>
+      <p [translate]="warnKey"></p>
+    </div>
+  </div>
+
+  <ng-content></ng-content>
+
+  <footer class="detail-card__footer">
+    <div class="detail-card__download">
+      <bag-download-link *ngIf="downloadUrls" fileDescription="{{ 'Commons.Image' | i18n }}">
+        {{ 'Commons.DownloadImage' | i18n }}
+        <a
+          class="g-default"
+          *bagDownloadLinkItem
+          [href]="downloadUrls.png.url"
+          [download]="downloadUrls.png.filename"
+          >{{ 'FileType.PNG' | i18n }}</a
+        >
+        <a
+          class="g-default"
+          *bagDownloadLinkItem
+          [href]="downloadUrls.jpeg.url"
+          [download]="downloadUrls.jpeg.filename"
+          >{{ 'FileType.JPEG' | i18n }}</a
+        >
+      </bag-download-link>
+      <bag-download-link *ngIf="detailUrl" fileDescription="{{ 'Commons.Image' | i18n }}" type="share">
+        {{ 'Commons.Share' | i18n }}
+        <bag-share-link
+          *bagDownloadLinkItem
+          [shareUrl]="detailUrl"
+          [title]="'Commons.SEO.Title' | i18n"
+          [text]="descriptionText"
+        ></bag-share-link>
+      </bag-download-link>
+    </div>
+    <a [attr.href]="detailUrl" tabindex="-1" class="cdk-visually-hidden">{{ 'Commons.Share' | i18n }}</a>
+    <div class="detail-card__url">covid19.admin.ch</div>
+    <div class="detail-card__source" [id]="sourceElId">
+      <ng-container *ngFor="let source of sources">
+        <div class="detail-card__source-entry" [innerHTML]="getSourceText(source)"></div>
+      </ng-container>
+    </div>
+  </footer>
+
+  <ng-container *ngIf="detailCardAddon">
+    <ng-template [ngTemplateOutlet]="detailCardAddon.templateRef"></ng-template>
+  </ng-container>
+</div>

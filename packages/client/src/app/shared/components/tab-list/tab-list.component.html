@@ -1,0 +1,32 @@
+<nav class="tab-list">
+  <button
+    class="tab-list__scroll-btn tab-list__scroll-btn--left"
+    [class.tab-list__scroll-btn--visible]="opacityBeforeBtn$ | async"
+    (click)="scroll(-1)"
+  >
+    <sc-svg url="/assets/icon/ic_chevron_right.svg" style="transform: scaleX(-1)"></sc-svg>
+  </button>
+
+  <div class="tab-list__inner">
+    <ul class="tab-list__list" #scrollContainerElRef>
+      <li *ngFor="let item of tabItems" class="tab-list__item">
+        <a
+          class="tab-list__link"
+          cdkMonitorElementFocus
+          [routerLink]="item.routeArgs"
+          routerLinkActive="tab-list__link--active"
+        >
+          <ng-template [ngTemplateOutlet]="item.template"></ng-template>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <button
+    class="tab-list__scroll-btn tab-list__scroll-btn--right"
+    [class.tab-list__scroll-btn--visible]="opacityAfterBtn$ | async"
+    (click)="scroll(1)"
+  >
+    <sc-svg url="/assets/icon/ic_chevron_right.svg"></sc-svg>
+  </button>
+</nav>

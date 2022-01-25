@@ -1,0 +1,34 @@
+<bag-overview-card
+  titleKey="OverviewCardHospCapacity.Title"
+  [sourceDate]="data.sourceDate | toDate"
+  [facet]="facet"
+  [moreLinkArgs]="moreLink"
+  [warnKey]="warningKey$ | async"
+>
+  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'OverviewCardHospCapacity.InfoText.Top'"></p>
+
+  <bag-key-value-list *ngIf="keyValueList$ | async as keyValueList" [data]="keyValueList"></bag-key-value-list>
+
+  <ng-container *ngIf="histogram$ | async as histogram">
+    <bag-chart-legend [itemGap]="16" class="card__legend">
+      <div bagChartLegendMeanLines>
+        <div *ngFor="let pair of legendSquarePairs" bagChartLegendMeanLine [color]="pair[0]"></div>
+        <div>
+          {{ 'HospCapacity.Card.Mean15Days.Label' | i18n }}
+        </div>
+      </div>
+      <div *ngFor="let pair of legendSquarePairs" bagChartLegendSquare [color]="pair[0]" [translate]="pair[1]"></div>
+    </bag-chart-legend>
+
+    <p class="card__chart-title">{{ 'OverviewCardHospCapacity.ChartTitle' | i18n }}</p>
+    <bag-histogram-preview
+      [data]="histogram"
+      [barColors]="barColors"
+      [barOpacity]="0.5"
+      [lineColors]="lineColors"
+      [lineThickness]="2"
+    ></bag-histogram-preview>
+  </ng-container>
+
+  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'OverviewCardHospCapacity.InfoText.Bottom'"></p>
+</bag-overview-card>

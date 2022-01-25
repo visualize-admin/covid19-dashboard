@@ -1,0 +1,72 @@
+<bag-detail-card
+  titleKey="WeeklyReport.Card.Overview.Title"
+  infoKey="WeeklyReport.Situation.Card.Overview.Info"
+  warnKey="WeeklyReport.Situation.Card.Overview.Warning"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: (data.curr.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+>
+  <div class="weekly-report-card-overview__lr">
+    <label id="detail-relativity-filter-label" class="cdk-visually-hidden">{{ 'RelativityFilter.Label' | i18n }}</label>
+    <select
+      bag-select
+      aria-labelledby="detail-relativity-filter-label"
+      name="detailRelativityFilter"
+      [formControl]="relativityFilterCtrl"
+    >
+      <ng-container *ngFor="let opt of relativityFilterOptions">
+        <option [ngValue]="opt.val" [attr.selected]="opt.val === relativityFilterCtrl.value ? '' : null">
+          {{ opt.key | i18n }}
+        </option>
+      </ng-container>
+    </select>
+  </div>
+  <div class="weekly-report-card-overview__view" *ngIf="tableData$ | async as tableData">
+    <table class="weekly-report-card-overview__table">
+      <thead>
+        <tr>
+          <td><!-- row title col --></td>
+          <th scope="col">
+            {{ 'WeeklyReport.TotalUntil' | i18n: { date: tableData.total } }}
+          </th>
+          <th>
+            {{ 'WeeklyReport.WeekFrom' | i18n: { week: tableData.prevWeek.week, date: tableData.prevWeek.date } }}
+          </th>
+          <th>
+            {{ 'WeeklyReport.WeekFrom' | i18n: { week: tableData.currWeek.week, date: tableData.currWeek.date } }}
+          </th>
+          <th>
+            {{ 'WeeklyReport.Difference' | i18n }}
+          </th>
+        </tr>
+      </thead>
+      <tbody>
+        <ng-container *ngFor="let row of tableData.entries">
+          <tr>
+            <th scope="row">{{ row.label | i18n }}</th>
+            <td>{{ row.total }}</td>
+            <td>{{ row.prevWeek }}</td>
+            <td>{{ row.currWeek }}</td>
+            <td>{{ row.diff }}</td>
+          </tr>
+          <tr
+            *ngFor="let nestedRow of row.inlineEntries; let ix = index"
+            class="weekly-report-card-overview__secondary-row"
+            [class.weekly-report-card-overview__row-no-bottom-padding]="ix === 0 || ix === 2"
+          >
+            <th scope="row">
+              <span class="cdk-visually-hidden">{{ row.label | i18n }}&ngsp;</span>{{ nestedRow.label | i18n }}
+            </th>
+            <td>{{ nestedRow.total }}</td>
+            <td>{{ nestedRow.prevWeek }}</td>
+            <td>{{ nestedRow.currWeek }}</td>
+            <td>{{ nestedRow.diff }}</td>
+          </tr>
+        </ng-container>
+      </tbody>
+    </table>
+  </div>
+</bag-detail-card>

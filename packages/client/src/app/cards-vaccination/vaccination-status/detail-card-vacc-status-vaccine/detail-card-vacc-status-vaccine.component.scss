@@ -1,0 +1,68 @@
+@use 'src/styles/text';
+@use 'src/styles/mix';
+@use 'src/styles/dim';
+
+bag-detail-card-vacc-status-vaccine {
+  display: block;
+
+  .detail-card-vacc-status-vaccine {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-card-vacc-status-vaccine__warning {
+    @include mix.warning;
+    margin-bottom: 32px;
+  }
+
+  .detail-card-vacc-status-vaccine__lr {
+    @include mix.cardFiltersMainWithMultiSelectLr;
+  }
+
+  .detail-card-vacc-status-vaccine__no-data {
+    @include mix.noDetailCardContent;
+  }
+
+  .detail-card-vacc-status-vaccine__no-data-btn {
+    @include mix.noDetailCardContentLink;
+  }
+
+  .detail-card-vacc-status-vaccine__chart {
+    margin-top: 48px;
+  }
+
+  .detail-card-vacc-status-vaccine__title {
+    @include text.h3;
+    margin: 0 0 16px 0;
+  }
+
+  .detail-card-vacc-status-vaccine__chart-title {
+    @include text.h3;
+    margin: 0 0 0;
+  }
+
+  .detail-card-vacc-status-vaccine__chart-title--spaced {
+    margin-bottom: 16px;
+  }
+
+  .detail-card-vacc-status-vaccine__chart-intro {
+    @include mix.cardChartIntro;
+  }
+
+  .detail-card-vacc-status-vaccine__chart-meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .detail-card-vacc-status-vaccine__relativity-filter--toggle {
+      display: none;
+    }
+  }
+
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .detail-card-vacc-status-vaccine__relativity-filter--select[bag-select] {
+      display: none;
+    }
+  }
+}

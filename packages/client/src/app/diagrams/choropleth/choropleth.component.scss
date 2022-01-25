@@ -1,0 +1,46 @@
+@use 'src/styles/col';
+@use 'src/styles/dim';
+@use 'src/styles/text';
+@use 'src/styles/mix';
+
+bag-choropleth {
+  display: block;
+  align-self: center;
+
+  width: 100%;
+
+  &.--no-vh-var {
+    --vh: 100vh;
+  }
+  max-width: calc((var(--vh) - var(--d-sticky-detail-filter-height) - 80px) * (780 / 495));
+
+  .choropleth {
+    position: relative;
+  }
+
+  @include mix.touchHint;
+
+  .choropleth--print {
+    .choropleth__zoom {
+      display: none;
+    }
+  }
+
+  .choropleth__element {
+    &.choropleth__element--is-zoomed {
+      cursor: grab;
+
+      &:active {
+        cursor: grabbing;
+      }
+    }
+  }
+
+  --card-padding: 24px;
+
+  @media (max-width: #{dim.$bp-max-sm}) {
+    --card-padding: 4px;
+  }
+
+  @include mix.choroplethZoom;
+}

@@ -1,0 +1,46 @@
+@use 'src/styles/layout';
+@use 'src/styles/var';
+@use 'src/styles/col';
+@use 'src/styles/text';
+
+:host {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-row-gap: 48px;
+
+  .giga {
+    @include text.giga;
+  }
+
+  .h1 {
+    @include text.h1;
+  }
+
+  .h2 {
+    @include text.h2;
+  }
+
+  .h3 {
+    @include text.h3;
+  }
+
+  .meta {
+    @include text.meta;
+  }
+
+  .lead {
+    @include text.lead;
+  }
+
+  .p1 {
+    @include text.paragraph1;
+  }
+
+  .p2 {
+    @include text.paragraph2;
+  }
+
+  .button {
+    @include text.button;
+  }
+}

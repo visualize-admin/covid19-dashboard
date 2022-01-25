@@ -1,0 +1,33 @@
+<bag-header class="dashboard__header"></bag-header>
+
+<main class="dashboard__main">
+  <div class="dashboard__nav">
+    <h1 class="dashboard__title">{{ 'Page.Title' | i18n }}</h1>
+    <p class="dashboard__sub-title" *ngIf="introArg$ | async as arg">{{ 'Page.Subtitle' | i18n: arg }}</p>
+
+    <bag-page-notification
+      *ngIf="noNewDataNotification$ | async as noNewDataNotification"
+      class="dashboard__notification"
+    >
+      <!-- usage of span on purpose: generates ugly linebreaks otherwise (ssr only) -->
+      <span [translate]="noNewDataNotification"></span>
+    </bag-page-notification>
+    <bag-page-notification *ngIf="showSpecialNotification$ | async" class="dashboard__notification">
+      <!-- usage of span on purpose: generates ugly linebreaks otherwise (ssr only) -->
+      <span [translate]="'Commons.TechnicalIssuesHint'"></span>
+    </bag-page-notification>
+    <bag-page-notification *ngIf="showGlobalDisclaimer$ | async" class="dashboard__notification">
+      <!-- usage of span on purpose: generates ugly linebreaks otherwise (ssr only) -->
+      <span [translate]="'Commons.GlobalDisclaimer'"></span>
+    </bag-page-notification>
+
+    <bag-tab-list class="dashboard__tabs">
+      <ng-container *ngFor="let link of links">
+        <ng-template [tabItem]="['/', lang, link.path]">{{ link.labelKey | i18n }}</ng-template>
+      </ng-container>
+    </bag-tab-list>
+  </div>
+  <router-outlet></router-outlet>
+</main>
+
+<bag-footer class="dashboard__footer"></bag-footer>

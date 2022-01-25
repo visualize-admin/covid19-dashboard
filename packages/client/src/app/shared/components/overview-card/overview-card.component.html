@@ -1,0 +1,38 @@
+<div class="card">
+  <div class="card__header">
+    <h3 class="card__title" [translate]="titleKey"></h3>
+    <p class="card__subtitle">
+      <ng-template #noSourceDateTpl>&nbsp;</ng-template>
+      <ng-container *ngIf="sourceKey && sourceDate; else noSourceDateTpl">
+        {{ 'Commons.Source' | i18n }}: {{ sourceKey | i18n }}&ngsp;–&ngsp;{{ 'Commons.DataStatus' | i18n: transArg }}
+      </ng-container>
+    </p>
+    <button
+      *ngIf="hasToggledInfos || hasToggledWarnings"
+      class="card__header-btn"
+      [class.card__header-btn--open]="showInfo$ | async"
+      [class.card__header-btn--warning]="hasToggledWarnings"
+      (click)="toggleInfo()"
+    >
+      <ng-container *ngIf="showInfo$ | async">
+        <span class="cdk-visually-hidden">{{ 'OverviewCard.InfoButtonLabel.Hide' | i18n }}</span>
+        <sc-svg url="/assets/icon/ic_close-info-2.svg"></sc-svg>
+      </ng-container>
+      <ng-container *ngIf="!(showInfo$ | async)">
+        <span class="cdk-visually-hidden">{{ 'OverviewCard.InfoButtonLabel.Show' | i18n }}</span>
+        <sc-svg [url]="hasToggledWarnings ? '/assets/icon/ic_info-alert.svg' : '/assets/icon/ic_info-2.svg'"></sc-svg>
+      </ng-container>
+    </button>
+  </div>
+  <bag-overview-card-warning *ngIf="warnKey && (warnKey | i18nCheckKey)" [key]="warnKey"></bag-overview-card-warning>
+  <ng-content></ng-content>
+  <ng-container *ngIf="moreLinkArgs && !facetPrint">
+    <a
+      class="card__cta g-default-icon"
+      [routerLink]="moreLinkArgs"
+      [queryParams]="moreLinkQueryParams"
+      [fragment]="RouteFragment.SHOW_DETAIL"
+      >{{ 'OverviewCard.MoreInfoLabel' | i18n }}<sc-svg url="/assets/icon/ic_chevron_right.svg"></sc-svg
+    ></a>
+  </ng-container>
+</div>

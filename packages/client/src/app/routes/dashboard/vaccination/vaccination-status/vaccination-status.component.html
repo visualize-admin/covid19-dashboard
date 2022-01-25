@@ -1,0 +1,26 @@
+<h3>{{ 'Vaccination.Status.DetailTitle' | i18n }}</h3>
+<div *ngIf="warningKey$ | async as warningKey" class="vaccination-status__warning">
+  <sc-svg url="/assets/icon/ic_alert.svg"></sc-svg>
+  <p [translate]="warningKey"></p>
+</div>
+<p class="g-content" [translate]="'Vaccination.Status.DetailIntro'"></p>
+
+<div
+  class="vaccination-status__filter"
+  [bagIntersection]="{ offset: 120 }"
+  #int="bagIntersection"
+  [class.vaccination-status__filter--shadow]="!(int.isIntersecting$ | async)"
+>
+  <bag-single-select
+    class="vaccination-status__filter-field"
+    labelKey="Vaccination.Status.IndicatorFilter.Description"
+    [formControl]="indicatorFilterCtrl"
+    [options]="indicatorFilterOptions"
+  ></bag-single-select>
+</div>
+
+<div class="detail__cards" *ngIf="data$ | async as data">
+  <bag-detail-card-vacc-status-development [data]="data.development"></bag-detail-card-vacc-status-development>
+  <bag-detail-card-vacc-status-vaccine [data]="data.vaccine"></bag-detail-card-vacc-status-vaccine>
+  <bag-detail-card-vacc-status-demography [data]="data.demography"></bag-detail-card-vacc-status-demography>
+</div>

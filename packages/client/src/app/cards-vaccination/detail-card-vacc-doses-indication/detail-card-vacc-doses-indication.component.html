@@ -1,0 +1,118 @@
+<bag-detail-card
+  titleKey="Vaccination.Card.Indication.Title"
+  [infoKey]="keys.info"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', descKey: keys.sourceDesc, date: (data.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [hideInfo]="hideInfo"
+>
+  <ng-container *ngIf="indicationData$ | async as indicationData">
+    <div class="detail-card-vacc-doses-indication__lr">
+      <!-- cumulative filter -->
+      <select
+        bag-select
+        [attr.aria-label]="'Vaccination.CumulativeFilter.Label' | i18n"
+        name="detailCumulativeFilter"
+        [formControl]="cumulativeCtrl"
+      >
+        <ng-container *ngFor="let opt of cumulativeFilterOptions">
+          <option [ngValue]="opt.val" [attr.selected]="opt.val === cumulativeCtrl.value ? '' : null">
+            {{ opt.key | i18n }}
+          </option>
+        </ng-container>
+      </select>
+
+      <!-- indication filter -->
+      <bag-multi-select
+        *ngIf="indicationData.showCumulative"
+        [formControl]="indicationFilterCtrl"
+        [labelFn]="demoViewMultiSelectFilterLabelFn"
+        [options]="indicationFilterOptions"
+      >
+      </bag-multi-select>
+
+      <!-- relativity filter -->
+      <bag-toggle-button-list
+        class="detail-card-vacc-doses-indication__relativity-filter--toggle"
+        [attr.aria-label]="'Vaccination.RelativityFilter.Label' | i18n"
+        name="detailRelativityFilter"
+        [formControl]="vaccDosesRelativityFilterCtrl"
+      >
+        <ng-container *ngFor="let opt of vaccDosesRelativityFilterOptions">
+          <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+        </ng-container>
+      </bag-toggle-button-list>
+      <select
+        bag-select
+        class="detail-card-vacc-doses-indication__relativity-filter--select"
+        [attr.aria-label]="'Vaccination.RelativityFilter.Label' | i18n"
+        name="detailRelativityFilter"
+        [formControl]="vaccDosesRelativityFilterCtrl"
+      >
+        <ng-container *ngFor="let opt of vaccDosesRelativityFilterOptions">
+          <option [ngValue]="opt.val" [attr.selected]="opt.val === vaccDosesRelativityFilterCtrl.value ? '' : null">
+            {{ opt.key | i18n }}
+          </option>
+        </ng-container>
+      </select>
+    </div>
+
+    <!-- indication Distribution Chart -->
+    <ng-container *ngIf="indicationData.showWeeklyValues">
+      <div class="detail-card-vacc-doses-indication__chart-intro">
+        <bag-color-legend
+          [min]="indicationData.matrixData.indication.min"
+          [max]="indicationData.matrixData.indication.max"
+          [titleKey]="indicationData.isRel ? keys.metaRel : keys.metaAbs"
+          [noCasesKey]="indicationData.matrixData.indication.hasZeroValues ? keys.legendZero : null"
+          [noDataKey]="indicationData.matrixData.indication.hasNullValues ? 'Commons.NoData' : null"
+          [scaleColors]="heatmapScaleColors"
+          [colorTicks]="6"
+        ></bag-color-legend>
+      </div>
+      <ng-container *ngFor="let bucketData of indicationData.matrixData.indicationDataPerBucket; let isLast = last">
+        <h4 class="detail-card-vacc-doses-indication__location-bucket-title">{{ bucketData.bucketName }}</h4>
+        <bag-matrix-heatmap
+          [class.detail-card-vacc-doses-indication__location-bucket]="!isLast"
+          [data]="bucketData.entries"
+          [fillFn]="indicationData.matrixData.indicationFillFn"
+          [hideYAxis]="true"
+          (elFocus)="showMatrixTooltip($event, indicationData.isRel)"
+          (diagramLeave)="hideTooltip()"
+        ></bag-matrix-heatmap>
+      </ng-container>
+    </ng-container>
+
+    <ng-container *ngIf="indicationData.showCumulative">
+      <div class="detail-card-vacc-doses-indication__chart-intro">
+        <!-- indication legend -->
+        <bag-chart-legend [itemGap]="16">
+          <div
+            *ngFor="let pair of indicationData.histogramData.histoLegendPairs"
+            bagChartLegendSquare
+            [color]="pair[0]"
+          >
+            {{ pair[1] }}
+          </div>
+        </bag-chart-legend>
+      </div>
+
+      <div class="detail-card-vacc-doses-indication__chart-meta">
+        {{ (indicationData.isRel ? keys.metaRel : keys.metaAbs) | i18n }}
+      </div>
+      <bag-histogram-line
+        [data]="indicationData.histogramData.data"
+        [focusPosYCenter]="true"
+        [colors]="indicationData.histogramData.histoColors"
+        [strokeWidths]="2"
+        [disableNoDataBlocks]="true"
+        [withWeeklyValues]="true"
+        (elFocus)="showCumulTooltip($event, indicationData.isRel, indicationData.histogramData.histoLegendPairs)"
+        (diagramLeave)="hideTooltip()"
+      ></bag-histogram-line>
+    </ng-container>
+  </ng-container>
+</bag-detail-card>

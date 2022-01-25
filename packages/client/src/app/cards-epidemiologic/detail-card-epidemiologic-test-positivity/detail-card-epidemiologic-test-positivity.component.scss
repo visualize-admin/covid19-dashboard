@@ -1,0 +1,19 @@
+@use 'src/styles/text';
+@use 'src/styles/col';
+@use 'src/styles/layout';
+
+bag-detail-card-epidemiologic-test-positivity {
+  display: block;
+
+  .detail-card-test-positivity {
+    display: flex;
+    flex-direction: column;
+  }
+  .detail-card-test-positivity__legend {
+    align-self: flex-end;
+  }
+  .detail-card-test-positivity__meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+}

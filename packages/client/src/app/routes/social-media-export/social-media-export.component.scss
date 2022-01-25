@@ -1,0 +1,41 @@
+@use 'src/styles/layout';
+@use 'src/styles/var';
+@use 'src/styles/col';
+@use 'src/styles/mix';
+@use 'src/styles/text';
+
+:host {
+  display: flex;
+  flex-direction: column;
+
+  .content {
+    @include layout.container;
+    padding: var(--d-page-side-gap) 0;
+    grid-row-gap: var(--d-page-side-gap);
+
+    & > h1 {
+      @include text.h1;
+    }
+  }
+
+  .card {
+    border: 1px solid var(--c-border-card);
+    box-shadow: var(--bs-card);
+    background-color: var(--c-bg-card);
+
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    & > h2 {
+      @include text.h2;
+      margin-bottom: 8px;
+    }
+
+    & > h3 {
+      @include text.h3;
+      margin-bottom: 4px;
+    }
+  }
+}

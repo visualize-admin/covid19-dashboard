@@ -1,0 +1,159 @@
+<bag-detail-card
+  [titleKey]="titleKey"
+  [infoKey]="hideInfo ? null : infoKey"
+  [infoAddOnKey]="hideInfo ? null : infoAddOnKey"
+  [warnKey]="hideInfo ? null : warnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: (data.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+>
+  <div class="detail-card-demography__chart-list">
+    <ng-container *ngIf="demographyData$ | async as demoData">
+      <!-- By age groups -->
+      <div *ngIf="demoData.age.entries">
+        <h5 class="detail-card-demography__subtitle">
+          {{ 'DetailCardDemography.Chart.MatrixColor.Title' | i18n }}
+        </h5>
+
+        <div [class.detail-card-demography__lr]="demoData.view === DemoViewFilter.HEATMAP">
+          <div [class.detail-card-demography__lr-graph]="demoData.view === DemoViewFilter.GRAPH">
+            <label id="detail-demo-view-filter-label" class="cdk-visually-hidden">{{
+              'DemoViewFilter.Label' | i18n
+            }}</label>
+            <bag-toggle-button-list
+              aria-labelledby="detail-demo-view-filter-label"
+              name="detailDemoViewFilter"
+              [formControl]="demoViewFilterCtrl"
+            >
+              <ng-container *ngFor="let opt of demoViewFilterOptions">
+                <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+              </ng-container>
+            </bag-toggle-button-list>
+
+            <ng-container *ngIf="demoData.view === DemoViewFilter.GRAPH">
+              <bag-multi-select
+                [formControl]="ageRangeFilterCtrl"
+                [labelFn]="demoViewMultiSelectFilterLabelFn"
+                [options]="ageRangeFilterOptions"
+              >
+              </bag-multi-select>
+            </ng-container>
+          </div>
+          <ng-container *ngIf="demoData.view === DemoViewFilter.HEATMAP">
+            <bag-color-legend
+              class="detail-card-geo__legend"
+              [min]="demoData.age.min"
+              [max]="demoData.age.max"
+              [titleKey]="demoData.isInz ? metaInzKey : metaAbsKey"
+              [noCasesKey]="demoData.age.hasZeroValues ? legendZeroKey : null"
+              [noDataKey]="demoData.age.hasNullValues ? 'Commons.NoData' : null"
+              [scaleColors]="heatmapScaleColors"
+              [colorTicks]="6"
+            ></bag-color-legend>
+          </ng-container>
+        </div>
+        <div *ngIf="demoData.view === DemoViewFilter.GRAPH" class="detail-card-demography__lr-histogram-legend">
+          <bag-chart-legend [itemGap]="16">
+            <div *ngFor="let pair of demoData.histoLegendPairs" bagChartLegendSquare [color]="pair[0]">
+              {{ pair[1] | replaceHyphenWithEnDash }}
+            </div>
+          </bag-chart-legend>
+        </div>
+        <ng-container *ngIf="demoData.view === DemoViewFilter.HEATMAP">
+          <bag-matrix-heatmap
+            [data]="demoData.age.entries"
+            [yLabelMaxLength]="5"
+            [yLabelFormatter]="matrixYLabelFmt"
+            [fillFn]="demoData.ageFillFn"
+            (elFocus)="showMatrixTooltip($event, demoData.isInz)"
+            (diagramLeave)="hideTooltip()"
+          ></bag-matrix-heatmap>
+        </ng-container>
+        <ng-container *ngIf="demoData.view === DemoViewFilter.GRAPH">
+          <p class="detail-card-demography__meta">{{ (demoData.isInz ? metaInzKey : metaAbsKey) | i18n }}</p>
+          <bag-histogram-line
+            [data]="demoData.ageHistoEntries"
+            [focusPosYCenter]="true"
+            [colors]="demoData.ageHistoColors"
+            [strokeWidths]="2"
+            [disableNoDataBlocks]="false"
+            [skipNoDataBlocksBefore]="demoData.ageSkipNoDataBefore"
+            [withWeeklyValues]="true"
+            (diagramLeave)="hideTooltip()"
+            (elFocus)="showHistoTooltip($event, demoData.isInz, demoData.histoLegendPairs)"
+          ></bag-histogram-line>
+        </ng-container>
+      </div>
+
+      <!-- By gender -->
+      <div *ngIf="demoData.gender.entries">
+        <div class="detail-card-demography__lr">
+          <h5 class="detail-card-demography__subtitle">{{ 'DetailCardDemography.Chart.MatrixStack.Title' | i18n }}</h5>
+          <bag-chart-legend [itemGap]="16">
+            <div bagChartLegendSquare [color]="'#428bd3'" translate="Commons.Male"></div>
+            <div bagChartLegendSquare [color]="'#b8dcff'" translate="Commons.Unknown"></div>
+            <div bagChartLegendSquare [color]="'#81b1e2'" translate="Commons.Female"></div>
+            <div
+              *ngIf="demoData.gender.hasBucketsAllZero"
+              bagChartLegendSquare
+              noCase
+              [translate]="legendZeroKey"
+            ></div>
+            <div *ngIf="demoData.gender.hasNullValues" bagChartLegendSquare noData translate="Commons.NoData"></div>
+          </bag-chart-legend>
+        </div>
+        <bag-matrix-stack
+          [data]="demoData.gender.entries"
+          [yLabelMaxLength]="5"
+          [rulerAt]="50"
+          [bucketColors]="stackColors"
+          (elFocus)="showStackTooltip($event)"
+          (diagramLeave)="hideTooltip()"
+        ></bag-matrix-stack>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="demographyTwoWeeks$ | async as data2w">
+      <div *ngIf="data2w.age">
+        <h5 class="detail-card-demography__subtitle">{{ 'DetailCardDemography.Chart.MatrixColor.Title' | i18n }}</h5>
+        <div class="detail-card-demography__chart-group">
+          <bag-row-bar-chart
+            [entries]="data2w.age.entries[0]"
+            [dates]="data2w.age.week1"
+            [maxLabelLength]="data2w.maxLabelLength"
+            [maxValueLength]="data2w.maxValueLength"
+          >
+          </bag-row-bar-chart>
+          <bag-row-bar-chart
+            [entries]="data2w.age.entries[1]"
+            [dates]="data2w.age.week2"
+            [maxLabelLength]="data2w.maxLabelLength"
+            [maxValueLength]="data2w.maxValueLength"
+          >
+          </bag-row-bar-chart>
+        </div>
+      </div>
+      <div *ngIf="data2w.gender">
+        <h5 class="detail-card-demography__subtitle">{{ 'DetailCardDemography.Chart.MatrixStack.Title' | i18n }}</h5>
+        <div class="detail-card-demography__chart-group">
+          <bag-row-bar-chart
+            [entries]="data2w.gender.entries[0]"
+            [dates]="data2w.gender.week1"
+            [maxLabelLength]="data2w.maxLabelLength"
+            [maxValueLength]="data2w.maxValueLength"
+          >
+          </bag-row-bar-chart>
+          <bag-row-bar-chart
+            [entries]="data2w.gender.entries[1]"
+            [dates]="data2w.gender.week2"
+            [maxLabelLength]="data2w.maxLabelLength"
+            [maxValueLength]="data2w.maxValueLength"
+          >
+          </bag-row-bar-chart>
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</bag-detail-card>

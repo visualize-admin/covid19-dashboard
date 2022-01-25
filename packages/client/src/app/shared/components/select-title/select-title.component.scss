@@ -1,0 +1,170 @@
+@use 'src/styles/col';
+@use 'src/styles/layout';
+@use 'src/styles/dim';
+@use 'src/styles/var';
+@use 'src/styles/text';
+
+bag-select-title {
+  display: block;
+  position: sticky;
+  z-index: 2;
+  top: 0;
+
+  // when changing, also change `--d-sticky-detail-filter-base-height`
+  --inner-vertical-padding: 16px 0;
+  --main-flex-dir: row;
+  --main-flex-align: center;
+
+  $margin-top: 32px;
+
+  background-color: var(--c-bg-page);
+  margin-top: $margin-top;
+  &:before {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: -$margin-top;
+    height: $margin-top;
+    background-color: var(--c-bg-page);
+  }
+
+  .select-title {
+    @include layout.container(dim.$detail-container);
+    border-bottom: 1px solid var(--c-divider);
+    position: relative;
+    background-color: inherit;
+    transition: background-color 250ms ease-in, border-bottom-color 250ms ease-in;
+
+    &:after {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      z-index: -1;
+      height: 50%;
+      transition: box-shadow 250ms ease-in;
+    }
+  }
+
+  .select-title__hamburger-btn {
+    display: none;
+  }
+
+  .select-title--no-border:not(.select-title--shadow) {
+    border-bottom-color: transparent;
+  }
+
+  .select-title__title,
+  .select-title__filter-search-value {
+    @include text.h1;
+  }
+
+  .select-title--shadow {
+    &:after {
+      box-shadow: var(--bs-overlay);
+    }
+  }
+
+  .select-title__main {
+    display: flex;
+    flex-direction: var(--main-flex-dir);
+    align-items: var(--main-flex-align);
+  }
+
+  .select-title__inner {
+    padding: var(--inner-vertical-padding);
+  }
+
+  .select-title__title {
+    flex: 1 1 0;
+    padding-right: 12px;
+  }
+
+  .select-title__filter-select {
+    margin-top: 20px;
+    width: 100%;
+  }
+
+  .select-title__filter-select-hamburger {
+    flex: 0 1 auto;
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: normal;
+  }
+
+  .select-title__reset {
+    font-size: var(--fz-meta);
+    line-height: var(--fz-meta);
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+    margin-top: 4px;
+  }
+
+  .select-title__intersection {
+    position: absolute;
+  }
+
+  @media (max-width: #{dim.$bp-max-sm}) {
+    top: var(--title-height-offset);
+
+    margin-top: 56px + $margin-top;
+    --inner-vertical-padding: 8px 0;
+    --main-flex-dir: column;
+    --main-flex-align: stretch;
+
+    .select-title__inner {
+      margin-top: -56px;
+    }
+
+    .select-title__title {
+      padding-right: 0;
+    }
+
+    .select-title__hamburger-btn {
+      border: 0;
+      padding: 0;
+      background-color: transparent;
+      color: var(--c-fg-page);
+      outline: none;
+      margin-right: -14px;
+      margin-top: 20px;
+      display: block;
+
+      sc-svg {
+        width: 48px;
+        height: 48px;
+      }
+    }
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .select-title__filter-search,
+    .select-title__addon {
+      display: none;
+    }
+  }
+
+  @media (min-width: #{dim.$bp-min-md}) {
+    .select-title__title {
+      white-space: nowrap;
+    }
+    .select-title:not(.select-title--full-width):after {
+      left: calc(max(0px, 100% - #{dim.$detail-container}) / 2 + var(--d--md-menu-width));
+    }
+
+    .select-title__filter-select[bag-select] {
+      margin-top: 0;
+    }
+  }
+
+  @media (min-width: #{dim.$bp-min-lg}) {
+    --inner-vertical-padding: 24px 0;
+
+    .select-title__filter-select[bag-select] {
+      display: none;
+    }
+  }
+}

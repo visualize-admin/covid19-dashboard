@@ -8,5 +8,27 @@
   "homepage": "https://www.covid19.admin.ch",
   "author": "Federal Office of Public Health FOPH",
   "license": "BSD-3-Clause",
-  "private": true
+  "private": true,
+  "description": "Client of the covid19.admin.ch website",
+  "workspaces": [
+    "packages/commons",
+    "packages/client"
+  ],
+  "scripts": {
+    "start": "yarn workspace @c19/commons run build:ci && node ./packages/client/setup-local-to-prod && yarn workspace @c19/client run start",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "husky": "^7.0.4",
+    "jest": "^27.4.5",
+    "tslint": "~6.1.3",
+    "tslint-config-prettier": "^1.18.0",
+    "ts-jest": "^27.1.2",
+    "typescript": "~4.5.5",
+    "prettier": "^2.5.1"
+  },
+  "engines": {
+    "node": ">=14.0.0 <15.0.0"
+  }
 }

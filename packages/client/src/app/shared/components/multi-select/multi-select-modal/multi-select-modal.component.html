@@ -1,0 +1,28 @@
+<div class="multi-select-modal" cdkTrapFocus>
+  <button class="multi-select-modal__select-all-btn" [disabled]="selectAllDisabled" (click)="selectAll()">
+    {{ 'AgeRangeFilter.SelectAllBtn' | i18n }}
+  </button>
+  <div class="multi-select-modal__list">
+    <ng-container *ngFor="let opt of data.options; let i = index">
+      <bag-option
+        [forMulti]="true"
+        [noSelectionColor]="true"
+        [value]="opt"
+        (selectionChange)="onOptionSelectionChanged($event)"
+        [selected]="isSelected(opt)"
+        [tabIndex]="i === 0 ? 0 : null"
+      >
+        {{ opt.label }}
+      </bag-option>
+    </ng-container>
+  </div>
+  <div class="multi-select-modal__submit">
+    <button class="multi-select-modal__submit-btn" [disabled]="isSelectionEmpty" (click)="submit()">
+      {{ 'AgeRangeFilter.ApplyBtn' | i18n }}
+    </button>
+  </div>
+  <button class="multi-select-modal__hidden-btn" cdkMonitorElementFocus (click)="ref.close({ focusSelf: true })">
+    <sc-svg url="/assets/icon/ic_close.svg"></sc-svg>
+    <span class="cdk-visually-hidden">{{ 'Commons.Close' | i18n }}</span>
+  </button>
+</div>

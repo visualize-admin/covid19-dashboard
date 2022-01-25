@@ -1,0 +1,26 @@
+<ng-template #tooltipElRef let-id="id" let-values="values">
+  <div>
+    <strong>{{ id }}</strong>
+  </div>
+  <ul>
+    <li *ngFor="let val of values">{{ val }}</li>
+  </ul>
+</ng-template>
+
+<h2>Column Chart</h2>
+
+<div class="styleguide__card">
+  <bag-column-chart
+    [data]="data"
+    [colors]="colors"
+    [refValues]="refVales"
+    [refColors]="refColors"
+    [direction]="direction"
+    (elFocus)="showTooltip($event)"
+    (diagramLeave)="hideTooltip()"
+    [rotateXAxisLabels]="rotate"
+  ></bag-column-chart>
+  <button (click)="changeData()">change values</button>
+  <button (click)="changeDirection()">change direction</button>
+  <button *ngIf="direction === 'horizontal'" (click)="changeRotation()">change X-Axis rotation</button>
+</div>

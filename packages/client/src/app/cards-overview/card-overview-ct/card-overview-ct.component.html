@@ -1,0 +1,13 @@
+<bag-overview-card
+  titleKey="OverviewCardCT.Title"
+  [sourceDate]="data.sourceDate | toDate"
+  [facet]="facet"
+  [warnKey]="warningKey$ | async"
+>
+  <div
+    bagOverviewCardHint
+    [translate]="'OverviewCardCT.CardHint'"
+    [translateValues]="{ count: data.reportingCantons }"
+  ></div>
+  <bag-key-value-list *ngIf="keyValueList$ | async as keyValueList" [data]="keyValueList"></bag-key-value-list>
+</bag-overview-card>

@@ -1,0 +1,29 @@
+<div class="geo-unit-int-data" [class.geo-unit-int-data--is-tooltip]="isTooltip">
+  <h5 class="geo-unit-int-data__title">{{ title }}</h5>
+  <ng-template #noDataTpl>
+    <p class="geo-unit-int-data__no-data">{{ 'Commons.NoData' | i18n }}</p>
+  </ng-template>
+  <table class="geo-unit-int-data__table" *ngIf="data && data.CovidCase.inzRollsum14d !== null; else noDataTpl">
+    <thead>
+      <tr>
+        <th></th>
+        <th scope="col">
+          <span class="cdk-visually-hidden">{{ title }}</span>
+        </th>
+        <th scope="col" *ngIf="dataCh">{{ 'CountryRegionFilter.CH' | i18n }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <th scope="row">{{ 'Commons.Cases.Inz100K.Abbr' | i18n }}</th>
+        <td>{{ data.CovidCase.inzRollsum14d | adminNum }}</td>
+        <td *ngIf="dataCh">{{ dataCh.CovidCase.inzRollsum14d | adminNum }}</td>
+      </tr>
+      <tr>
+        <th scope="row">{{ 'Commons.Cases' | i18n }}</th>
+        <td>{{ data.CovidCase.rollsum14d | adminNum }}</td>
+        <td *ngIf="dataCh">{{ dataCh.CovidCase.rollsum14d | adminNum }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

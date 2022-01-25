@@ -1,0 +1,10 @@
+<table class="text-table-easy__table">
+  <tbody>
+    <tr *ngFor="let row of data">
+      <th scope="row">
+        {{ row.titleKey | i18n }}
+      </th>
+      <td>{{ row.content }}</td>
+    </tr>
+  </tbody>
+</table>

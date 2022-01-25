@@ -1,0 +1,88 @@
+<bag-detail-card
+  titleKey="Vaccination.Card.GroupRatio.Title"
+  [infoKey]="keys.info"
+  [infoAddOnKey]="infoAddOnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: (data.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [hideInfo]="hideInfo"
+>
+  <div class="detail-card-vaccination-grp-ratio" *ngIf="currentValues$ | async as cv">
+    <ng-container *ngIf="chartData$ | async as chartData">
+      <div class="detail-card-vaccination-grp-ratio__lr">
+        <select
+          bag-select
+          [attr.aria-label]="'Vaccination.CumulativeFilter.Development.Label' | i18n"
+          name="cumulativeFilter"
+          [formControl]="cumulativeFilterCtrl"
+        >
+          <ng-container *ngFor="let opt of cumulativeFilterOptions">
+            <option [ngValue]="opt.val" [attr.selected]="opt.val === cumulativeFilterCtrl.value ? '' : null">
+              {{ opt.key | i18n }}
+            </option>
+          </ng-container>
+        </select>
+
+        <ng-container *ngIf="cv.showGrpRangeFilter">
+          <select
+            bag-select
+            [attr.aria-label]="'Vaccination.VaccPersonsFull.Card.GroupRangeFilter.Label' | i18n"
+            name="groupRangeFilter"
+            [formControl]="grpRangeFilterCtrl"
+          >
+            <ng-container *ngFor="let opt of grpRangeFilterOptions">
+              <option [ngValue]="opt.val" [attr.selected]="opt.val === grpRangeFilterCtrl.value ? '' : null">
+                {{ opt.key | i18n }}
+              </option>
+            </ng-container>
+          </select>
+        </ng-container>
+      </div>
+
+      <bag-chart-legend class="detail-card-vaccination-grp-ratio__legend" [itemGap]="24">
+        <div *ngIf="cv.useGrpRangePopulation" bagChartLegendSquare [color]="colors.notVacced">
+          {{ 'Vaccination.Card.GroupRatio.Groups.NotVaccinated' | i18n }}
+        </div>
+        <div bagChartLegendGroup>
+          <span>{{ 'Vaccination.Card.VaccinationIndication' | i18n }}:</span>
+          <div bagChartLegendSquare [color]="colors.risk">{{ 'Vaccination.Card.GroupRatio.Groups.Risk' | i18n }}</div>
+          <div bagChartLegendSquare [color]="colors.other">{{ 'Vaccination.Card.GroupRatio.Groups.Other' | i18n }}</div>
+        </div>
+        <div *ngIf="chartData.hasZeroValues" bagChartLegendSquare noCase>{{ keys.legendZero | i18n }}</div>
+        <div *ngIf="chartData.hasNullValues" bagChartLegendSquare noData>{{ 'Commons.NoData' | i18n }}</div>
+      </bag-chart-legend>
+
+      <p class="detail-card-vaccination-grp-ratio__meta">
+        {{ keys.descriptionTitle | i18n }}
+      </p>
+
+      <bag-matrix-stack
+        *ngIf="chartData.stackEntries"
+        [data]="chartData.stackEntries"
+        [ratio]="[994, 312]"
+        [bucketColors]="[colors.risk, colors.other]"
+        [yLabelMaxLength]="5"
+        (diagramLeave)="hideTooltip()"
+        (elFocus)="showStackTooltip($event)"
+      ></bag-matrix-stack>
+
+      <bag-histogram-area
+        *ngIf="chartData.areaEntries"
+        [data]="chartData.areaEntries"
+        [colors]="[colors.other, colors.risk, colors.notVacced]"
+        [yLabelFormatter]="yLabelFmt"
+        [focusPosYCenter]="true"
+        [yLabelsMaxLength]="5"
+        [domainMax]="100"
+        [skipNoDataBlocksBefore]="chartData.areaEntries[1].date"
+        [withWeeklyValues]="true"
+        [showLines]="false"
+        [noOffsetX]="true"
+        (elFocus)="showAreaTooltip($event, cv)"
+        (diagramLeave)="hideTooltip()"
+      ></bag-histogram-area>
+    </ng-container>
+  </div>
+</bag-detail-card>

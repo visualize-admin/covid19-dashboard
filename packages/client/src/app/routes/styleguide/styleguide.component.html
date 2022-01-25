@@ -1,0 +1,10 @@
+<div class="styleguide__header">
+  <bag-tab-list>
+    <ng-container *ngFor="let link of links">
+      <ng-template [tabItem]="['/styleguide/', link.path]">{{ link.label }}</ng-template>
+    </ng-container>
+  </bag-tab-list>
+</div>
+<div class="styleguide__content">
+  <router-outlet></router-outlet>
+</div>

@@ -1,0 +1,53 @@
+@use 'src/styles/var';
+@use 'src/styles/dim';
+@use 'src/styles/text';
+
+@mixin container($width: dim.$base-container, $sideGap: var(--d-page-side-gap)) {
+  display: grid;
+  grid-template-columns: 1fr minmax(auto, $width) 1fr;
+  grid-column-gap: #{$sideGap};
+  & > * {
+    grid-column-start: 2;
+  }
+}
+
+@mixin leftRight($margin-top: 24px, $margin-bottom: 8px) {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  margin: #{$margin-top} -8px #{$margin-bottom} -8px;
+  max-width: calc(100% + 16px);
+
+  & > * {
+    margin: 8px;
+    max-width: calc(100% - 16px);
+    flex: 0 1 auto;
+  }
+}
+
+@mixin leftRightPart {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin: 0;
+  & > * {
+    margin: 8px;
+    flex: 0 1 auto;
+  }
+}
+
+@mixin dataListTable($colGap: 16px, $withText: true) {
+  display: grid;
+  grid-template-columns: minmax(min-content, 1fr) max-content;
+  grid-column-gap: $colGap;
+  @if $withText {
+    @include text.paragraph2;
+  }
+  dt {
+  }
+  dd {
+    text-align: right;
+    font-weight: var.$font-weight-bold;
+  }
+}

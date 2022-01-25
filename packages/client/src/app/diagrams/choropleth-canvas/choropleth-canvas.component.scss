@@ -1,0 +1,33 @@
+@use 'src/styles/col';
+@use 'src/styles/dim';
+@use 'src/styles/text';
+@use 'src/styles/mix';
+
+bag-choropleth-canvas {
+  &,
+  .choropleth {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .choropleth,
+  .choropleth__canvas {
+    position: relative;
+    flex: 1 1 0;
+  }
+
+  .choropleth__hidden-svg,
+  .choropleth__hidden-canvas {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    z-index: -1;
+    pointer-events: none;
+  }
+
+  @include mix.touchHint;
+
+  @include mix.choroplethZoom;
+}

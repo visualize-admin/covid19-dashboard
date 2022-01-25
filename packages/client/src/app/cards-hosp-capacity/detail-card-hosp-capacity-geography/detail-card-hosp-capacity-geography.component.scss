@@ -1,0 +1,278 @@
+@use 'src/styles/text';
+@use 'src/styles/col';
+@use 'src/styles/dim';
+@use 'src/styles/mix';
+@use 'src/styles/layout';
+@use 'src/styles/var';
+
+bag-detail-card-capacity-geography {
+  display: block;
+
+  .detail-card-capacity-geography {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-card-capacity-geography__filter-buttons {
+    align-self: flex-start;
+  }
+  .detail-card-capacity-geography__filter-select {
+    align-self: flex-start;
+  }
+
+  .detail-card-capacity-geography__lr-filters {
+    @include layout.leftRight(-16px);
+    justify-content: flex-start;
+  }
+
+  .detail-card-capacity-geography__lr {
+    @include layout.leftRight(8px);
+  }
+
+  .detail-card-capacity-geography__selected-unit {
+    @include mix.geoInfoBox;
+  }
+
+  @media (max-width: #{dim.$bp-max-sm}) {
+    .detail-card-capacity-geography__filter-buttons {
+      align-self: stretch;
+    }
+  }
+  @media (max-width: #{dim.$bp-max-md}) {
+    .detail-card-capacity-geography__filter-buttons {
+      display: none;
+    }
+  }
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .detail-card-capacity-geography__filter-select[bag-select] {
+      display: none;
+    }
+  }
+
+  .detail-card-capacity-geography-table {
+    --cols: 5;
+    --mobile-cols: 4;
+    margin-top: 16px;
+    width: 100%;
+    position: relative;
+    display: grid;
+    grid-template-columns: auto repeat(4, minmax(min-content, 1fr));
+    grid-column-gap: 4px;
+    @include text.paragraph2;
+    color: col.$table-header-text;
+
+    th {
+      text-align: left;
+    }
+
+    td[colspan='4'] {
+      grid-column-end: span 4;
+    }
+
+    td,
+    th {
+      padding: 4px 12px;
+    }
+
+    thead,
+    tbody,
+    tr {
+      display: contents;
+    }
+  }
+  .detail-card-capacity-geography-table__row {
+    th,
+    td {
+      background-color: col.$compare-table-cell;
+      margin-bottom: 4px;
+    }
+
+    td {
+      white-space: nowrap;
+    }
+  }
+  .detail-card-capacity-geography-table__row--large-padding {
+    th,
+    td {
+      padding-top: 12px;
+      padding-bottom: 12px;
+    }
+  }
+  .detail-card-capacity-geography-table__row--large-gap {
+    th,
+    td {
+      margin-bottom: 16px;
+    }
+  }
+  .detail-card-capacity-geography-table__title-cell {
+    font-weight: var.$font-weight-bold;
+    display: flex;
+    flex-direction: column;
+    span {
+      font-weight: normal;
+      opacity: 0.8;
+    }
+  }
+
+  .detail-card-capacity-geography-table__bar-cell {
+    margin-right: -3px;
+    position: relative;
+    z-index: 0;
+    display: flex;
+    flex-direction: column;
+
+    span {
+      opacity: 0.8;
+    }
+
+    &:last-child {
+      margin-right: 0;
+    }
+
+    &:before {
+      content: '';
+      position: absolute;
+      z-index: -1;
+      top: 0;
+      left: 0;
+      width: var(--w);
+      bottom: 0;
+      display: block;
+      background-color: col.$compare-table-bar-0;
+    }
+
+    &.detail-card-capacity-geography-table__bar-cell--secondary {
+      &:before {
+        background-color: col.$compare-table-bar-1;
+      }
+    }
+  }
+
+  .detail-card-capacity-geography-table__overlay {
+    display: block;
+    position: absolute;
+    left: -1px;
+    right: -1px;
+    top: -1px;
+    bottom: -1px;
+    grid-column: 1 / span var(--cols);
+    grid-row: calc(var(--row) + 1) / span 1;
+    background: transparent !important;
+    z-index: 1;
+  }
+  .detail-card-capacity-geography-table__overlay-link {
+    position: absolute;
+    display: block;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    cursor: pointer;
+  }
+  .detail-card-capacity-geography-table__overlay--selected {
+    border: 1px solid black;
+  }
+  .detail-card-capacity-geography-table__h1 th {
+    border-bottom: 1px solid var(--c-divider-light);
+    color: col.$table-header-primary;
+    font-weight: var.$font-weight-normal;
+  }
+  .detail-card-capacity-geography-table__h2 th {
+    @include text.meta;
+    color: col.$table-header-secondary;
+    font-weight: var.$font-weight-normal;
+  }
+  .detail-card-capacity-geography-table__h2-bar {
+    margin-right: -3px;
+  }
+  .detail-card-capacity-geography-table__h2-val {
+    text-align: right;
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .detail-card-capacity-geography-table {
+      grid-template-columns: repeat(4, minmax(min-content, 1fr));
+
+      thead {
+        td {
+          display: none;
+        }
+      }
+
+      td {
+        @include text.meta;
+      }
+
+      td,
+      th {
+        padding: 4px;
+      }
+
+      .detail-card-capacity-geography-table__title-cell {
+        grid-column: 1 / span var(--mobile-cols);
+        margin-bottom: -1px;
+        margin-right: 0;
+        background-color: transparent;
+        padding: 4px 0 4px 4px;
+
+        span {
+          @include text.meta;
+        }
+      }
+
+      .detail-card-capacity-geography-table__overlay {
+        grid-column: 1 / span var(--mobile-cols);
+        grid-row: calc(var(--row) * 2) / span 2;
+
+        &:hover {
+          ~ td {
+            background-color: col.$compare-table-cell-hover;
+          }
+          ~ .detail-card-capacity-geography-table__bar-cell:before {
+            background-color: col.$compare-table-bar-0-hover;
+          }
+          ~ .detail-card-capacity-geography-table__bar-cell--secondary:before {
+            background-color: col.$compare-table-bar-1-hover;
+          }
+        }
+      }
+    }
+  }
+  @media (max-width: #{dim.$bp-max-sm}) {
+    .detail-card-capacity-geography-table {
+      td,
+      th {
+        padding: 2px;
+      }
+
+      .detail-card-capacity-geography-table__bar-cell {
+        flex-direction: column;
+        b {
+          margin-right: 0;
+        }
+      }
+    }
+  }
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .detail-card-capacity-geography-table {
+      .detail-card-capacity-geography-table__overlay {
+        &:hover {
+          ~ th,
+          ~ td {
+            background-color: col.$compare-table-cell-hover;
+          }
+          ~ .detail-card-capacity-geography-table__bar-cell:before {
+            background-color: col.$compare-table-bar-0-hover;
+          }
+          ~ .detail-card-capacity-geography-table__bar-cell--secondary:before {
+            background-color: col.$compare-table-bar-1-hover;
+          }
+        }
+      }
+    }
+  }
+}
+
+.detail-card-capacity-geography-tooltip {
+  max-width: 260px;
+}

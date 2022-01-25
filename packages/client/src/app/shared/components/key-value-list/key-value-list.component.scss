@@ -1,0 +1,114 @@
+@use 'src/styles/col';
+@use 'src/styles/var';
+@use 'src/styles/text';
+@use 'src/styles/mix';
+
+bag-key-value-list {
+  display: block;
+  margin-bottom: 32px;
+
+  .bag-key-value-list__table {
+    width: 100%;
+    border-spacing: 0;
+  }
+
+  th,
+  td {
+    padding-top: 12px;
+    padding-bottom: 12px;
+  }
+
+  td {
+    padding-left: 16px;
+    white-space: nowrap;
+    vertical-align: top;
+  }
+
+  tr ~ tr {
+    th,
+    td {
+      border-top: 1px solid var(--c-divider-light);
+      padding-top: 11px;
+    }
+  }
+
+  .bag-key-value-list__combine-above {
+    th,
+    td {
+      border-top: none;
+      padding-top: 4px;
+    }
+  }
+
+  .bag-key-value-list__combine-above-no-border {
+    th,
+    td {
+      border-top: none;
+      padding-top: 15px;
+    }
+  }
+
+  .bag-key-value-list__combine-below {
+    th,
+    td {
+      padding-bottom: 4px;
+    }
+  }
+
+  .bag-key-value-list__entry-key,
+  .bag-key-value-list__entry-value {
+    display: block;
+    font-size: var(--fz-paragraph1);
+    line-height: 20px;
+    letter-spacing: 0.1px;
+  }
+
+  .bag-key-value-list__color-square {
+    $squareSize: 8px;
+    display: inline-block;
+    width: $squareSize;
+    height: $squareSize;
+    margin-right: 8px;
+    flex: 0 0 $squareSize;
+    align-self: baseline;
+    margin-top: 5px;
+
+    &.bag-key-value-list__color-square--pattern {
+      @include mix.boosterPattern(var(--bg-color), #ffffff);
+    }
+  }
+
+  .bag-key-value-list__entry:empty {
+    padding-top: 0;
+  }
+
+  .bag-key-value-list__entry-key {
+    font-weight: normal;
+    text-align: left;
+    color: var(--c-fg-keyvalue);
+    word-break: break-word;
+    display: flex;
+    align-items: center;
+  }
+  .bag-key-value-list__entry-key--title {
+    font-weight: var.$font-weight-bold;
+    color: var(--c-fg-page);
+  }
+
+  .bag-key-value-list__entry-value {
+    text-align: right;
+    font-weight: bold;
+  }
+
+  .bag-key-value-list__entry-key-description {
+    text-align: left;
+    font-weight: normal;
+    @include text.meta;
+    color: var(--c-fg-meta);
+    display: block;
+    word-break: break-word;
+    &:not(:last-child) {
+      margin-bottom: 4px;
+    }
+  }
+}

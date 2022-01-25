@@ -1,0 +1,58 @@
+@use 'src/styles/col';
+@use 'src/styles/dim';
+@use 'src/styles/var';
+@use 'src/styles/text';
+
+bag-text-table-easy {
+  display: block;
+
+  .text-table-easy__table {
+    display: grid;
+    grid-template-columns: auto minmax(1px, 1fr);
+    grid-gap: 4px 2px;
+    @include text.paragraph2;
+
+    tbody,
+    tr {
+      display: contents;
+    }
+
+    tbody {
+      th {
+        text-align: left;
+        font-weight: var.$font-weight-bold;
+      }
+
+      td,
+      th {
+        padding: 12px 16px;
+        background-color: col.$summary-table-bg;
+      }
+    }
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .text-table-easy__table {
+      grid-template-columns: auto;
+      grid-gap: 0 0;
+
+      tbody {
+        td,
+        th {
+          padding: 6px 6px;
+        }
+
+        th {
+          background-color: transparent;
+        }
+
+        tr > {
+          :not(:first-child) {
+            margin-top: 0;
+            margin-bottom: 4px;
+          }
+        }
+      }
+    }
+  }
+}

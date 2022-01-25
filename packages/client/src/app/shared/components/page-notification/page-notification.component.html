@@ -1,0 +1,8 @@
+<div
+  class="page-notification"
+  [class.page-notification--info]="type === 'info'"
+  [class.page-notification--full]="type === 'full'"
+>
+  <sc-svg *ngIf="type === 'info'" class="page-notification__icon" url="/assets/icon/ic_alert.svg"></sc-svg>
+  <p class="page-notification__text"><ng-content></ng-content></p>
+</div>

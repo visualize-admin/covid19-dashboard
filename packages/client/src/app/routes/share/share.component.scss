@@ -1,0 +1,82 @@
+@use 'src/styles/layout';
+@use 'src/styles/text';
+@use 'src/styles/col';
+@use 'src/styles/var';
+
+:host {
+  display: block;
+
+  .share-detail {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .share-detail__notification {
+    margin-bottom: 16px;
+  }
+
+  .share-detail__main {
+    display: flex;
+    min-height: calc(100vh - var(--d-header-height));
+    flex-direction: column;
+  }
+
+  .share-detail__nav {
+    @include layout.container();
+    padding-top: 32px;
+    background-color: var(--c-bg-header);
+  }
+
+  .share-detail__title {
+    @include text.giga;
+    margin-bottom: 8px;
+  }
+
+  .share-detail__sub-title {
+    @include text.lead;
+    margin-bottom: 16px;
+  }
+
+  .share-detail__link {
+    display: flex;
+    color: var(--c-fg-nav-active);
+    line-height: 28px;
+    font-size: 18px;
+    letter-spacing: 0.1px;
+    align-items: center;
+    padding: 18px 0;
+
+    &:hover,
+    &.cdk-keyboard-focused,
+    &.cdk-program-focused {
+      color: var(--c-fg-nav);
+    }
+  }
+
+  .share-detail__link-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+    transform: rotate(180deg);
+  }
+
+  .share-detail--export {
+    .share-detail__container {
+      background-color: #fff;
+    }
+  }
+
+  .share-detail--sharing {
+    .share-detail__container {
+      border-top: 1px solid var(--c-divider);
+      padding-top: var(--d-page-side-gap);
+      padding-bottom: 48px;
+
+      & ::ng-deep {
+        @include layout.container(1240px);
+      }
+
+      background: var(--c-bg-card-container);
+    }
+  }
+}

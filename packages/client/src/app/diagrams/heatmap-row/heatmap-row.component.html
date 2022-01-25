@@ -1,0 +1,6 @@
+<div class="heatmap-row__wrapper">
+  <div class="heatmap-row__triangle">
+    <div class="heatmap-row__triangle-el" *ngIf="triangleTransformX$ | async as val" [style.--x.%]="val.rel"></div>
+  </div>
+  <canvas #canvasElRef class="heatmap-row__canvas"></canvas>
+</div>

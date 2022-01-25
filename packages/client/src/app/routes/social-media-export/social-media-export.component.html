@@ -1,0 +1,59 @@
+<bag-header></bag-header>
+
+<div class="content">
+  <h1>{{ sourceDate | fmtDate: 'EEEE, d. MMMM yyyy, hh:mm' }}</h1>
+
+  <div class="card">
+    <select
+      bag-select
+      class="overview__filter overview__filter--select"
+      name="overviewTimeFilter"
+      [attr.aria-label]="'TimeSlotFilter.Label' | i18n"
+      [formControl]="overviewTimeFilterCtrl"
+    >
+      <ng-container *ngFor="let opt of timeFilterOptions">
+        <option [ngValue]="opt.value" [attr.selected]="opt.value === overviewTimeFilterCtrl.value ? '' : null">
+          {{ opt.labelKey | i18n }}
+        </option>
+      </ng-container>
+    </select>
+    <h2>Overview Cards</h2>
+    <ul>
+      <li *ngFor="let urls of overviewCardDownloadUrls$ | async">
+        <a [href]="urls.jpeg.url" [download]="urls.jpeg.filename">{{ urls.jpeg.filename }}</a>
+      </li>
+    </ul>
+
+    <h2>Overview Card Combinations</h2>
+    <ul>
+      <li *ngFor="let urls of cardCombinationDownloadUrls$ | async">
+        <a [href]="urls.jpeg.url" [download]="urls.jpeg.filename">{{ urls.jpeg.filename }}</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Detail Cards</h2>
+    <ul>
+      <li *ngFor="let urls of vaccinationDetailDownloadUrl | async">
+        <a [href]="urls.jpeg.url" [download]="urls.jpeg.filename">{{ urls.jpeg.filename }}</a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="card">
+    <h2>Tweets</h2>
+
+    <bag-tweet-preparation
+      title="Epidemiologic"
+      [defaultKey]="casesDayDiff === 1 ? 'SocialMediaTweets.Overview' : 'SocialMediaTweets.OverviewX'"
+      [args]="overviewTweetArgs"
+    ></bag-tweet-preparation>
+
+    <bag-tweet-preparation
+      title="Vaccination"
+      [defaultKey]="'SocialMediaTweets.Vaccination'"
+      [args]="vaccineTweetArgs"
+    ></bag-tweet-preparation>
+  </div>
+</div>

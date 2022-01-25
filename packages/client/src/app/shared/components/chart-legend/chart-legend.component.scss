@@ -1,0 +1,188 @@
+@use 'src/styles/col';
+@use 'src/styles/text';
+@use 'src/styles/var';
+@use 'src/styles/mix';
+
+$baseItemGap: 8px;
+
+bag-chart-legend {
+  --item-gap: #{$baseItemGap};
+
+  .chart-legend {
+    display: flex;
+    flex-wrap: wrap;
+
+    @include text.meta;
+    color: var(--c-fg-legend);
+
+    margin: 0 calc(var(--item-gap) / -2);
+
+    > * {
+      margin: 0 calc(var(--item-gap) / 2);
+    }
+
+    &.chart-legend--justify-flex-end {
+      justify-content: flex-end;
+
+      .chart-legend__group {
+        justify-content: flex-end;
+      }
+    }
+  }
+
+  .chart-legend__group {
+    --item-group-gap: #{$baseItemGap};
+
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 calc((var(--item-gap) - var(--item-group-gap)) / 2);
+
+    > * {
+      margin: 0 calc(var(--item-group-gap) / 2);
+    }
+  }
+
+  .chart-legend__label {
+    &:after {
+      content: ':';
+    }
+
+    &.chart-legend__label--with-tooltip {
+      &:after {
+        content: ' :';
+      }
+    }
+  }
+
+  %before {
+    content: '';
+    display: inline-block;
+    width: var(--w);
+    height: var(--h);
+    margin-right: var(--g);
+    background: var(--c);
+  }
+
+  .chart-legend__tooltip-icon {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #e5e5e5;
+    display: inline-flex;
+    transform: translateY(1px);
+    margin-left: 4px;
+
+    svg {
+      transform: scale(1.5);
+    }
+  }
+
+  .chart-legend__line,
+  .chart-legend__dashed-line {
+    --w: 12px;
+    --h: 2px;
+    --g: 8px;
+
+    &:before {
+      @extend %before;
+      margin-bottom: calc(4px - (var(--h) / 2));
+    }
+  }
+
+  .chart-legend__dashed-line {
+    &:before {
+      background-color: transparent;
+      background-image: linear-gradient(90deg, var(--c), var(--c) 75%, transparent 75%, transparent 100%);
+      background-size: 6px 2px;
+    }
+  }
+
+  .chart-legend__square {
+    --w: 8px;
+    --h: 8px;
+    --g: 8px;
+
+    &:before {
+      @extend %before;
+    }
+
+    &.chart-legend__square--no-data:before {
+      background: var.$no-data-background;
+    }
+
+    &.chart-legend__square--no-case {
+      --c: #{col.$datavis-no-case};
+    }
+
+    &.chart-legend__square--pattern:before {
+      @include mix.boosterPattern(var(--c), #ffffff);
+    }
+  }
+
+  .chart-legend__daily-value {
+  }
+
+  .chart-legend__daily-value-square {
+    position: relative;
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: rgba(204, 204, 204, 0.4);
+    margin: 0 8px -2px 0;
+
+    &:before {
+      // line
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 50%;
+      transform: translateY(-0.5px);
+      height: 1px;
+      background-color: #adadad;
+    }
+
+    &:not(.chart-legend__daily-value-square--no-point) {
+      &:after {
+        // point
+        content: '';
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-1.5px, -1.5px);
+        height: 3px;
+        width: 3px;
+        border-radius: 50%;
+        background-color: #adadad;
+      }
+    }
+  }
+
+  .chart-legend__mean-lines {
+    --mean-label-gap: #{$baseItemGap};
+
+    display: flex;
+    align-items: baseline;
+  }
+
+  .chart-legend__mean-line {
+    --w: 2px;
+    --h: 8px;
+    display: inline-block;
+    background-color: var(--c);
+    width: var(--w);
+    height: var(--h);
+    transform: rotate(45deg);
+    margin-right: var(--w);
+    & + :not(.chart-legend__mean-line) {
+      margin-left: var(--mean-label-gap);
+    }
+  }
+}
+
+// needs to be outside of `bag-chart-legend`
+.chart-legend-tooltip {
+  @include text.meta;
+  color: var(--c-fg-meta);
+  max-width: 300px;
+}
