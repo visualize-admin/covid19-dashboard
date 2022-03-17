@@ -46,9 +46,9 @@ import {
 } from '../../../shared/models/filters/vacc-status-cumulative-filter.enum'
 import {
   DEFAULT_VACC_STATUS_DEVELOPMENT_RELATIVITY_FILTER,
-  getVaccStatusDevelopmentRelativityFilterOptions,
-  VaccStatusDevelopmentRelativityFilter,
-} from '../../../shared/models/filters/vacc-status-development-relativity-filter.enum'
+  getInz100AbsRelFilterOptions,
+  Inz100AbsRelFilter,
+} from '../../../shared/models/filters/relativity/inz100-abs-rel-filter.enum'
 import { QueryParams } from '../../../shared/models/query-params.enum'
 import { adminFormatNum } from '../../../static-utils/admin-format-num.function'
 import { formatUtcDate, parseIsoDate } from '../../../static-utils/date-utils'
@@ -61,7 +61,7 @@ interface CurrentValues extends CurrentValuesVaccStatusBase {
   cumulativeFilter: VaccStatusCumulativeFilter
   developmentViewFilter: DevelopmentViewFilter
   developmentViewTotalFilter: DevelopmentViewTotalFilter
-  relativityFilter: VaccStatusDevelopmentRelativityFilter
+  relativityFilter: Inz100AbsRelFilter
 }
 
 interface AreaEntry extends HistogramAreaEntry {
@@ -161,15 +161,13 @@ export class DetailCardVaccStatusDevelopmentComponent
     ),
   )
 
-  readonly relativityFilterOptions = getVaccStatusDevelopmentRelativityFilterOptions(
-    DEFAULT_VACC_STATUS_DEVELOPMENT_RELATIVITY_FILTER,
-  )
+  readonly relativityFilterOptions = getInz100AbsRelFilterOptions(DEFAULT_VACC_STATUS_DEVELOPMENT_RELATIVITY_FILTER)
   readonly relativityFilterCtrl = new FormControl(
     this.route.snapshot.queryParams[QueryParams.VACC_STATUS_DEV_REL_FILTER] || null,
   )
-  readonly relativityFilter$: Observable<VaccStatusDevelopmentRelativityFilter> = this.route.queryParams.pipe(
+  readonly relativityFilter$: Observable<Inz100AbsRelFilter> = this.route.queryParams.pipe(
     selectChanged(QueryParams.VACC_STATUS_DEV_REL_FILTER, DEFAULT_VACC_STATUS_DEVELOPMENT_RELATIVITY_FILTER),
-    tap<VaccStatusDevelopmentRelativityFilter>(
+    tap<Inz100AbsRelFilter>(
       emitValToOwnViewFn(this.relativityFilterCtrl, DEFAULT_VACC_STATUS_DEVELOPMENT_RELATIVITY_FILTER),
     ),
   )
@@ -374,8 +372,8 @@ export class DetailCardVaccStatusDevelopmentComponent
       return null
     }
     return {
-      isRel: cv.relativityFilter === VaccStatusDevelopmentRelativityFilter.RELATIVE,
-      isInz: cv.relativityFilter === VaccStatusDevelopmentRelativityFilter.INZ_100,
+      isRel: cv.relativityFilter === Inz100AbsRelFilter.RELATIVE,
+      isInz: cv.relativityFilter === Inz100AbsRelFilter.INZ_100,
       isTotal: cv.cumulativeFilter === VaccStatusCumulativeFilter.TOTAL,
       titleKey: `Vaccination.Status.Card.${this.indicatorKey(cv.indicator)}.Title`,
       completenessData: this.prepareCompletenessData(cv),
@@ -439,7 +437,7 @@ export class DetailCardVaccStatusDevelopmentComponent
     let skipNoDataBefore: Date | null = null
     let skipNoDataAfter: Date | null = null
 
-    const isInz = cv.relativityFilter === VaccStatusDevelopmentRelativityFilter.INZ_100
+    const isInz = cv.relativityFilter === Inz100AbsRelFilter.INZ_100
 
     // colors and legend pairs
     colors = [
@@ -459,7 +457,7 @@ export class DetailCardVaccStatusDevelopmentComponent
       legendPairs.push([COLOR_STATUS_LINE_UNKNOWN, 'Vaccination.Status.Card.Unknown'])
     }
 
-    if (cv.relativityFilter !== VaccStatusDevelopmentRelativityFilter.RELATIVE) {
+    if (cv.relativityFilter !== Inz100AbsRelFilter.RELATIVE) {
       lineData = this.data.values[cv.indicator].map((v): DailyHistogramLineEntry => {
         const fullyNoBooster = v[VaccinationStatus.FULLY_VACCINATED_NO_BOOSTER]
         const fullyWithBooster = v[VaccinationStatus.FULLY_VACCINATED_FIRST_BOOSTER]
@@ -491,7 +489,7 @@ export class DetailCardVaccStatusDevelopmentComponent
 
       skipNoDataBefore = addDays(lineData[0].date, 3)
       skipNoDataAfter = addDays(lineData[lineData.length - 1].date, -3)
-    } else if (cv.relativityFilter === VaccStatusDevelopmentRelativityFilter.RELATIVE) {
+    } else if (cv.relativityFilter === Inz100AbsRelFilter.RELATIVE) {
       barData = this.data.values[cv.indicator].map((v): DailyHistogramDetailEntry => {
         const fullyNoBooster = v[VaccinationStatus.FULLY_VACCINATED_NO_BOOSTER]
         const fullyWithBooster = v[VaccinationStatus.FULLY_VACCINATED_FIRST_BOOSTER]
@@ -532,7 +530,7 @@ export class DetailCardVaccStatusDevelopmentComponent
       skipNoDataAfter,
       skipNoDataBefore,
       metaKey: this.prepareChartLabel(cv),
-      isInz: cv.relativityFilter === VaccStatusDevelopmentRelativityFilter.INZ_100,
+      isInz: cv.relativityFilter === Inz100AbsRelFilter.INZ_100,
     }
   }
 
@@ -567,7 +565,7 @@ export class DetailCardVaccStatusDevelopmentComponent
     }
 
     // no inz_100 for total for now
-    if (cv.relativityFilter === VaccStatusDevelopmentRelativityFilter.INZ_100) {
+    if (cv.relativityFilter === Inz100AbsRelFilter.INZ_100) {
       lineData = [
         {
           date: parseIsoDate(this.data.timeSpan.start),
@@ -588,7 +586,7 @@ export class DetailCardVaccStatusDevelopmentComponent
       }
     }
 
-    if (cv.relativityFilter !== VaccStatusDevelopmentRelativityFilter.RELATIVE) {
+    if (cv.relativityFilter !== Inz100AbsRelFilter.RELATIVE) {
       // chart data
       if (cv.developmentViewTotalFilter === DevelopmentViewTotalFilter.LINES) {
         lineData = this.data.values[cv.indicator].map((v): HistogramLineEntry => {
@@ -643,7 +641,7 @@ export class DetailCardVaccStatusDevelopmentComponent
           }
         })
       }
-    } else if (cv.relativityFilter === VaccStatusDevelopmentRelativityFilter.RELATIVE) {
+    } else if (cv.relativityFilter === Inz100AbsRelFilter.RELATIVE) {
       areaData = this.data.values[cv.indicator].map((v): AreaEntry => {
         const fullyNoBooster = v[VaccinationStatus.FULLY_VACCINATED_NO_BOOSTER].percentageTotal
         const fullyWithBooster = v[VaccinationStatus.FULLY_VACCINATED_FIRST_BOOSTER].percentageTotal
@@ -680,11 +678,11 @@ export class DetailCardVaccStatusDevelopmentComponent
     const indicator = this.indicatorKey(cv.indicator)
 
     switch (cv.relativityFilter) {
-      case VaccStatusDevelopmentRelativityFilter.INZ_100:
+      case Inz100AbsRelFilter.INZ_100:
         return `Vaccination.Status.Card.Chart.Meta.${indicator}.Inz`
-      case VaccStatusDevelopmentRelativityFilter.ABSOLUTE:
+      case Inz100AbsRelFilter.ABSOLUTE:
         return `Vaccination.Status.Card.Chart.Meta.${indicator}.Abs`
-      case VaccStatusDevelopmentRelativityFilter.RELATIVE:
+      case Inz100AbsRelFilter.RELATIVE:
         return `Vaccination.Status.Card.Chart.Meta.${indicator}.Rel`
     }
   }

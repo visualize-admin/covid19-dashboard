@@ -10,6 +10,7 @@ import { ColorLegendModule } from '../../shared/components/color-legend/color-le
 import { DetailCardModule } from '../../shared/components/detail-card/detail-card.module'
 import { MultiSelectModule } from '../../shared/components/multi-select/multi-select.module'
 import { RowBarChartModule } from '../../shared/components/row-bar-chart/row-bar-chart.module'
+import { SingleSelectModule } from '../../shared/components/single-select/single-select.module'
 import { ToggleButtonListModule } from '../../shared/components/toggle-button-list/toggle-button-list.module'
 import { DetailCardEpidemiologicDemographyComponent } from './detail-card-epidemiologic-demography.component'
 
@@ -28,6 +29,7 @@ import { DetailCardEpidemiologicDemographyComponent } from './detail-card-epidem
     ReactiveFormsModule,
     MultiSelectModule,
     ChartLegendModule,
+    SingleSelectModule,
   ],
   exports: [DetailCardEpidemiologicDemographyComponent],
 })

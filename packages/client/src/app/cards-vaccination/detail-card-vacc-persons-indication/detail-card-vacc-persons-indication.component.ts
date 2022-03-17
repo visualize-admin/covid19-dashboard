@@ -38,12 +38,12 @@ import {
   TooltipListContentData,
   TooltipListContentEntry,
 } from '../../shared/components/tooltip/tooltip-list-content/tooltip-list-content.component'
+import { RelAbsFilter } from '../../shared/models/filters/relativity/rel-abs-filter.enum'
 import {
   DEFAULT_VACC_INDICATION_CUMULATIVE_FILTER,
   getVaccCumulativeFilterOptions,
   VaccCumulativeFilter,
 } from '../../shared/models/filters/vacc-cumulative-filter.enum'
-import { VaccPersonsRelAbsFilter } from '../../shared/models/filters/vacc-persons-rel-abs-filter.enum'
 
 import { QueryParams } from '../../shared/models/query-params.enum'
 import { adminFormatNum } from '../../static-utils/admin-format-num.function'
@@ -66,7 +66,7 @@ import {
 } from '../base-detail-card-vaccination.component'
 
 interface CurrentValues extends CurrentValuesVaccinationBase {
-  relativityFilter: VaccPersonsRelAbsFilter
+  relativityFilter: RelAbsFilter
   cumulativeFilter: VaccCumulativeFilter
   isRel: boolean
   indications: VaccinationIndicationGeneral[]
@@ -163,7 +163,7 @@ export class DetailCardVaccPersonsIndicationComponent
     switchMap((args) => this.onChanges$.pipe(mapTo(args))),
     withLatestFrom(this.selectedGeoUnit$),
     map(([[relativityFilter, cumulativeFilter, indicationFilter], geoUnit]) => {
-      const isRel = relativityFilter === VaccPersonsRelAbsFilter.RELATIVE
+      const isRel = relativityFilter === RelAbsFilter.RELATIVE
       return {
         geoUnit,
         relativityFilter,

@@ -8,6 +8,7 @@ export interface TimeFrames {
   tfP3: TimeSpan
   tfP4: TimeSpan
   tfP5: TimeSpan
+  tfP6: TimeSpan
   tf28d: TimeSpan
   tf14d: TimeSpan
 }

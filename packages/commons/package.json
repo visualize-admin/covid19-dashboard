@@ -3,6 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "description": "bag covid-19 dashboard - commons",
+  "license": "BSD-3-Clause",
   "author": "shiftcode GmbH <team@shiftcode.ch>",
   "contributors": [
     {

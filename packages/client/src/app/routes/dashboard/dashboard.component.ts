@@ -68,8 +68,8 @@ export class DashboardComponent {
 
     this.showGlobalDisclaimer$ = dataService.sourceDate$.pipe(
       map((sourceDate) => {
-        const startDate = parseIsoDate('2021-12-20')
-        const endDate = parseIsoDate('2022-01-03')
+        const startDate = parseIsoDate('2022-01-25')
+        const endDate = parseIsoDate('2022-01-26')
         return !!this.translator.tryGet('Commons.GlobalDisclaimer') && sourceDate >= startDate && sourceDate < endDate
       }),
     )

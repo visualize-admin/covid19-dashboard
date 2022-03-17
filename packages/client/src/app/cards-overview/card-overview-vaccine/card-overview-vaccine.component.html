@@ -5,9 +5,18 @@
   [moreLinkArgs]="moreLink"
   [warnKey]="warningKey$ | async"
 >
-  <p *bagOverviewCardInfo class="g-content" bagOverviewCardHint [translate]="'OverviewCardVaccine.InfoText.Top'"></p>
+  <p
+    *bagOverviewCardInfo
+    class="g-content"
+    bagOverviewCardHint
+    [translate]="'IndicatorsDescription.OverviewCardVaccine.General'"
+  ></p>
 
-  <bag-key-value-list *ngIf="keyValueList$ | async as keyValueList" [data]="keyValueList"></bag-key-value-list>
+  <bag-key-value-list
+    *ngIf="keyValueList$ | async as keyValueList"
+    [data]="keyValueList"
+    [showInfo]="(overviewCard?.showInfo$ | async) || false"
+  ></bag-key-value-list>
 
   <ng-container *ngIf="histogram$ | async as histogram">
     <bag-histogram-preview-area
@@ -24,7 +33,7 @@
       *bagOverviewCardInfo
       class="g-content"
       bagOverviewCardHint
-      [translate]="'OverviewCardVaccine.InfoText.Bottom.VaccPersons'"
+      [translate]="'IndicatorsDescription.OverviewCardVaccine.Graph'"
     ></p>
   </ng-container>
 </bag-overview-card>

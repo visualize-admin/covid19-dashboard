@@ -5,6 +5,7 @@ import { DetailCardEpidemiologicDemographyModule } from '../../../cards-epidemio
 import { DetailCardEpidemiologicDevelopmentModule } from '../../../cards-epidemiologic/detail-card-epidemiologic-development/detail-card-epidemiologic-development.module'
 import { DetailCardEpidemiologicGeoRegionsModule } from '../../../cards-epidemiologic/detail-card-epidemiologic-geo-regions/detail-card-epidemiologic-geo-regions.module'
 import { DetailCardEpidemiologicGeographyModule } from '../../../cards-epidemiologic/detail-card-epidemiologic-geography/detail-card-epidemiologic-geography.module'
+import { DetailCardEpidemiologicHospCauseModule } from '../../../cards-epidemiologic/detail-card-epidemiologic-hosp-cause/detail-card-epidemiologic-hosp-cause.module'
 import { DetailCardEpidemiologicTestPositivityModule } from '../../../cards-epidemiologic/detail-card-epidemiologic-test-positivity/detail-card-epidemiologic-test-positivity.module'
 import { DetailCardVirusVariantsOverviewModule } from '../../../cards-virus-variants/detail-card-virus-variants-overview/detail-card-virus-variants-overview.module'
 import { ChflGeoJsonResolver } from '../../../core/chfl-geo-json.resolver'
@@ -27,6 +28,8 @@ import { ShareEpidemiologicGeoRegionsGeojsonResolver } from './share-epidemiolog
 import { ShareEpidemiologicGeoRegionsComponent } from './share-epidemiologic-geo-regions/share-epidemiologic-geo-regions.component'
 import { ShareEpidemiologicGeographyComponent } from './share-epidemiologic-geography/share-epidemiologic-geography.component'
 import { ShareEpidemiologicGeographyResolver } from './share-epidemiologic-geography/share-epidemiologic-geography.resolver'
+import { ShareEpidemiologicHospCauseComponent } from './share-epidemiologic-hosp-cause/share-epidemiologic-hosp-cause.component'
+import { ShareEpidemiologicHospCauseResolver } from './share-epidemiologic-hosp-cause/share-epidemiologic-hosp-cause.resolver'
 import { ShareEpidemiologicTestPositivityComponent } from './share-epidemiologic-test-positivity/share-epidemiologic-test-positivity.component'
 
 @NgModule({
@@ -76,6 +79,14 @@ import { ShareEpidemiologicTestPositivityComponent } from './share-epidemiologic
           },
 
           {
+            path: RoutePaths.SHARE_HOSP_CAUSE,
+            component: ShareEpidemiologicHospCauseComponent,
+            resolve: {
+              [RouteDataKey.DETAIL_DATA]: ShareEpidemiologicHospCauseResolver,
+            },
+          },
+
+          {
             path: RoutePaths.SHARE_GEO_REGIONS,
             component: ShareEpidemiologicGeoRegionsComponent,
             resolve: {
@@ -100,8 +111,8 @@ import { ShareEpidemiologicTestPositivityComponent } from './share-epidemiologic
     DetailCardEpidemiologicDevelopmentModule,
     DetailCardEpidemiologicTestPositivityModule,
     DetailCardEpidemiologicDemographyModule,
-
     DetailCardEpidemiologicGeoRegionsModule,
+    DetailCardEpidemiologicHospCauseModule,
   ],
   declarations: [
     ShareEpidemiologicGeographyComponent,
@@ -109,6 +120,7 @@ import { ShareEpidemiologicTestPositivityComponent } from './share-epidemiologic
     ShareEpidemiologicTestPositivityComponent,
     ShareEpidemiologicDemographyComponent,
     ShareEpidemiologicGeoRegionsComponent,
+    ShareEpidemiologicHospCauseComponent,
   ],
   providers: [
     ShareEpidemiologicGeographyResolver,
@@ -116,6 +128,7 @@ import { ShareEpidemiologicTestPositivityComponent } from './share-epidemiologic
     ShareEpidemiologicDemographyResolver,
     ShareEpidemiologicGeoRegionsDataResolver,
     ShareEpidemiologicGeoRegionsGeojsonResolver,
+    ShareEpidemiologicHospCauseResolver,
   ],
 })
 export class ShareEpidemiologicModule {}

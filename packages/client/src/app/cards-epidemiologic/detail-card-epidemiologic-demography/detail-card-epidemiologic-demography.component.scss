@@ -29,9 +29,12 @@ bag-detail-card-epidemiologic-demography {
     @include layout.leftRight(16px);
   }
 
-  .detail-card-demography__lr-graph {
-    @include layout.leftRight();
-    justify-content: flex-start;
+  .detail-card-demography__lr-part {
+    @include layout.leftRightPart;
+  }
+
+  .detail-card-demography__heat-legend {
+    justify-content: end;
   }
 
   .detail-card-demography__lr-histogram-legend {
@@ -42,5 +45,28 @@ bag-detail-card-epidemiologic-demography {
   .detail-card-demography__meta {
     @include text.meta;
     color: var(--c-fg-meta);
+  }
+
+  .detail-card-demography__filter-relativity,
+  .detail-card-demography__filter-toggle {
+    justify-self: end;
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .detail-card-demography__filter-toggle {
+      display: none;
+    }
+  }
+
+  @media (max-width: #{dim.$bp-max-sm}) {
+    .detail-card-demography__lr-part {
+      width: 100%;
+    }
+  }
+
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .detail-card-demography__filter-relativity {
+      display: none;
+    }
   }
 }

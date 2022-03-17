@@ -51,7 +51,11 @@ import {
   DemoViewFilter,
   getDemoViewFilterOptions,
 } from '../../shared/models/filters/demo-view-filter.enum'
-import { RelativityFilter } from '../../shared/models/filters/relativity-filter.enum'
+import {
+  DEFAULT_RELATIVITY_FILTER,
+  getInz100KAbsFilterOptions,
+  Inz100KAbsFilter,
+} from '../../shared/models/filters/relativity/inz100k-abs-filter.enum'
 import { TimeSlotFilter, timeSlotFilterTimeFrameKey } from '../../shared/models/filters/time-slot-filter.enum'
 import { QueryParams } from '../../shared/models/query-params.enum'
 import { TwoWeeksDemographyData } from '../../shared/models/two-weeks-demography-data.model'
@@ -87,6 +91,7 @@ interface CurrentDemographyValues extends CurrentValuesBase {
   geoUnit: CantonGeoUnit | TopLevelGeoUnit
   timeFilter: TimeSlotFilter
   view: DemoViewFilter
+  relativityFilter: Inz100KAbsFilter
   isInz: boolean
   timeFrame: TimeSpan
   ageData: AgeBucketData[]
@@ -141,6 +146,14 @@ export class DetailCardEpidemiologicDemographyComponent
     tap<MultiSelectValueOption[]>(emitValToOwnViewFn(this.ageRangeFilterCtrl)),
   )
 
+  readonly relativityFilterOptions = getInz100KAbsFilterOptions(DEFAULT_RELATIVITY_FILTER)
+  readonly relativityFilterCtrl = new FormControl(
+    this.route.snapshot.queryParams[QueryParams.EPI_REL_ABS_DEMOGRAPHY_FILTER] || null,
+  )
+  readonly relFilter$: Observable<Inz100KAbsFilter> = this.route.queryParams.pipe(
+    selectChanged(QueryParams.EPI_REL_ABS_DEMOGRAPHY_FILTER, DEFAULT_RELATIVITY_FILTER),
+  )
+
   readonly currentValues$: Observable<CurrentDemographyValues> = combineLatest([
     this.timeFilter$,
     this.relFilter$,
@@ -149,7 +162,7 @@ export class DetailCardEpidemiologicDemographyComponent
   ]).pipe(
     switchMap((args) => this.onChanges$.pipe(mapTo(args))),
     withLatestFrom(this.selectedGeoUnit$),
-    map(([[timeFilter, relativityFilter, demoView, ageRangeFilter], geoUnit]) => {
+    map(([[timeFilter, relativityFilter, demoView, ageRangeFilter], geoUnit]): CurrentDemographyValues => {
       const timeFrame = this.data.timeframes[timeSlotFilterTimeFrameKey[timeFilter]]
       const ageRanges = ageRangeFilter.map((v) => v.value)
       const genders = [Sex.MALE, Sex.UNKNOWN, Sex.FEMALE]
@@ -158,7 +171,7 @@ export class DetailCardEpidemiologicDemographyComponent
         timeFilter,
         relativityFilter,
         view: timeFilter === TimeSlotFilter.LAST_2_WEEKS ? DemoViewFilter.HEATMAP : demoView,
-        isInz: relativityFilter === RelativityFilter.INZ_100K,
+        isInz: relativityFilter === Inz100KAbsFilter.INZ_100K,
         timeFrame,
         ageRanges,
         ageData: getTimeslotCorrespondingWeeklyValues(this.data.ageData, timeFrame),
@@ -186,6 +199,7 @@ export class DetailCardEpidemiologicDemographyComponent
   ngOnInit() {
     merge(
       this.demoViewFilterCtrl.valueChanges.pipe(map((v) => ({ [QueryParams.DEMO_VIEW_FILTER]: v }))),
+      this.relativityFilterCtrl.valueChanges.pipe(map((v) => ({ [QueryParams.EPI_REL_ABS_DEMOGRAPHY_FILTER]: v }))),
       this.ageRangeFilterCtrl.valueChanges.pipe(
         map((v: MultiSelectValueOption[]) => createMultiSelectQueryParamValue(v, this.ageRangeFilterOptions)),
         map((v) => ({ [QueryParams.DEMO_VIEW_AGE_RANGE_FILTER]: v })),

@@ -31,10 +31,12 @@ export enum RoutePaths {
   SHARE_SEGMENTATION = 'segmentation',
   SHARE_GEOGRAPHY = 'geography',
   SHARE_TEST_POSITIVITY = 'test-positivity',
+  SHARE_HOSP_CAUSE = 'hosp-cause',
   SHARE_QUARANTINE_GEOGRAPHY = 'quarantine',
   SHARE_SUMMARY = 'summary',
   SHARE_EPI_SUMMARY = 'epi-summary',
   SHARE_OVERVIEW = 'overview',
+  SHARE_CERTIFIED_BEDS = 'certified-beds',
   SHARE_HOSP_CAPACITY_ICU = 'hosp-capacity-icu',
   SHARE_HOSP_CAPACITY_ICU_SUMMARY = 'hosp-capacity-icu-summary',
 

@@ -9,19 +9,22 @@
       #int0="bagIntersection"
     >
       <div class="overview__header-inner">
-        <select
-          bag-select
-          class="overview__filter overview__filter--select"
-          name="overviewTimeFilter"
-          [attr.aria-label]="'TimeSlotFilter.Label' | i18n"
-          [formControl]="timeFilterCtrl"
-        >
-          <ng-container *ngFor="let opt of timeFilterOptions">
-            <option [ngValue]="opt.val" [attr.selected]="opt.val === timeFilterCtrl.value ? '' : null">
-              {{ opt.key | i18n }}
-            </option>
-          </ng-container>
-        </select>
+        <div class="overview__filter overview__filter--select">
+          <select
+            bag-select
+            name="overviewTimeFilter"
+            [attr.aria-label]="'TimeSlotFilter.Label' | i18n"
+            [formControl]="timeFilterCtrl"
+          >
+            <ng-container *ngFor="let opt of timeFilterOptions">
+              <option [ngValue]="opt.val" [attr.selected]="opt.val === timeFilterCtrl.value ? '' : null">
+                {{ opt.key | i18n }}
+              </option>
+            </ng-container>
+          </select>
+          <bag-info-tooltip [sizeMd]="true" [text]="selectedTimeFilterDescriptionKey | i18n"></bag-info-tooltip>
+        </div>
+
         <button
           *ngIf="!(int0.isIntersecting$ | async)"
           class="overview__hamburger-btn"
@@ -61,9 +64,6 @@
 
       <!-- Repro Value -->
       <bag-card-overview-repro [data]="overviewData.covidRe"></bag-card-overview-repro>
-
-      <!-- Certificate -->
-      <bag-card-overview-certificate [data]="overviewData.covidCertificates"></bag-card-overview-certificate>
 
       <!-- Contact Tracing -->
       <bag-card-overview-ct [data]="overviewData.covidCt"></bag-card-overview-ct>

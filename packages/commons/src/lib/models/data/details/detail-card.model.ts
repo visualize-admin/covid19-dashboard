@@ -14,6 +14,7 @@ export type DetailTimelineValues =
   | DefaultHistogramDataValuesP3
   | DefaultHistogramDataValuesP4
   | DefaultHistogramDataValuesP5
+  | DefaultHistogramDataValuesP6
   | DefaultHistogramDataValues28d
   | DefaultHistogramDataValues14d
   | HistogramDataValuesTestTotal
@@ -22,6 +23,7 @@ export type DetailTimelineValues =
   | HistogramDataValuesTestP3
   | HistogramDataValuesTestP4
   | HistogramDataValuesTestP5
+  | HistogramDataValuesTestP6
   | HistogramDataValuesTest28d
   | HistogramDataValuesTest14d
   | HospCapacityValues
@@ -55,6 +57,7 @@ export type DefaultHistogramDataValues28d = DefaultHistogramDataValues | GdiVari
 export type DefaultHistogramDataValuesP3 = DefaultHistogramDataValues | GdiVariant.SUMP3 | GdiVariant.INZ_P3
 export type DefaultHistogramDataValuesP4 = DefaultHistogramDataValues | GdiVariant.SUMP4 | GdiVariant.INZ_P4
 export type DefaultHistogramDataValuesP5 = DefaultHistogramDataValues | GdiVariant.SUMP5 | GdiVariant.INZ_P5
+export type DefaultHistogramDataValuesP6 = DefaultHistogramDataValues | GdiVariant.SUMP6 | GdiVariant.INZ_P6
 export type DefaultHistogramDataValues14d = DefaultHistogramDataValues | GdiVariant.SUM14D | GdiVariant.INZ_14D
 
 export type HistogramDataValuesTestTotal =
@@ -105,6 +108,14 @@ export type HistogramDataValuesTestP5 =
   | GdiVariant.INZ_P5_PCR
   | GdiVariant.SUMP5_ANTIGEN
   | GdiVariant.INZ_P5_ANTIGEN
+export type HistogramDataValuesTestP6 =
+  | HistogramDataValuesTest
+  | GdiVariant.SUMP6
+  | GdiVariant.INZ_P6
+  | GdiVariant.SUMP6_PCR
+  | GdiVariant.INZ_P6_PCR
+  | GdiVariant.SUMP6_ANTIGEN
+  | GdiVariant.INZ_P6_ANTIGEN
 export type HistogramDataValuesTest28d =
   | HistogramDataValuesTest
   | GdiVariant.SUM28D
@@ -131,7 +142,7 @@ export interface HospCapacityHistogramDetailCard<X extends DetailTimelineValues>
   timeLineRelative: TimelineValues<X>[]
 }
 
-export interface BucketData<T, X extends AgeRange | Sex | AgeRangeByVaccinationStrategy> {
+export interface BucketData<T, X extends AgeRange | Sex | AgeRangeByVaccinationStrategy | 'all'> {
   isoWeek: string
   start: string
   end: string
@@ -139,6 +150,13 @@ export interface BucketData<T, X extends AgeRange | Sex | AgeRangeByVaccinationS
 }
 
 export type VaccinationAgeRangeValues = GdiVariant.WEEK | GdiVariant.INZ_WEEK | GdiVariant.TOTAL | GdiVariant.INZ_TOTAL
+export type HospReasonsAgeRangeValues =
+  | GdiVariant.WEEK
+  | GdiVariant.INZ_WEEK
+  | GdiVariant.TOTAL
+  | GdiVariant.INZ_TOTAL
+  | GdiVariant.PERCENTAGE
+  | GdiVariant.PERCENTAGE_TOTAL
 export type GenderValues = GdiVariant.PERCENTAGE | GdiVariant.INZ_WEEK
 export type AgeRangeValues = GdiVariant.WEEK | GdiVariant.INZ_WEEK
 
@@ -157,6 +175,11 @@ export interface VaccinationAgeBucketDataVaccPersons
   incompleteWeek: boolean
 }
 
+export type HospReasonsAgeRanges = AgeRange | 'all'
+
+export interface HospReasonsAgeBucketData
+  extends BucketData<HospReasonsBucketValue<HospReasonsAgeRangeValues>, HospReasonsAgeRanges> {}
+
 // gender
 export interface GenderBucketData extends BucketData<DefaultBucketValue<GenderValues>, Sex> {}
 
@@ -169,7 +192,12 @@ export type VaccPersonsBucketValue<T extends string> = {
   [GdiSubset.VACC_PERSONS_MIN_ONE_DOSE]: DefaultBucketValue<T>
   [GdiSubset.VACC_PERSONS_PARTIAL]: DefaultBucketValue<T>
 }
+export type HospReasonsBucketValue<T extends string> = {
+  [GdiSubset.HOSP_REASON_COVID]: DefaultBucketValue<T>
+  [GdiSubset.HOSP_REASON_OTHER]: DefaultBucketValue<T>
+  [GdiSubset.HOSP_REASON_UNKNOWN]: DefaultBucketValue<T>
+}
 
-export type BucketEntry<X extends AgeRange | Sex | AgeRangeByVaccinationStrategy | HospCapacityType, T> = T & {
+export type BucketEntry<X extends 'all' | AgeRange | Sex | AgeRangeByVaccinationStrategy | HospCapacityType, T> = T & {
   bucket: X
 }

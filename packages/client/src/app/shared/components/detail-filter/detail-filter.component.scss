@@ -19,28 +19,11 @@ bag-detail-filter {
   .detail-filter__field--time {
     justify-self: start;
   }
-  .detail-filter__field--relativity,
-  .detail-filter__field--toggle {
-    justify-self: end;
-  }
 
   @media (max-width: #{dim.$bp-max-md}) {
     .detail-filter .detail-filter__field {
       width: 100%;
       justify-self: stretch;
-    }
-  }
-
-  $bp-filter-select-relativity: 1200px;
-
-  @media (max-width: #{$bp-filter-select-relativity}) {
-    .detail-filter .detail-filter__field--toggle {
-      display: none;
-    }
-  }
-  @media (min-width: #{$bp-filter-select-relativity}) {
-    .detail-filter .detail-filter__field--relativity {
-      display: none;
     }
   }
 

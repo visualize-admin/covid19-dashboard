@@ -4,6 +4,7 @@ import {
   CantonData,
   CantonGeoUnit,
   GenderBucketData,
+  HospReasonsAgeBucketData,
   VaccinationAgeBucketData,
   VaccinationAgeBucketDataVaccPersons,
   VaccinationGenderBucketDataVaccPersons,
@@ -72,6 +73,8 @@ export type EpidemiologicGeoValues =
   | GdiVariant.INZ_P4
   | GdiVariant.SUMP5
   | GdiVariant.INZ_P5
+  | GdiVariant.SUMP6
+  | GdiVariant.INZ_P6
   | GdiVariant.SUM28D
   | GdiVariant.INZ_28D
   | GdiVariant.SUM14D
@@ -91,6 +94,8 @@ export type EpidemiologicTestGeoValues =
   | GdiVariant.PRCT_P4_POSTEST_PCR
   | GdiVariant.PRCT_P5_POSTEST_ANTIGEN
   | GdiVariant.PRCT_P5_POSTEST_PCR
+  | GdiVariant.PRCT_P6_POSTEST_ANTIGEN
+  | GdiVariant.PRCT_P6_POSTEST_PCR
   | GdiVariant.PRCT_28D_POSTEST_ANTIGEN
   | GdiVariant.PRCT_28D_POSTEST_PCR
   | GdiVariant.PRCT_14D_POSTEST_ANTIGEN
@@ -120,6 +125,8 @@ export type EpidemiologicDevValuesOPT =
   | GdiVariant.INZ_P4
   | GdiVariant.SUMP5
   | GdiVariant.INZ_P5
+  | GdiVariant.SUMP6
+  | GdiVariant.INZ_P6
   | GdiVariant.SUM28D
   | GdiVariant.INZ_28D
   | GdiVariant.SUM14D
@@ -164,6 +171,10 @@ export type EpidemiologicTestDevValuesOPT =
   | GdiVariant.INZ_P5_PCR
   | GdiVariant.SUMP5_ANTIGEN
   | GdiVariant.INZ_P5_ANTIGEN
+  | GdiVariant.SUMP6_PCR
+  | GdiVariant.INZ_P6_PCR
+  | GdiVariant.SUMP6_ANTIGEN
+  | GdiVariant.INZ_P6_ANTIGEN
   | GdiVariant.SUM28D_PCR
   | GdiVariant.INZ_28D_PCR
   | GdiVariant.SUM28D_ANTIGEN
@@ -194,7 +205,6 @@ export type EpidemiologicVaccGeoUnitData = InlineValues<EpidemiologicVaccGeoValu
 
 export interface EpidemiologicVaccDosesDailyGeoValues {
   [GdiSubset.VACC_DOSES_DELIV]: EpidemiologicVaccGeoUnitData
-  [GdiSubset.VACC_DOSES_CONTINGENT]: EpidemiologicVaccGeoUnitData
   [GdiSubset.VACC_DOSES_ADMIN]: EpidemiologicVaccGeoUnitData
 }
 
@@ -207,7 +217,6 @@ export interface EpidemiologicVaccDosesGeographyData extends GdiObjectTimespanCo
   vaccSourceDates: {
     [GdiSubset.VACC_DOSES_DELIV]: string
     [GdiSubset.VACC_DOSES_ADMIN]: string
-    [GdiSubset.VACC_DOSES_CONTINGENT]: string
     detailed: string
   }
 }
@@ -267,7 +276,6 @@ export type EpidemiologicVaccPersonsTimelineEntry = InlineValues<EpidemiologicVa
 
 export type EpidemiologicVaccDosesDevelopmentEntry = { date: string } & {
   [GdiSubset.VACC_DOSES_DELIV]: EpidemiologicVaccDosesDelivTimelineEntry
-  [GdiSubset.VACC_DOSES_CONTINGENT]: EpidemiologicVaccDosesContingentTimelineEntry
   [GdiSubset.VACC_DOSES_ADMIN]: EpidemiologicVaccDosesAdminTimelineEntry
   [GdiSubset.VACC_DOSES_RECEIVED]: EpidemiologicVaccDosesAdminTimelineEntry
 }
@@ -278,7 +286,6 @@ export interface EpidemiologicVaccDosesDevelopmentData extends GdiObjectTimespan
   values: EpidemiologicVaccDosesDevelopmentEntry[]
   vaccSourceDates: {
     [GdiSubset.VACC_DOSES_DELIV]: string
-    [GdiSubset.VACC_DOSES_CONTINGENT]: string
     [GdiSubset.VACC_DOSES_ADMIN]: string
   }
 }
@@ -417,8 +424,9 @@ export type EpidemiologicVaccDosesAdminLocationTimelineValues =
   | GdiVariant.INZ
   | GdiVariant.TOTAL
   | GdiVariant.INZ_TOTAL
-export type EpidemiologicVaccDosesAdminLocationTimelineEntry =
-  InlineValues<EpidemiologicVaccDosesAdminLocationTimelineValues>
+export type EpidemiologicVaccDosesAdminLocationTimelineEntry = InlineValues<
+  EpidemiologicVaccDosesAdminLocationTimelineValues
+>
 
 export type EpidemiologicVaccDosesLocationDevelopmentEntry = {
   isoWeek: string
@@ -556,4 +564,9 @@ export interface EpidemiologicVaccDemographyDataV2 extends GdiObjectTimespanCont
 export interface EpidemiologicDemographyData extends GdiObjectTimeFrameContext {
   ageData: AgeBucketData[]
   genderData: GenderBucketData[]
+}
+
+// actual file type
+export interface HospReasonAgeRangeData extends GdiObjectTimeFrameContext {
+  values: HospReasonsAgeBucketData[]
 }

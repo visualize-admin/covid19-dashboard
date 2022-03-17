@@ -27,9 +27,13 @@ export enum GdiSubset {
   TEST_PCR = 'CovidTestPcr',
   TEST_ANTIGEN = 'CovidTestAntigen',
 
+  // hosp
+  HOSP_REASON_COVID = 'CovidHospReasonCovid',
+  HOSP_REASON_OTHER = 'CovidHospReasonOther',
+  HOSP_REASON_UNKNOWN = 'CovidHospReasonUnknown',
+
   // vaccination
   VACC_DOSES_DELIV = 'VaccDosesDeliv',
-  VACC_DOSES_CONTINGENT = 'VaccDosesContingent',
   VACC_DOSES_RECEIVED = 'VaccDosesReceived',
   VACC_DOSES_ADMIN = 'VaccDosesAdmin',
   VACC_PERSONS_FULL = 'VaccPersonsFull',
@@ -66,6 +70,7 @@ export enum GdiSubset {
   HOSP_CAPACITY_ICU_CERT_TARGET = 'HospCapacityIcuCertTarget',
   HOSP_CAPACITY_ICU_CERT_OPERATIONAL = 'HospCapacityIcuCertOperational',
   HOSP_CAPACITY_ICU_ADHOC_OPERATIONAL = 'HospCapacityIcuAdhocOperational',
+  HOSP_CAPACITY_ICU_TOTAL_OPERATIONAL = 'HospCapacityIcuTotalOperational',
 }
 
 export enum GdiVariant {
@@ -105,6 +110,7 @@ export enum GdiVariant {
   SUMP3 = 'sumP3',
   SUMP4 = 'sumP4',
   SUMP5 = 'sumP5',
+  SUMP6 = 'sumP6',
   SUM_VACC_INFO = 'sumVaccInfo',
   SUM14D = 'sum14d',
   SUM7D = 'sum7d',
@@ -116,6 +122,7 @@ export enum GdiVariant {
   SUMP3_PCR = 'sumP3_pcr',
   SUMP4_PCR = 'sumP4_pcr',
   SUMP5_PCR = 'sumP5_pcr',
+  SUMP6_PCR = 'sumP6_pcr',
   SUM28D_PCR = 'sum28d_pcr',
   SUM14D_PCR = 'sum14d_pcr',
 
@@ -125,6 +132,7 @@ export enum GdiVariant {
   SUMP3_ANTIGEN = 'sumP3_antigen',
   SUMP4_ANTIGEN = 'sumP4_antigen',
   SUMP5_ANTIGEN = 'sumP5_antigen',
+  SUMP6_ANTIGEN = 'sumP6_antigen',
   SUM28D_ANTIGEN = 'sum28d_antigen',
   SUM14D_ANTIGEN = 'sum14d_antigen',
 
@@ -135,6 +143,7 @@ export enum GdiVariant {
   INZ_P3 = 'inzP3',
   INZ_P4 = 'inzP4',
   INZ_P5 = 'inzP5',
+  INZ_P6 = 'inzP6',
   INZ_28D = 'inz28d',
   INZ_14D = 'inz14d',
 
@@ -145,7 +154,8 @@ export enum GdiVariant {
   INZ_P2B_PCR = 'inzP2b_pcr',
   INZ_P3_PCR = 'inzP3_pcr',
   INZ_P4_PCR = 'inzP4_pcr',
-  INZ_P5_PCR = 'inzP4_pcr',
+  INZ_P5_PCR = 'inzP5_pcr',
+  INZ_P6_PCR = 'inzP6_pcr',
   INZ_28D_PCR = 'inz28d_pcr',
   INZ_14D_PCR = 'inz14d_pcr',
 
@@ -154,7 +164,8 @@ export enum GdiVariant {
   INZ_P2B_ANTIGEN = 'inzP2b_antigen',
   INZ_P3_ANTIGEN = 'inzP3_antigen',
   INZ_P4_ANTIGEN = 'inzP4_antigen',
-  INZ_P5_ANTIGEN = 'inzP4_antigen',
+  INZ_P5_ANTIGEN = 'inzP5_antigen',
+  INZ_P6_ANTIGEN = 'inzP6_antigen',
   INZ_28D_ANTIGEN = 'inz28d_antigen',
   INZ_14D_ANTIGEN = 'inz14d_antigen',
 
@@ -186,7 +197,8 @@ export enum GdiVariant {
   PRCT_P2B_POSTEST = 'percentageP2b_posTest',
   PRCT_P3_POSTEST = 'percentageP3_posTest',
   PRCT_P4_POSTEST = 'percentageP4_posTest',
-  PRCT_P5_POSTEST = 'percentageP4_posTest',
+  PRCT_P5_POSTEST = 'percentageP5_posTest',
+  PRCT_P6_POSTEST = 'percentageP6_posTest',
   PRCT_28D_POSTEST = 'percentage28d_posTest',
   PRCT_14D_POSTEST = 'percentage14d_posTest',
 
@@ -197,6 +209,7 @@ export enum GdiVariant {
   PRCT_P3_POSTEST_PCR = 'percentageP3_posTest_pcr',
   PRCT_P4_POSTEST_PCR = 'percentageP4_posTest_pcr',
   PRCT_P5_POSTEST_PCR = 'percentageP5_posTest_pcr',
+  PRCT_P6_POSTEST_PCR = 'percentageP6_posTest_pcr',
   PRCT_28D_POSTEST_PCR = 'percentage28d_posTest_pcr',
   PRCT_14D_POSTEST_PCR = 'percentage14d_posTest_pcr',
 
@@ -207,6 +220,7 @@ export enum GdiVariant {
   PRCT_P3_POSTEST_ANTIGEN = 'percentageP3_posTest_antigen',
   PRCT_P4_POSTEST_ANTIGEN = 'percentageP4_posTest_antigen',
   PRCT_P5_POSTEST_ANTIGEN = 'percentageP5_posTest_antigen',
+  PRCT_P6_POSTEST_ANTIGEN = 'percentageP6_posTest_antigen',
   PRCT_28D_POSTEST_ANTIGEN = 'percentage28d_posTest_antigen',
   PRCT_14D_POSTEST_ANTIGEN = 'percentage14d_posTest_antigen',
 

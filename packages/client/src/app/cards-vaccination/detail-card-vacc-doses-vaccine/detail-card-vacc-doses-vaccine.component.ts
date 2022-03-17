@@ -49,7 +49,7 @@ import {
 } from '../../shared/models/filters/vacc-doses-cumulative-type-filter.enum'
 import { VaccDosesTypeFilter } from '../../shared/models/filters/vacc-doses-type-filter.enum'
 import { VaccVaccineCumulativeFilter } from '../../shared/models/filters/vacc-vaccine-cumulative-filter.enum'
-import { VaccinationRelativityFilter } from '../../shared/models/filters/vaccination-relativity-filter.enum'
+import { Inz100AbsFilter } from '../../shared/models/filters/relativity/inz100-abs-filter.enum'
 
 import { QueryParams } from '../../shared/models/query-params.enum'
 import { adminFormatNum } from '../../static-utils/admin-format-num.function'
@@ -186,7 +186,7 @@ export class DetailCardVaccDosesVaccineComponent
     switchMap((args) => this.onChanges$.pipe(mapTo(args))),
     withLatestFrom(this.selectedGeoUnit$),
     map(([[relativityFilter, cumulativeTypeFilter, vaccineFilter], geoUnit]) => {
-      const isRel = relativityFilter === VaccinationRelativityFilter.INZ_100
+      const isRel = relativityFilter === Inz100AbsFilter.INZ_100
       return {
         geoUnit,
         isRel,

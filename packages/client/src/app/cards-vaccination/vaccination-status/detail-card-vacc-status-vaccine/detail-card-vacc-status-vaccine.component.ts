@@ -36,9 +36,9 @@ import {
 } from '../../../shared/components/tooltip/tooltip-table-content/tooltip-table-content.component'
 import {
   DEFAULT_VACC_VACCINE_STATUS_RELATIVITY_FILTER,
-  getRelativityFilterOptions,
-  RelativityFilter,
-} from '../../../shared/models/filters/relativity-filter.enum'
+  getInz100KAbsFilterOptions,
+  Inz100KAbsFilter,
+} from '../../../shared/models/filters/relativity/inz100k-abs-filter.enum'
 import {
   DEFAULT_VACC_SATUS_CUMULATIVE_FILTER,
   VaccStatusCumulativeFilter,
@@ -61,7 +61,7 @@ import { BaseCardVaccStatusComponent, CurrentValuesVaccStatusBase } from '../bas
 
 interface CurrentValues extends CurrentValuesVaccStatusBase {
   cumulativeFilter: VaccStatusCumulativeFilter
-  relativityFilter: RelativityFilter
+  relativityFilter: Inz100KAbsFilter
   vaccineStatus: VaccineVaccinationStatus[]
 }
 
@@ -163,11 +163,11 @@ export class DetailCardVaccStatusVaccineComponent
     tap<MultiSelectValueOption[]>(emitValToOwnViewFn(this.vaccineStatusFilterCtrl)),
   )
 
-  readonly relativityFilterOptions = getRelativityFilterOptions(DEFAULT_VACC_VACCINE_STATUS_RELATIVITY_FILTER)
+  readonly relativityFilterOptions = getInz100KAbsFilterOptions(DEFAULT_VACC_VACCINE_STATUS_RELATIVITY_FILTER)
   readonly relativityFilterCtrl = new FormControl(this.route.snapshot.queryParams[QueryParams.VACC_REL_FILTER] || null)
-  readonly relativityFilter$: Observable<RelativityFilter> = this.route.queryParams.pipe(
+  readonly relativityFilter$: Observable<Inz100KAbsFilter> = this.route.queryParams.pipe(
     selectChanged(QueryParams.VACC_REL_FILTER, DEFAULT_VACC_VACCINE_STATUS_RELATIVITY_FILTER),
-    tap<RelativityFilter>(
+    tap<Inz100KAbsFilter>(
       emitValToOwnViewFn(this.vaccDosesRelativityFilterCtrl, DEFAULT_VACC_VACCINE_STATUS_RELATIVITY_FILTER),
     ),
   )
@@ -290,7 +290,7 @@ export class DetailCardVaccStatusVaccineComponent
     }
 
     return {
-      isRel: cv.relativityFilter === RelativityFilter.INZ_100K,
+      isRel: cv.relativityFilter === Inz100KAbsFilter.INZ_100K,
       titleKey: `Vaccination.Status.Card.Vaccine.${this.indicatorKey(cv.indicator)}.Title`,
       populationData: this.preparePopulationData(),
       mainChartData: this.prepareDailyData(cv),
@@ -365,7 +365,7 @@ export class DetailCardVaccStatusVaccineComponent
     let skipNoDataBefore: Date | null = null
     let skipNoDataAfter: Date | null = null
 
-    const isInz = cv.relativityFilter === RelativityFilter.INZ_100K
+    const isInz = cv.relativityFilter === Inz100KAbsFilter.INZ_100K
     const isTotal = cv.cumulativeFilter === VaccStatusCumulativeFilter.TOTAL
 
     const relevantGdi: GdiVariant.ROLLMEAN_7D | GdiVariant.INZ_ROLLMEAN_7D | GdiVariant.TOTAL | GdiVariant.INZ_TOTAL =
@@ -467,9 +467,9 @@ export class DetailCardVaccStatusVaccineComponent
   private prepareChartLabel(cv: CurrentValues) {
     const indicator = this.indicatorKey(cv.indicator)
     switch (cv.relativityFilter) {
-      case RelativityFilter.INZ_100K:
+      case Inz100KAbsFilter.INZ_100K:
         return `Vaccination.Status.Card.Chart.Meta.${indicator}.Inz`
-      case RelativityFilter.ABSOLUTE:
+      case Inz100KAbsFilter.ABSOLUTE:
         return `Vaccination.Status.Card.Chart.Meta.${indicator}.Abs`
     }
   }

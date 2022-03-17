@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common'
 import { NgModule } from '@angular/core'
 import { RouterModule } from '@angular/router'
+import { DetailCardCapacityCertifiedBedsModule } from '../../../cards-hosp-capacity/detail-card-hosp-capacity-certified-beds/detail-card-capacity-certified-beds.module'
 import { DetailCardCapacityDevelopmentModule } from '../../../cards-hosp-capacity/detail-card-hosp-capacity-development/detail-card-capacity-development.module'
 import { DetailCardCapacityGeographyModule } from '../../../cards-hosp-capacity/detail-card-hosp-capacity-geography/detail-card-capacity-geography.module'
 import { ChflGeoJsonResolver } from '../../../core/chfl-geo-json.resolver'
@@ -12,6 +13,8 @@ import { RouteDataKey } from '../../route-data-key.enum'
 import { RoutePaths } from '../../route-paths.enum'
 import { ShareComponent } from '../share.component'
 import { ShareModule } from '../share.module'
+import { ShareHospCapacityCertifiedBedsComponent } from './share-hosp-capacity-certified-beds/share-hosp-capacity-certified-beds.component'
+import { ShareHospCapacityCertifiedBedsResolver } from './share-hosp-capacity-certified-beds/share-hosp-capacity-certified-beds.resolver'
 import { ShareHospCapacityDevelopmentComponent } from './share-hosp-capacity-development/share-hosp-capacity-development.component'
 import { ShareHospCapacityDevelopmentResolver } from './share-hosp-capacity-development/share-hosp-capacity-development.resolver'
 import { ShareHospCapacityGeographyComponent } from './share-hosp-capacity-geography/share-hosp-capacity-geography.component'
@@ -47,6 +50,13 @@ import { ShareHospCapacityGeographyResolver } from './share-hosp-capacity-geogra
               [RouteDataKey.DETAIL_DATA]: ShareHospCapacityDevelopmentResolver,
             },
           },
+          {
+            path: RoutePaths.SHARE_CERTIFIED_BEDS,
+            component: ShareHospCapacityCertifiedBedsComponent,
+            resolve: {
+              [RouteDataKey.DETAIL_DATA]: ShareHospCapacityCertifiedBedsResolver,
+            },
+          },
           { path: '**', redirectTo: RoutePaths.SHARE_GEOGRAPHY },
         ],
       },
@@ -54,8 +64,17 @@ import { ShareHospCapacityGeographyResolver } from './share-hosp-capacity-geogra
 
     DetailCardCapacityGeographyModule,
     DetailCardCapacityDevelopmentModule,
+    DetailCardCapacityCertifiedBedsModule,
   ],
-  declarations: [ShareHospCapacityGeographyComponent, ShareHospCapacityDevelopmentComponent],
-  providers: [ShareHospCapacityDevelopmentResolver, ShareHospCapacityGeographyResolver],
+  declarations: [
+    ShareHospCapacityGeographyComponent,
+    ShareHospCapacityDevelopmentComponent,
+    ShareHospCapacityCertifiedBedsComponent,
+  ],
+  providers: [
+    ShareHospCapacityDevelopmentResolver,
+    ShareHospCapacityGeographyResolver,
+    ShareHospCapacityCertifiedBedsResolver,
+  ],
 })
 export class ShareHospCapacityModule {}

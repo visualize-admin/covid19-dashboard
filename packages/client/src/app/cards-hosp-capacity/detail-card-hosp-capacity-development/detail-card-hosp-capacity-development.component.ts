@@ -30,10 +30,10 @@ import {
   TooltipTableContentEntry,
 } from '../../shared/components/tooltip/tooltip-table-content/tooltip-table-content.component'
 import {
+  AbsRelFilter,
   DEFAULT_REL_ABS_FILTER_HOSP_CAPACITY_DEV,
-  getRelAbsFilterOptions,
-  RelAbsFilter,
-} from '../../shared/models/filters/rel-abs-filter.enum'
+  getAbsRelFilterOptions,
+} from '../../shared/models/filters/relativity/abs-rel-filter.enum'
 import {
   DEFAULT_TIME_SLOT_FILTER_HOSP_CAPACITY_DEV,
   getTimeSlotFilterOptions,
@@ -105,11 +105,11 @@ export class DetailCardHospCapacityDevelopmentComponent
     tap<TimeSlotFilter>(emitValToOwnViewFn(this.timeSlotFilerCtrl, DEFAULT_TIME_SLOT_FILTER_HOSP_CAPACITY_DEV)),
   )
 
-  readonly relAbsFilterOptions = getRelAbsFilterOptions(DEFAULT_REL_ABS_FILTER_HOSP_CAPACITY_DEV)
+  readonly relAbsFilterOptions = getAbsRelFilterOptions(DEFAULT_REL_ABS_FILTER_HOSP_CAPACITY_DEV)
   readonly relAbsFilterCtrl = new FormControl(this.route.snapshot.queryParams[QueryParams.REL_ABS_FILTER] || null)
-  readonly relAbsFilter$: Observable<RelAbsFilter> = this.route.queryParams.pipe(
+  readonly relAbsFilter$: Observable<AbsRelFilter> = this.route.queryParams.pipe(
     selectChanged(QueryParams.REL_ABS_FILTER, DEFAULT_REL_ABS_FILTER_HOSP_CAPACITY_DEV),
-    tap<RelAbsFilter>(emitValToOwnViewFn(this.relAbsFilterCtrl, DEFAULT_REL_ABS_FILTER_HOSP_CAPACITY_DEV)),
+    tap<AbsRelFilter>(emitValToOwnViewFn(this.relAbsFilterCtrl, DEFAULT_REL_ABS_FILTER_HOSP_CAPACITY_DEV)),
   )
 
   readonly legendSquarePairs: Array<[string, string]> = [
@@ -124,7 +124,7 @@ export class DetailCardHospCapacityDevelopmentComponent
         withLatestFrom(this.geoUnitFilter$),
         map(([, geoUnit]) => {
           const timeFrame = this.data.timeframes[timeSlotFilterTimeFrameKey[timeSlotFilter]]
-          return relativeFilter === RelAbsFilter.RELATIVE
+          return relativeFilter === AbsRelFilter.RELATIVE
             ? {
                 geoUnit,
                 timeFrame,

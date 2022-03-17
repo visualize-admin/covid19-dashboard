@@ -64,22 +64,9 @@
   <ng-container *ngIf="geoTableData$ | async as geoTableData">
     <table class="vacc-doses-table">
       <thead>
-        <tr class="vacc-doses-table__h1-first">
+        <tr class="vacc-doses-table__h1">
           <td><!-- row title col --></td>
-          <th colspan="2" scope="colgroup">
-            <div class="vacc-doses-table__h1-square" [style.--color]="tableColors.VaccDosesContingent">
-              {{ keys.valueSet3Label | i18n }}
-            </div>
-          </th>
-          <th colspan="2" scope="colgroup"><!-- no content --></th>
-        </tr>
-        <tr class="vacc-doses-table__h1 vacc-doses-table__h1-second">
-          <td><!-- row title col --></td>
-          <th colspan="2" scope="colgroup">
-            <div class="vacc-doses-table__h1-square" [style.--color]="tableColors.VaccDosesDeliv">
-              {{ keys.valueSet1Label | i18n }}
-            </div>
-          </th>
+          <th colspan="2" scope="colgroup">{{ keys.valueSet1Label | i18n }}</th>
           <th colspan="2" scope="colgroup">{{ keys.valueSet2Label | i18n }}</th>
         </tr>
         <tr class="vacc-doses-table__h2">
@@ -98,11 +85,7 @@
             [class.vacc-doses-table__row--large-padding]="ix === 0"
             [class.vacc-doses-table__row--large-gap]="ix === 3"
           >
-            <td
-              class="vacc-doses-table__overlay"
-              rowspan="2"
-              [class.vacc-doses-table__overlay--selected]="row.isSelected"
-            >
+            <td class="vacc-doses-table__overlay" [class.vacc-doses-table__overlay--selected]="row.isSelected">
               <!-- todo: make link accessible -->
               <a
                 href="#detail"
@@ -113,40 +96,27 @@
                 queryParamsHandling="merge"
               ></a>
             </td>
-            <th class="vacc-doses-table__title-cell vacc-doses-table__table-cell-rowspan-2" scope="row" rowspan="2">
+            <th class="vacc-doses-table__title-cell vacc-doses-table__table-cell">
               {{ row.key | i18n }}
             </th>
-            <th class="vacc-doses-table__table-hidden-cell" scope="row">{{ keys.valueSet3Label | i18n }}</th>
             <td
-              class="vacc-doses-table__bar-cell vacc-doses-table__mb-less-cell"
-              [style.--w.%]="row.set3.barVal"
-              [style.--color]="row.set3.color"
+              class="vacc-doses-table__bar-cell vacc-doses-table__bar-cell--secondary vacc-doses-table__table-cell"
+              [style.--w.%]="row.deliveredData.barVal"
+              [style.--color]="row.deliveredData.color"
             >
-              {{ row.set3.rel | adminNum: 2 }}
+              {{ row.deliveredData.rel | adminNum: 2 }}
             </td>
-            <td class="vacc-doses-table__val-cell vacc-doses-table__mb-less-cell">{{ row.set3.abs | adminNum }}</td>
+            <td class="vacc-doses-table__val-cell vacc-doses-table__table-cell">
+              {{ row.deliveredData.abs | adminNum }}
+            </td>
             <td
-              rowspan="2"
-              class="vacc-doses-table__bar-cell vacc-doses-table__bar-cell--secondary vacc-doses-table__table-cell-rowspan-2"
-              [style.--w.%]="row.set2.barVal"
-              [style.--color]="row.set2.color"
+              class="vacc-doses-table__bar-cell"
+              [style.--w.%]="row.administeredData.barVal"
+              [style.--color]="row.administeredData.color"
             >
-              {{ row.set2.rel | adminNum: 2 }}
+              {{ row.administeredData.rel | adminNum: 2 }}
             </td>
-            <td rowspan="2" class="vacc-doses-table__val-cell vacc-doses-table__table-cell-rowspan-2">
-              {{ row.set2.abs | adminNum }}
-            </td>
-          </tr>
-          <tr
-            [style.--row]="ix + 1"
-            class="vacc-doses-table__row"
-            [class.vacc-doses-table__row--large-padding]="ix === 0"
-          >
-            <th class="vacc-doses-table__table-hidden-cell" scope="row">{{ keys.valueSet1Label | i18n }}</th>
-            <td class="vacc-doses-table__bar-cell" [style.--w.%]="row.set1.barVal" [style.--color]="row.set1.color">
-              {{ row.set1.rel | adminNum: 2 }}
-            </td>
-            <td class="vacc-doses-table__val-cell">{{ row.set1.abs | adminNum }}</td>
+            <td class="vacc-doses-table__val-cell">{{ row.administeredData.abs | adminNum }}</td>
           </tr>
         </ng-container>
         <ng-container *ngIf="geoTableData.additionalData">
@@ -154,33 +124,20 @@
             [style.--row]="1 + geoTableData.rows.length"
             class="vacc-doses-table__row vacc-doses-table__row--large-gap-top"
           >
-            <th class="vacc-doses-table__title-cell vacc-doses-table__table-cell-rowspan-2" scope="row" rowspan="2">
+            <th class="vacc-doses-table__title-cell vacc-doses-table__table-cell">
               {{ 'Vaccination.VaccDoses.Card.Geography.Table.Army' | i18n }}
             </th>
-            <th class="vacc-doses-table__table-hidden-cell" scope="row">{{ keys.valueSet3Label | i18n }}</th>
-            <td class="vacc-doses-table__bar-cell vacc-doses-table__mb-less-cell">
-              {{ geoTableData.additionalData.VaccDosesContingent.inzTotal | adminNum: 2 }}
-            </td>
-            <td class="vacc-doses-table__val-cell vacc-doses-table__mb-less-cell">
-              {{ geoTableData.additionalData.VaccDosesContingent.total | adminNum }}
-            </td>
-            <td
-              rowspan="2"
-              class="vacc-doses-table__bar-cell vacc-doses-table__bar-cell--secondary vacc-doses-table__table-cell-rowspan-2"
-            >
-              {{ geoTableData.additionalData.VaccDosesAdmin.inzTotal | adminNum: 2 }}
-            </td>
-            <td rowspan="2" class="vacc-doses-table__val-cell vacc-doses-table__table-cell-rowspan-2">
-              {{ geoTableData.additionalData.VaccDosesAdmin.total | adminNum }}
-            </td>
-          </tr>
-          <tr [style.--row]="1" class="vacc-doses-table__row vacc-doses-table__row--large-padding">
-            <th class="vacc-doses-table__table-hidden-cell" scope="row">{{ keys.valueSet1Label | i18n }}</th>
             <td class="vacc-doses-table__bar-cell">
               {{ geoTableData.additionalData.VaccDosesDeliv.inzTotal | adminNum: 2 }}
             </td>
             <td class="vacc-doses-table__val-cell">
               {{ geoTableData.additionalData.VaccDosesDeliv.total | adminNum }}
+            </td>
+            <td class="vacc-doses-table__bar-cell">
+              {{ geoTableData.additionalData.VaccDosesAdmin.inzTotal | adminNum: 2 }}
+            </td>
+            <td class="vacc-doses-table__val-cell">
+              {{ geoTableData.additionalData.VaccDosesAdmin.total | adminNum }}
             </td>
           </tr>
         </ng-container>

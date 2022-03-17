@@ -40,7 +40,7 @@ import {
   TooltipTableContentData,
   TooltipTableContentEntry,
 } from '../../shared/components/tooltip/tooltip-table-content/tooltip-table-content.component'
-import { VaccPersonsRelAbsFilter } from '../../shared/models/filters/vacc-persons-rel-abs-filter.enum'
+import { RelAbsFilter } from '../../shared/models/filters/relativity/rel-abs-filter.enum'
 import {
   DEFAULT_VACC_VACCINE_CUMULATIVE_FILTER,
   getVaccVaccineCumulativeFilterOptions,
@@ -174,7 +174,7 @@ export class DetailCardVaccPersonsVaccineComponent
     switchMap((args) => this.onChanges$.pipe(mapTo(args))),
     withLatestFrom(this.selectedGeoUnit$),
     map(([[relativityFilter, cumulativeFilter, vaccineFilter], geoUnit]) => {
-      const isRel = relativityFilter === VaccPersonsRelAbsFilter.RELATIVE
+      const isRel = relativityFilter === RelAbsFilter.RELATIVE
       return {
         geoUnit,
         isRel,

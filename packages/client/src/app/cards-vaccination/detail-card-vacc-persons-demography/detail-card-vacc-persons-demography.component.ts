@@ -72,7 +72,7 @@ import {
   getVaccPersonsDemoFilterOptions,
   VaccPersonsDemoFilter,
 } from '../../shared/models/filters/vacc-persons-demo-filter.enum'
-import { VaccPersonsRelAbsFilter } from '../../shared/models/filters/vacc-persons-rel-abs-filter.enum'
+import { RelAbsFilter } from '../../shared/models/filters/relativity/rel-abs-filter.enum'
 import { QueryParams } from '../../shared/models/query-params.enum'
 import { adminFormatNum } from '../../static-utils/admin-format-num.function'
 import { createMatrixData, createSexMatrixData, MatrixCreationData } from '../../static-utils/data-utils'
@@ -264,7 +264,7 @@ export class DetailCardVaccPersonsDemographyComponent
         ],
         geoUnit,
       ]) => {
-        const isRel = relativityFilter === VaccPersonsRelAbsFilter.RELATIVE
+        const isRel = relativityFilter === RelAbsFilter.RELATIVE
         const ageRanges = this.ageRangeFilterCtrl.value.map((v: MultiSelectValueOption) => v.value)
 
         return {

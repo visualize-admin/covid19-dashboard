@@ -7,9 +7,9 @@
 >
   <p
     *bagOverviewCardInfo
-    class="g-content"
     bagOverviewCardHint
-    [translate]="'OverviewCardVirusVariant.InfoText.Top'"
+    class="g-content"
+    [translate]="'IndicatorsDescription.OverviewCardVirusVariant.General'"
   ></p>
 
   <p class="card__intro">{{ 'OverviewCardVirusVariant.IntroText' | i18n }}</p>
@@ -30,5 +30,5 @@
     ></bag-histogram-preview-lines>
   </ng-container>
 
-  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'OverviewCardVirusVariant.InfoText.Bottom'"></p>
+  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'IndicatorsDescription.OverviewCardVirusVariant.Graph'"></p>
 </bag-overview-card>

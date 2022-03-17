@@ -52,7 +52,7 @@
     </ng-container>
 
     <ng-container *ngIf="diagramData$ | async as histo">
-      <div class="detail-card-capacity-development__legend">
+      <div class="detail-card-capacity-development__chart-intro">
         <bag-chart-legend [itemGap]="16">
           <!-- only show 15-day legend if absolute graph -->
           <ng-container *ngIf="!histo.isRelative">

@@ -20,7 +20,7 @@ import { TooltipService } from '../tooltip/tooltip.service'
       <div class="info-tooltip">{{ text }}</div>
     </ng-template>
     <ng-content></ng-content>
-    <sc-svg #iconElRef url="/assets/icon/ic_info-2.svg"></sc-svg>
+    <sc-svg #iconElRef [class.info-tooltip__icon--md]="sizeMd" url="/assets/icon/ic_info-2.svg"></sc-svg>
   `,
   styleUrls: ['./info-tooltip.component.scss'],
   encapsulation: ViewEncapsulation.None,
@@ -29,6 +29,9 @@ import { TooltipService } from '../tooltip/tooltip.service'
 export class InfoTooltipComponent implements AfterViewInit, OnDestroy {
   @Input()
   text: string
+
+  @Input()
+  sizeMd?: boolean
 
   @ViewChild('tooltipRef', { static: true, read: TemplateRef })
   tooltipRef: TemplateRef<{ text: string }>

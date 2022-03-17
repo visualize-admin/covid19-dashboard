@@ -46,12 +46,14 @@ export class CardOverviewReproComponent extends BaseCardOverviewComponent<CovidR
         ? {
             key: this.translator.get('OverviewCardRepro.Table.Value.Label', args),
             value: adminFormatNum(val, 2),
+            info: this.translator.get('IndicatorsDescription.OverviewCardRepro.Value'),
           }
         : null,
       isDefined(valRollmean)
         ? {
             key: this.translator.get('OverviewCardRepro.Table.Rollmean.Label', args),
             value: adminFormatNum(valRollmean, 2),
+            info: this.translator.get('IndicatorsDescription.OverviewCardRepro.Rollmean'),
           }
         : null,
     ].filter(isDefined)

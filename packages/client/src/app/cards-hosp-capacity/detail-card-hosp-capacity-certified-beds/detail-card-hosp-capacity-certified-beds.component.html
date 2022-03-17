@@ -1,0 +1,65 @@
+<bag-detail-card
+  titleKey="HospCapacity.Card.CertifiedBeds.Title"
+  [sources]="[{ sourceKey: 'Commons.Source.KSD', date: (data.sourceDate | toDate) }]"
+  [infoKey]="infoKey"
+  [infoAddOnKey]="infoAddOnKey"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+  [hideInfo]="hideInfo"
+>
+  <div class="detail-card-capacity-certified-beds">
+    <div class="detail-card-capacity-certified-beds__lr">
+      <select
+        bag-select
+        name="TimeFilter"
+        [attr.aria-label]="'TimeSlotFilter.Label' | i18n"
+        [formControl]="timeSlotFilerCtrl"
+      >
+        <ng-container *ngFor="let opt of timeSlotFilterOptions">
+          <option [ngValue]="opt.val" [attr.selected]="opt.val === timeSlotFilerCtrl.value ? '' : null">
+            {{ opt.key | i18n }}
+          </option>
+        </ng-container>
+      </select>
+    </div>
+
+    <ng-container *ngIf="noHospKey$ | async as noHospKey">
+      <p class="detail-card-capacity-certified-beds__no-hosp">{{ noHospKey | i18n }}</p>
+    </ng-container>
+
+    <ng-container *ngIf="diagramData$ | async as histo">
+      <div class="detail-card-capacity-certified-beds__legend">
+        <bag-chart-legend [itemGap]="16">
+          <div
+            *ngFor="let pair of legendLinePairs"
+            bagChartLegendLine
+            [thickness]="4"
+            [length]="16"
+            [color]="pair.color"
+            [translate]="pair.labelKey"
+          ></div>
+          <div
+            *ngFor="let pair of legendSquarePairs"
+            bagChartLegendSquare
+            [color]="pair.color"
+            [translate]="pair.labelKey"
+          ></div>
+        </bag-chart-legend>
+      </div>
+      <p class="detail-card-capacity-certified-beds__meta">
+        {{ 'HospCapacity.Card.CertifiedBeds.DiagramTitle' | i18n }}
+      </p>
+
+      <bag-histogram-detail
+        [data]="histo.entries"
+        [barColors]="barColors"
+        [lineColors]="lineColors"
+        [lineThickness]="[4]"
+        (elFocus)="showTooltip($event)"
+        (diagramLeave)="hideTooltip()"
+      ></bag-histogram-detail>
+    </ng-container>
+  </div>
+</bag-detail-card>

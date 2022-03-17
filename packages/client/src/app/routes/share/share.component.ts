@@ -34,8 +34,8 @@ export class ShareComponent {
     this.introArg$ = dataService.sourceDate$.pipe(map((v) => ({ date: formatUtcDate(v, 'longDate', locale) })))
     this.showGlobalDisclaimer$ = dataService.sourceDate$.pipe(
       map((sourceDate) => {
-        const startDate = parseIsoDate('2021-10-21')
-        const endDate = parseIsoDate('2021-10-22')
+        const startDate = parseIsoDate('2022-01-25')
+        const endDate = parseIsoDate('2022-01-26')
         return !!translator.tryGet('Commons.GlobalDisclaimer') && sourceDate >= startDate && sourceDate < endDate
       }),
     )

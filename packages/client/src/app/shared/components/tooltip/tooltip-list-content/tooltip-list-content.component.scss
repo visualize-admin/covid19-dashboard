@@ -61,6 +61,11 @@ bag-tooltip-list-content {
         margin: 0 8px 3px 0;
       }
 
+      &.tooltip-list-content__colored--line:before {
+        height: 4px;
+        margin: 0 8px 2px 0;
+      }
+
       &.tooltip-list-content__colored--diagonal-line:before {
         height: 2px;
         margin: 0 8px 3px 0;

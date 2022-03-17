@@ -84,6 +84,7 @@ export type HospCapacityCertAdhocDevelopmentValue = {
   [GdiSubset.HOSP_CAPACITY_ICU_CERT_TARGET]: HospCapacityCertAdhocValues
   [GdiSubset.HOSP_CAPACITY_ICU_CERT_OPERATIONAL]: HospCapacityCertAdhocValues
   [GdiSubset.HOSP_CAPACITY_ICU_ADHOC_OPERATIONAL]: HospCapacityCertAdhocValues
+  [GdiSubset.HOSP_CAPACITY_ICU_TOTAL_OPERATIONAL]: HospCapacityCertAdhocValues
 }
 
 /** the actual file type for hospcapacity/hospcapacity-development-{gdi}-{geoUnit}.json */

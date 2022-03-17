@@ -1,36 +1,43 @@
-<table class="bag-key-value-list__table">
+<table class="bag-key-value-list__table" [class.bag-key-value-list__table--border]="showInfo">
   <caption *ngIf="captionKey" [translate]="captionKey"></caption>
   <tbody>
-    <tr
-      *ngFor="let entry of data; trackBy: identifyRowItem"
-      [class.bag-key-value-list__combine-above]="entry.combineAbove"
-      [class.bag-key-value-list__combine-above-no-border]="entry.combineAboveNoBorder"
-      [class.bag-key-value-list__combine-below]="entry.combineBelow || entry.isTitle"
-    >
-      <th [attr.colspan]="entry.value ? null : 2" class="bag-key-value-list__entry">
-        <span
-          *ngIf="entry.key"
-          class="bag-key-value-list__entry-key"
-          [class.bag-key-value-list__entry-key--title]="entry.isTitle"
-        >
+    <ng-container *ngFor="let entry of data; trackBy: identifyRowItem">
+      <tr
+        [class.bag-key-value-list__entry-value-with-info]="entry.info && showInfo"
+        [class.bag-key-value-list__combine-above]="entry.combineAbove"
+        [class.bag-key-value-list__combine-above-no-border]="entry.combineAboveNoBorder"
+        [class.bag-key-value-list__combine-below]="entry.combineBelow || entry.isTitle"
+      >
+        <th [attr.colspan]="entry.value ? null : 2" class="bag-key-value-list__entry">
           <span
-            *ngIf="entry.colorCode"
-            aria-hidden="true"
-            class="bag-key-value-list__color-square"
-            [class.bag-key-value-list__color-square--pattern]="entry.pattern"
-            [style.background-color]="entry.colorCode"
-            [style.--bg-color]="entry.colorCode"
-          ></span>
-          <span [innerHTML]="entry.key"></span>
-        </span>
-        <span class="bag-key-value-list__entry-key-description" *ngIf="entry.keyDescription">{{
-          entry.keyDescription
-        }}</span>
-        <span class="bag-key-value-list__entry-key-description" *ngIf="entry.info && showInfo">{{ entry.info }}</span>
-      </th>
-      <td *ngIf="entry.value">
-        <span class="bag-key-value-list__entry-value">{{ entry.value }}</span>
-      </td>
-    </tr>
+            *ngIf="entry.key"
+            class="bag-key-value-list__entry-key"
+            [class.bag-key-value-list__entry-key--title]="entry.isTitle"
+          >
+            <span
+              *ngIf="entry.colorCode"
+              aria-hidden="true"
+              class="bag-key-value-list__color-square"
+              [class.bag-key-value-list__color-square--pattern]="entry.pattern"
+              [style.background-color]="entry.colorCode"
+              [style.--bg-color]="entry.colorCode"
+            ></span>
+            <span [innerHTML]="entry.key"></span>
+          </span>
+          <span class="bag-key-value-list__entry-key-description" *ngIf="entry.keyDescription">{{
+            entry.keyDescription
+          }}</span>
+          <!--        <span class="bag-key-value-list__entry-key-description" *ngIf="entry.info && showInfo">{{ entry.info }}</span>-->
+        </th>
+        <td *ngIf="entry.value">
+          <span class="bag-key-value-list__entry-value">{{ entry.value }}</span>
+        </td>
+      </tr>
+      <tr *ngIf="entry.info && showInfo" class="bag-key-value-list__table-info">
+        <td colspan="2">
+          <span class="bag-key-value-list__entry-key-description">{{ entry.info }}</span>
+        </td>
+      </tr>
+    </ng-container>
   </tbody>
 </table>

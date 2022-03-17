@@ -52,9 +52,8 @@ import {
   GeoViewFilter,
   getGeoViewFilterOptions,
 } from '../../shared/models/filters/geo-view-filter.enum'
-import { QueryParams } from '../../shared/models/query-params.enum'
-import { RelativityFilter } from '../../shared/models/filters/relativity-filter.enum'
 import { TimeSlotFilter, timeSlotFilterTimeFrameKey } from '../../shared/models/filters/time-slot-filter.enum'
+import { QueryParams } from '../../shared/models/query-params.enum'
 import { adminFormatNum } from '../../static-utils/admin-format-num.function'
 import { Breakpoints } from '../../static-utils/breakpoints.enum'
 import { DOM_ID } from '../../static-utils/dom-id.const'
@@ -66,7 +65,7 @@ import { BaseDetailEpidemiologicCardComponent, CurrentValuesBase } from '../base
 
 interface ExtChoroplethDataUnit {
   val: number | -1 | null
-  isInz: boolean
+  absVal: number | -1 | null
   additionalValues: Array<number | undefined | null>
 }
 
@@ -75,13 +74,13 @@ interface GeoMapData {
   min: number
   max: number
   featureCollection: ChoroplethGeoFeatureCollection<ExtChoroplethDataUnit>
-  isInz: boolean
   hasNoData: boolean
   fillFn: (feature: ChoroplethGeoFeature<ExtChoroplethDataUnit>, instance: D3SvgComponent) => string
 }
 
 interface SelectedUnitData {
   title: string
+  inzValue: [string, string]
   value: [string, string]
   additionalValues: [string, string][]
   noData: boolean
@@ -91,7 +90,6 @@ interface CurrentGeographyValues extends CurrentValuesBase {
   geoUnit: CantonGeoUnit | TopLevelGeoUnit
   geoView: GeoViewFilter
   timeFilter: TimeSlotFilter
-  isInz: boolean
   timeFrame: TimeSpan
   cantonData: CantonData<EpidemiologicGeoValues> | CantonData<EpidemiologicTestGeoValues>
   geoUnitData: InlineValues<EpidemiologicGeoValues> | InlineValues<EpidemiologicTestGeoValues> | null
@@ -147,6 +145,7 @@ export class DetailCardEpidemiologicGeographyComponent
     [TimeSlotFilter.PHASE_3]: [GdiVariant.SUMP3, GdiVariant.INZ_P3],
     [TimeSlotFilter.PHASE_4]: [GdiVariant.SUMP4, GdiVariant.INZ_P4],
     [TimeSlotFilter.PHASE_5]: [GdiVariant.SUMP5, GdiVariant.INZ_P5],
+    [TimeSlotFilter.PHASE_6]: [GdiVariant.SUMP6, GdiVariant.INZ_P6],
     [TimeSlotFilter.LAST_4_WEEKS]: [GdiVariant.SUM28D, GdiVariant.INZ_28D],
     [TimeSlotFilter.LAST_2_WEEKS]: [GdiVariant.SUM14D, GdiVariant.INZ_14D],
   }
@@ -175,18 +174,15 @@ export class DetailCardEpidemiologicGeographyComponent
 
   readonly currentValues$: Observable<CurrentGeographyValues> = combineLatest([
     this.timeFilter$,
-    this.relFilter$,
     this.selectedGeoUnit$,
     this.geoViewFilter$,
   ]).pipe(
     switchMap((args) => this.onChanges$.pipe(mapTo(args))),
-    map(([timeFilter, relativityFilter, geoUnit, geoView]) => {
+    map(([timeFilter, geoUnit, geoView]): CurrentGeographyValues => {
       return {
         geoUnit,
         timeFilter,
-        relativityFilter,
         geoView,
-        isInz: relativityFilter === RelativityFilter.INZ_100K,
         timeFrame: this.data.timeframes[timeSlotFilterTimeFrameKey[timeFilter]],
         geoUnitData:
           geoUnit === TopLevelGeoUnit.CHFL
@@ -223,8 +219,8 @@ export class DetailCardEpidemiologicGeographyComponent
     uriService: UriService,
     tooltipService: TooltipService,
     private readonly windowRef: WindowRef,
+    private readonly breakpointObserver: BreakpointObserver,
     @Inject(DOCUMENT) private readonly doc: Document,
-    private breakpointObserver: BreakpointObserver,
     @Inject(CURRENT_LANG) private readonly lang: Language,
   ) {
     super(route, router, translator, uriService, tooltipService)
@@ -272,7 +268,10 @@ export class DetailCardEpidemiologicGeographyComponent
 
   showTooltip({ source, unit, properties }: ChoroplethEventData<ExtChoroplethDataUnit>) {
     const value: number | null = properties.val
-    const valKey: string = properties.isInz ? this.tooltipInzKey : this.tooltipAbsKey
+    const valKey: string = this.tooltipInzKey
+
+    const absValue: number | null = properties.absVal
+    const absValKey: string = this.tooltipAbsKey
 
     const additionalEntries: TooltipListContentEntry[] = this.additional.map((addDef, ix) => {
       const val = properties.additionalValues[ix]
@@ -285,7 +284,11 @@ export class DetailCardEpidemiologicGeographyComponent
     const tooltipCtx: TooltipListContentData = {
       title: this.translator.get(`GeoFilter.${unit}`),
       noData: !isDefined(value),
-      entries: [{ label: this.translator.get(valKey), value: adminFormatNum(value) }, ...additionalEntries],
+      entries: [
+        { label: this.translator.get(valKey), value: adminFormatNum(value) },
+        { label: this.translator.get(absValKey), value: adminFormatNum(absValue), lighten: true },
+        ...additionalEntries,
+      ],
     }
     this.tooltipService.showCmp(TooltipListContentComponent, source, tooltipCtx, { position: 'above', offsetY: 10 })
   }
@@ -297,21 +300,23 @@ export class DetailCardEpidemiologicGeographyComponent
       return null
     }
 
-    const relevantGdi = this.getRelevantGdi(cv.timeFilter, cv.isInz)
+    const relevantGdi = this.getRelevantGdi(cv.timeFilter, true)
+    const relevantAbsGdi = this.getRelevantGdi(cv.timeFilter, false)
 
-    const entries: Array<[string, number | null, Array<number | undefined>]> = (<Array<any>>(
+    const entries: Array<[string, number | null, number | null, Array<number | undefined>]> = (<Array<any>>(
       Object.entries(cv.cantonData)
     )).map(([key, val]) => {
       const value = val && isDefined(val[relevantGdi]) ? val[relevantGdi] : null
+      const absValue = val && isDefined(val[relevantAbsGdi]) ? val[relevantAbsGdi] : null
       const addValue: any[] = this.additional.map((addDef) => val && val[addDef.gdi[cv.timeFilter]])
-      return [key, value, addValue]
+      return [key, value, absValue, addValue]
     })
 
     const preparedData = entries.reduce(
-      (u, [k, val, additionalValues]) =>
+      (u, [k, val, absVal, additionalValues]) =>
         u.set(k, {
           val,
-          isInz: cv.isInz,
+          absVal,
           additionalValues,
         }),
       new Map<string, ExtChoroplethDataUnit>(),
@@ -349,7 +354,6 @@ export class DetailCardEpidemiologicGeographyComponent
 
     return {
       geoUnit: cv.geoUnit,
-      isInz: cv.isInz,
       fillFn,
       featureCollection: { ...this.geoJson, features },
       min,
@@ -403,8 +407,8 @@ export class DetailCardEpidemiologicGeographyComponent
       set: {
         abs: set ? set[relevantGdi] : null,
         rel: set ? set[relevantInzGdi] : null,
-        barVal: cv.isInz ? ((set ? set[relevantInzGdi] || 0 : 0) / maxCol1Val) * 100 : null,
-        bar2Val: cv.isInz ? null : ((set ? set[relevantGdi] || 0 : 0) / maxCol2Val) * 100,
+        barVal: ((set ? set[relevantInzGdi] || 0 : 0) / maxCol1Val) * 100,
+        bar2Val: ((set ? set[relevantGdi] || 0 : 0) / maxCol2Val) * 100,
       },
       setTestPositivity: createTestPositivity(set),
     })
@@ -440,13 +444,17 @@ export class DetailCardEpidemiologicGeographyComponent
       title.unshift(this.translator.get('Commons.Canton'))
     }
 
-    const value: number | null = geoUnitData ? geoUnitData[this.getRelevantGdi(cv.timeFilter, cv.isInz)] : null
-    const valKey: string = cv.isInz ? this.tooltipInzKey : this.tooltipAbsKey
+    const inzValue: number | null = geoUnitData ? geoUnitData[this.getRelevantGdi(cv.timeFilter, true)] : null
+    const inzValKey: string = this.tooltipInzKey
+
+    const value: number | null = geoUnitData ? geoUnitData[this.getRelevantGdi(cv.timeFilter, false)] : null
+    const valKey: string = this.tooltipAbsKey
 
     // this is an ugly hack to escape the 'actually-necessary-but-from-tslint-removed-casting' bug
     const isDefinedGeoUnitData = (
       gud: InlineValues<EpidemiologicGeoValues> | InlineValues<EpidemiologicTestGeoValues> | null,
     ): gud is InlineValues<EpidemiologicTestGeoValues> => !!gud
+
     const additionalValues: [string, string][] = this.additional.map((addDef) => {
       const gdi = addDef.gdi[cv.timeFilter]
       const val = isDefinedGeoUnitData(geoUnitData) ? geoUnitData[gdi] : null
@@ -455,9 +463,10 @@ export class DetailCardEpidemiologicGeographyComponent
 
     return {
       title: title.join(' '),
+      inzValue: [this.translator.get(inzValKey), adminFormatNum(inzValue)],
       value: [this.translator.get(valKey), adminFormatNum(value)],
       additionalValues,
-      noData: !isDefined(value),
+      noData: !isDefined(inzValue),
     }
   }
 

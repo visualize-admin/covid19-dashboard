@@ -24,6 +24,7 @@ import { NavBoardService } from '../../../shared/components/header/nav-board/nav
 import {
   DEFAULT_TIME_SLOT_FILTER_OVERVIEW,
   getTimeSlotFilterOptions,
+  timeSlotFilterKey,
 } from '../../../shared/models/filters/time-slot-filter.enum'
 import { QueryParams } from '../../../shared/models/query-params.enum'
 import { emitValToOwnViewFn } from '../../../static-utils/emit-value-to-own-view.function'
@@ -44,6 +45,14 @@ export class OverviewComponent implements OnInit, OnDestroy, AfterViewInit {
   readonly bottomLinks = navLinks
     .filter((v) => v.path !== RoutePaths.DASHBOARD_OVERVIEW)
     .map(({ path, labelKey }) => ({ pathArgs: ['/', this.lang, path], labelKey }))
+
+  get selectedTimeFilterDescriptionKey(): string {
+    const selectedOption = getTimeSlotFilterOptions(DEFAULT_TIME_SLOT_FILTER_OVERVIEW).find(
+      (o) => o.val === this.timeFilterCtrl.value,
+    )
+    const key = selectedOption ? selectedOption.key : timeSlotFilterKey[DEFAULT_TIME_SLOT_FILTER_OVERVIEW]
+    return `IndicatorsDescription.${key}`
+  }
 
   readonly timeFilterOptions = getTimeSlotFilterOptions(DEFAULT_TIME_SLOT_FILTER_OVERVIEW)
   readonly timeFilterCtrl = new FormControl(this.route.snapshot.queryParams[QueryParams.TIME_FILTER] || null)

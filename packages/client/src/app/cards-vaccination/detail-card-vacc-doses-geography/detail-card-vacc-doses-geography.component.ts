@@ -42,7 +42,6 @@ import { createColorScale } from '../../diagrams/utils'
 import { RoutePaths } from '../../routes/route-paths.enum'
 import {
   COLOR_VACC_ADMINISTERED_TABLE,
-  COLOR_VACC_CONTINGENT_TABLE,
   COLOR_VACC_RECEIVED_TABLE,
   COLORS_VACC_HEATMAP,
 } from '../../shared/commons/colors.const'
@@ -93,9 +92,8 @@ interface GeoTableRow {
   name: string
   isSelected: boolean
   queryParams: Record<string, string>
-  set1: GeoTableRowSetValues
-  set2: GeoTableRowSetValues
-  set3: GeoTableRowSetValues
+  deliveredData: GeoTableRowSetValues
+  administeredData: GeoTableRowSetValues
 }
 
 interface GeoTableData {
@@ -129,7 +127,6 @@ export class DetailCardVaccDosesGeographyComponent
   readonly tableColors = {
     [GdiSubset.VACC_DOSES_DELIV]: COLOR_VACC_RECEIVED_TABLE,
     [GdiSubset.VACC_DOSES_ADMIN]: COLOR_VACC_ADMINISTERED_TABLE,
-    [GdiSubset.VACC_DOSES_CONTINGENT]: COLOR_VACC_CONTINGENT_TABLE,
   }
 
   readonly cardDetailPath = RoutePaths.SHARE_GEOGRAPHY
@@ -160,15 +157,10 @@ export class DetailCardVaccDosesGeographyComponent
     map((specialWarnKey) => (this.translator.tryGet(specialWarnKey) ? specialWarnKey : null)),
   )
 
-  keys: Record<'info' | 'legendTitle' | 'valueSet1Label' | 'valueSet2Label' | 'valueSet3Label', string>
+  keys: Record<'info' | 'legendTitle' | 'valueSet1Label' | 'valueSet2Label', string>
 
   get sources(): Source[] {
     return [
-      {
-        sourceKey: 'Commons.Source.BAG',
-        descKey: 'Vaccination.Card.DosesContingent',
-        date: new Date(this.data.vaccSourceDates[GdiSubset.VACC_DOSES_CONTINGENT]),
-      },
       {
         sourceKey: 'Commons.Source.LBA',
         descKey: 'Vaccination.Card.DosesDelivered',
@@ -232,7 +224,6 @@ export class DetailCardVaccDosesGeographyComponent
       legendTitle: 'Vaccination.VaccDoses.Card.Geography.Legend.Title',
       valueSet1Label: 'Vaccination.Card.DosesDelivered',
       valueSet2Label: 'Vaccination.Card.DosesAdministered',
-      valueSet3Label: 'Vaccination.Card.DosesContingent',
     }
   }
 
@@ -303,36 +294,30 @@ export class DetailCardVaccDosesGeographyComponent
   private _prepareGeoTableData(cv: CurrentValues, data: EpidemiologicVaccDosesGeographyData): GeoTableRow[] {
     const entries = [data.chFlData, data.chData, ...Object.values(data.cantonData)]
 
-    const maxCol1Val = Math.max(...entries.map((e) => e[GdiSubset.VACC_DOSES_DELIV].inzTotal).filter(isDefined))
-    const maxCol2Val = Math.max(...entries.map((e) => e[GdiSubset.VACC_DOSES_ADMIN].inzTotal).filter(isDefined))
-    const maxCol3Val = Math.max(...entries.map((e) => e[GdiSubset.VACC_DOSES_CONTINGENT].inzTotal).filter(isDefined))
+    const maxDeliveredValue = Math.max(...entries.map((e) => e[GdiSubset.VACC_DOSES_DELIV].inzTotal).filter(isDefined))
+    const maxAdministeredValue = Math.max(
+      ...entries.map((e) => e[GdiSubset.VACC_DOSES_ADMIN].inzTotal).filter(isDefined),
+    )
     const createGeoTableRow = (
       geoUnit: CantonGeoUnit | TopLevelGeoUnit,
-      set1: InlineValues<EpidemiologicVaccGeoValues>,
-      set2: EpidemiologicVaccGeoUnitData,
-      set3: InlineValues<EpidemiologicVaccGeoValues>,
+      deliveredData: InlineValues<EpidemiologicVaccGeoValues>,
+      administratedData: EpidemiologicVaccGeoUnitData,
     ): GeoTableRow => ({
       key: `GeoFilter.${geoUnit}`,
       name: this.translator.get(`GeoFilter.${geoUnit}`),
       isSelected: geoUnit === cv.geoUnit,
       queryParams: { [QueryParams.GEO_FILTER]: geoUnit },
-      set1: {
-        abs: set1.total,
-        rel: set1.inzTotal,
-        barVal: ((set1.inzTotal || 0) / Math.max(maxCol1Val, maxCol3Val)) * 100,
+      deliveredData: {
+        abs: deliveredData.total,
+        rel: deliveredData.inzTotal,
+        barVal: ((deliveredData.inzTotal || 0) / maxDeliveredValue) * 100,
         color: this.tableColors[GdiSubset.VACC_DOSES_DELIV],
       },
-      set2: {
-        abs: set2.total,
-        rel: set2.inzTotal,
-        barVal: ((set2.inzTotal || 0) / maxCol2Val) * 100,
+      administeredData: {
+        abs: administratedData.total,
+        rel: administratedData.inzTotal,
+        barVal: ((administratedData.inzTotal || 0) / maxAdministeredValue) * 100,
         color: this.tableColors[GdiSubset.VACC_DOSES_ADMIN],
-      },
-      set3: {
-        abs: set3.total,
-        rel: set3.inzTotal,
-        barVal: ((set3.inzTotal || 0) / Math.max(maxCol1Val, maxCol3Val)) * 100,
-        color: this.tableColors[GdiSubset.VACC_DOSES_CONTINGENT],
       },
     })
 
@@ -343,24 +328,14 @@ export class DetailCardVaccDosesGeographyComponent
           : geoUnit === TopLevelGeoUnit.CH
           ? data.chData
           : data.cantonData[TopLevelGeoUnit.FL]
-      return createGeoTableRow(
-        geoUnit,
-        entry[GdiSubset.VACC_DOSES_DELIV],
-        entry[GdiSubset.VACC_DOSES_ADMIN],
-        entry[GdiSubset.VACC_DOSES_CONTINGENT],
-      )
+      return createGeoTableRow(geoUnit, entry[GdiSubset.VACC_DOSES_DELIV], entry[GdiSubset.VACC_DOSES_ADMIN])
     })
 
     const cantonRows: GeoTableRow[] = (<CantonGeoUnit[]>getEnumValues(CantonGeoUnit))
       .filter((k) => k !== CantonGeoUnit.FL)
       .map((geoUnit) => {
         const entry = data.cantonData[geoUnit]
-        return createGeoTableRow(
-          geoUnit,
-          entry[GdiSubset.VACC_DOSES_DELIV],
-          entry[GdiSubset.VACC_DOSES_ADMIN],
-          entry[GdiSubset.VACC_DOSES_CONTINGENT],
-        )
+        return createGeoTableRow(geoUnit, entry[GdiSubset.VACC_DOSES_DELIV], entry[GdiSubset.VACC_DOSES_ADMIN])
       })
       .sort((a, b) => (a.name < b.name ? -1 : a.name > b.name ? 1 : 0))
 

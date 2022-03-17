@@ -1,6 +1,7 @@
 @use 'src/styles/text';
 @use 'src/styles/col';
 @use 'src/styles/layout';
+@use 'src/styles/mix';
 
 bag-detail-card-epidemiologic-test-positivity {
   display: block;
@@ -10,7 +11,7 @@ bag-detail-card-epidemiologic-test-positivity {
     flex-direction: column;
   }
   .detail-card-test-positivity__legend {
-    align-self: flex-end;
+    @include mix.cardChartIntro;
   }
   .detail-card-test-positivity__meta {
     @include text.meta;

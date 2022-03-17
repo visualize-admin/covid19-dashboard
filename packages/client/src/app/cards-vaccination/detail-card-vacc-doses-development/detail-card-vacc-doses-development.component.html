@@ -51,14 +51,7 @@
     </div>
     <ng-container *ngIf="cumulativeData$ | async as cumulData">
       <bag-chart-legend [itemGap]="16" class="detail-card-vacc-doses-development__chart-intro">
-        <div
-          *ngFor="let pair of cumulData.legendPairs"
-          bagChartLegendLine
-          [dashed]="pair[2]"
-          [length]="16"
-          [thickness]="2"
-          [color]="pair[0]"
-        >
+        <div *ngFor="let pair of cumulData.legendPairs" bagChartLegendSquare [color]="pair[0]">
           {{ pair[1] | i18n }}
         </div>
       </bag-chart-legend>

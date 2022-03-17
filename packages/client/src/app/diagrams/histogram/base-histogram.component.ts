@@ -71,8 +71,8 @@ export abstract class BaseHistogramComponent<T extends HistogramEntry> implement
 
   set data(data: T[]) {
     this._data = data
-    this.firstDate = this.withWeeklyValues ? addDays(data[0].date, -3) : data[0].date
-    this.lastDate = this.withWeeklyValues ? addDays(data[data.length - 1].date, 3) : data[data.length - 1].date
+    this.firstDate = data[0].date
+    this.lastDate = data[data.length - 1].date
     this.xCount = differenceInDays(this.lastDate, this.firstDate) + 1
   }
 

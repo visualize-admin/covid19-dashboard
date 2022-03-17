@@ -48,13 +48,12 @@ export class DetailCardEpidemiologicTestPositivityComponent extends BaseDetailEp
 
   readonly currentValues$: Observable<CurrentTestPositivityValues> = this.timeFilter$.pipe(
     switchMap((args) => this.onChanges$.pipe(mapTo(args))),
-    withLatestFrom(this.selectedGeoUnit$, this.relFilter$),
-    map(([timeFilter, geoUnit, relativityFilter]) => {
+    withLatestFrom(this.selectedGeoUnit$),
+    map(([timeFilter, geoUnit]): CurrentTestPositivityValues => {
       const timeFrame = this.data.timeframes[timeSlotFilterTimeFrameKey[timeFilter]]
       return {
         geoUnit,
         timeFilter,
-        relativityFilter,
         timeFrame,
         values: getTimeslotCorrespondingValues(this.data.values, timeFrame),
       }

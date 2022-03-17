@@ -23,6 +23,8 @@
           <h5 class="detail-card-geography__selected-unit-title">{{ selectedData.title }}</h5>
           <p *ngIf="selectedData.noData" translate="Commons.NoData"></p>
           <dl *ngIf="!selectedData.noData" class="detail-card-geography__selected-unit-values">
+            <dt>{{ selectedData.inzValue[0] }}</dt>
+            <dd>{{ selectedData.inzValue[1] }}</dd>
             <dt>{{ selectedData.value[0] }}</dt>
             <dd>{{ selectedData.value[1] }}</dd>
             <ng-container *ngFor="let addVal of selectedData.additionalValues">
@@ -35,7 +37,7 @@
       <bag-color-legend
         [min]="data.min"
         [max]="data.max"
-        [titleKey]="data.isInz ? metaInzKey : metaAbsKey"
+        [titleKey]="metaInzKey"
         [noCasesKey]="legendZeroKey"
         [noDataKey]="data.hasNoData ? 'Commons.NoData' : undefined"
         [scaleColors]="scaleColors"

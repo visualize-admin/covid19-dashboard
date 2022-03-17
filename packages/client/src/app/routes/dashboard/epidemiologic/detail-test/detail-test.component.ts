@@ -16,6 +16,7 @@ export const DETAIL_TEST_GDI_PCR: Record<TimeSlotFilter, EpidemiologicTestGeoVal
   [TimeSlotFilter.PHASE_3]: GdiVariant.PRCT_P3_POSTEST_PCR,
   [TimeSlotFilter.PHASE_4]: GdiVariant.PRCT_P4_POSTEST_PCR,
   [TimeSlotFilter.PHASE_5]: GdiVariant.PRCT_P5_POSTEST_PCR,
+  [TimeSlotFilter.PHASE_6]: GdiVariant.PRCT_P6_POSTEST_PCR,
   [TimeSlotFilter.LAST_4_WEEKS]: GdiVariant.PRCT_28D_POSTEST_PCR,
   [TimeSlotFilter.LAST_2_WEEKS]: GdiVariant.PRCT_14D_POSTEST_PCR,
 }
@@ -27,6 +28,7 @@ export const DETAIL_TEST_GDI_ANTIGEN: Record<TimeSlotFilter, EpidemiologicTestGe
   [TimeSlotFilter.PHASE_3]: GdiVariant.PRCT_P3_POSTEST_ANTIGEN,
   [TimeSlotFilter.PHASE_4]: GdiVariant.PRCT_P4_POSTEST_ANTIGEN,
   [TimeSlotFilter.PHASE_5]: GdiVariant.PRCT_P5_POSTEST_ANTIGEN,
+  [TimeSlotFilter.PHASE_6]: GdiVariant.PRCT_P6_POSTEST_ANTIGEN,
   [TimeSlotFilter.LAST_4_WEEKS]: GdiVariant.PRCT_28D_POSTEST_ANTIGEN,
   [TimeSlotFilter.LAST_2_WEEKS]: GdiVariant.PRCT_14D_POSTEST_ANTIGEN,
 }

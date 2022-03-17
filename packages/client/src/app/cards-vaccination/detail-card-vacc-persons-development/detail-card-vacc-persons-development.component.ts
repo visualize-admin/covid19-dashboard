@@ -30,7 +30,7 @@ import {
   VaccPersonsDevCumulativeFilter,
   vaccPersonsDevCumulativeFilterOptions,
 } from '../../shared/models/filters/vacc-persons-dev-cumulative-filter.enum'
-import { VaccPersonsRelAbsFilter } from '../../shared/models/filters/vacc-persons-rel-abs-filter.enum'
+import { RelAbsFilter } from '../../shared/models/filters/relativity/rel-abs-filter.enum'
 import { QueryParams } from '../../shared/models/query-params.enum'
 import { adminFormatNum } from '../../static-utils/admin-format-num.function'
 import { formatUtcDate, parseIsoDate } from '../../static-utils/date-utils'
@@ -120,7 +120,7 @@ export class DetailCardVaccPersonsDevelopmentComponent
       return {
         geoUnit,
         cumulativeFilter,
-        isInz: relativityFilter === VaccPersonsRelAbsFilter.RELATIVE,
+        isInz: relativityFilter === RelAbsFilter.RELATIVE,
         timeSpan: this.data.timeSpan,
       }
     }),
@@ -239,31 +239,40 @@ export class DetailCardVaccPersonsDevelopmentComponent
       return
     }
 
-    const toFixed = isRel ? 2 : undefined
+    // always round to 2 decimal
+    const toFixed = 2
     const suffix = isRel ? '%' : ''
 
-    const values: TooltipListContentEntry[] = []
-    if (isDefined(minOne)) {
-      values.push({
-        label: this.translator.get('Vaccination.Card.VaccPersons.First'),
-        value: adminFormatNum(minOne, toFixed, suffix),
-        color: this.colorFirstDose,
-      })
-    }
-    if (isDefined(full)) {
-      values.push({
-        label: this.translator.get('Vaccination.Card.VaccPersons.Full'),
-        value: adminFormatNum(full, toFixed, suffix),
-        color: this.colorFullyVacced,
-      })
-    }
-    if (isDefined(booster)) {
-      values.push({
-        label: this.translator.get('Vaccination.Card.VaccPersons.Booster'),
-        value: adminFormatNum(booster, toFixed, suffix),
-        color: this.colorBooster,
-      })
-    }
+    const entries: [string, string, string, number | null][] = [
+      [
+        this.translator.get('Vaccination.Card.VaccPersons.First'),
+        adminFormatNum(minOne, toFixed, suffix),
+        this.colorFirstDose,
+        minOne,
+      ],
+      [
+        this.translator.get('Vaccination.Card.VaccPersons.Full'),
+        adminFormatNum(full, toFixed, suffix),
+        this.colorFullyVacced,
+        full,
+      ],
+      [
+        this.translator.get('Vaccination.Card.VaccPersons.Booster'),
+        adminFormatNum(booster, toFixed, suffix),
+        this.colorBooster,
+        booster,
+      ],
+    ]
+
+    const values: TooltipListContentEntry[] = entries
+      // filter out empty
+      .filter((entry) => isDefined(entry[3]))
+      .sort((a, b) => (b[3] || 0) - (a[3] || 0))
+      .map((entry) => ({
+        label: entry[0],
+        value: entry[1],
+        color: entry[2],
+      }))
     const ctx: TooltipListContentData = {
       title: formatUtcDate(data.date),
       entries: values,

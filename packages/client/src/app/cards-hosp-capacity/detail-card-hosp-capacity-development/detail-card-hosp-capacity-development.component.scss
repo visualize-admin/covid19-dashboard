@@ -21,12 +21,8 @@ bag-detail-card-hosp-capacity-development {
     @include mix.cardFiltersMainLr;
   }
 
-  .detail-card-capacity-development__legend {
-    align-self: flex-end;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    margin-bottom: 8px;
+  .detail-card-capacity-development__chart-intro {
+    @include mix.cardChartIntro;
   }
 
   .detail-card-capacity-development__meta {

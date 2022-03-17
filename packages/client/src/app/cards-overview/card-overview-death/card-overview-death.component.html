@@ -5,15 +5,13 @@
   [moreLinkArgs]="moreLink"
   [warnKey]="warningKey$ | async"
 >
-  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'OverviewCardDeath.InfoText.Top'"></p>
+  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'IndicatorsDescription.OverviewCardDeath.General'"></p>
 
   <bag-key-value-list
     *ngIf="keyValueList$ | async as keyValueList"
     [data]="keyValueList"
     [showInfo]="(overviewCard?.showInfo$ | async) || false"
   ></bag-key-value-list>
-
-  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'OverviewCardDeath.InfoText.Center'"></p>
 
   <ng-container *ngIf="histogram$ | async as histogram">
     <bag-chart-legend [itemGap]="16" class="card__legend" [justifyContentFlexEnd]="true">
@@ -24,7 +22,7 @@
     <bag-histogram-preview [data]="histogram"></bag-histogram-preview>
   </ng-container>
 
-  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'OverviewCardDeath.InfoText.Bottom'"></p>
+  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'IndicatorsDescription.OverviewCardDeath.Graph'"></p>
 
   <a
     *ngIf="facet !== 'print'"
@@ -32,6 +30,7 @@
     [routerLink]="breakthroughLink"
     [queryParams]="breakthroughLinkQueryParams"
     [fragment]="RouteFragment.SHOW_DETAIL"
-    >{{ 'OverviewCardDeath.LinkToVaccBreakThrough' | i18n }}<sc-svg url="/assets/icon/ic_chevron_right.svg"></sc-svg
-  ></a>
+    >{{ 'OverviewCardDeath.LinkToVaccBreakThrough' | i18n }}
+    <sc-svg url="/assets/icon/ic_chevron_right.svg"></sc-svg>
+  </a>
 </bag-overview-card>

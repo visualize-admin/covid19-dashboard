@@ -10,11 +10,6 @@
 
     <tbody>
       <tr [class.geo-unit-vacc-doses-data__row--lowlight]="lowlight">
-        <th>{{ 'Vaccination.Card.DosesContingent' | i18n }}</th>
-        <td>{{ data.VaccDosesContingent.inzTotal | adminNum: 2 }}</td>
-        <td>{{ data.VaccDosesContingent.total | adminNum }}</td>
-      </tr>
-      <tr [class.geo-unit-vacc-doses-data__row--lowlight]="lowlight">
         <th>{{ 'Vaccination.Card.DosesDelivered' | i18n }}</th>
         <td>{{ data.VaccDosesDeliv.inzTotal | adminNum: 2 }}</td>
         <td>{{ data.VaccDosesDeliv.total | adminNum }}</td>

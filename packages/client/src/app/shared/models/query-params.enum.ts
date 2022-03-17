@@ -49,4 +49,9 @@ export enum QueryParams {
 
   IS_EXPORT = 'isExport',
   HIDE_INFO = 'hideInfo',
+
+  EPI_REL_ABS_DEVELOPMENT_FILTER = 'epiRelDev',
+  EPI_REL_ABS_DEMOGRAPHY_FILTER = 'epiRelDemo',
+  EPI_REL_ABS_HOSP_CAUSE_FILTER = 'epiRelHospCause',
+  EPI_AGE_HOSP_CAUSE_FILTER = 'epiAgeHospCause',
 }

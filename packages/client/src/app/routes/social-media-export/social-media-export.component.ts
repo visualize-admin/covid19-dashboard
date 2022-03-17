@@ -112,7 +112,6 @@ export class SocialMediaExportComponent implements OnDestroy {
       'covidCt',
       'covidVacc',
       'hospCapacity',
-      'covidCertificates',
     ]
     this.overviewCardDownloadUrls$ = this.overviewTimeFilter$.pipe(
       switchMap((timeFilter) => Promise.all(cardTypes.map(this.createOverviewCardDownloadUrls(timeFilter)))),

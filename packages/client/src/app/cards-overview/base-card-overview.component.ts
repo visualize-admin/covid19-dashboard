@@ -143,7 +143,7 @@ export abstract class BaseCardOverviewComponent<C extends OverviewCardV3<any, an
     return {
       key: this.translator.get(key, keyArgs),
       value: adminFormatNum(dailyValues[GdiVariant.DELTA_DAY]),
-      info: recent ? this.translator.get(`${this.cardBaseContext}.Table.DeltaDayRecent.Info`) : undefined,
+      info: this.translator.get(`IndicatorsDescription.${this.cardBaseContext}.DeltaDay`),
       ...opts,
     }
   }
@@ -160,6 +160,7 @@ export abstract class BaseCardOverviewComponent<C extends OverviewCardV3<any, an
     return {
       key: this.translator.get('OverviewCard.Table.Sum.Label', keyArgs),
       value: adminFormatNum(dailyValues[timeframeGdiVariantMapping[timeFilter].sum]),
+      info: this.translator.get(`IndicatorsDescription.${this.cardBaseContext}.TotalSince`),
       ...opts,
     }
   }
@@ -172,6 +173,7 @@ export abstract class BaseCardOverviewComponent<C extends OverviewCardV3<any, an
     return {
       key: this.translator.get('OverviewCard.Table.Inz.Label'),
       value: adminFormatNum(dailyValues[timeframeGdiVariantMapping[timeFilter].inz]),
+      info: this.translator.get(`IndicatorsDescription.${this.cardBaseContext}.Inz100k`),
       ...opts,
     }
   }
@@ -189,8 +191,20 @@ export abstract class BaseCardOverviewComponent<C extends OverviewCardV3<any, an
     }
   }
 
-  protected initKeyValueListData({ timeFilter }: CurrentValuesOverview<any>): KeyValueListEntries {
-    return [this.createDeltaDayEntry(), this.createSumEntry(timeFilter), this.createInzEntry(timeFilter)]
+  protected initKeyValueListData({ timeFilter }: CurrentValuesOverview): KeyValueListEntries {
+    return [
+      this.createDeltaDayEntry(),
+      this.createInz14DaysEntry(),
+      this.createSumEntry(timeFilter, { value: undefined, isTitle: true, info: undefined }),
+      {
+        key: this.translator.get(`${this.cardBaseContext}.Table.Amount.Label`),
+        value: adminFormatNum(this.data.dailyValues[timeframeGdiVariantMapping[timeFilter].sum]),
+        info: this.translator.get(`IndicatorsDescription.${this.cardBaseContext}.TotalSince`),
+        combineBelow: true,
+        combineAbove: true,
+      },
+      this.createInzEntry(timeFilter, { combineAbove: true }),
+    ]
   }
 
   protected getPadEntries(
@@ -203,6 +217,20 @@ export abstract class BaseCardOverviewComponent<C extends OverviewCardV3<any, an
     const startPadEntries = this._getPadEntries(timeFrame.start, entries[0].date)
     const endPadEntries = this._getPadEntries(entries[entries.length - 1].date, timeFrame.end, 1)
     return [startPadEntries, endPadEntries]
+  }
+
+  private createInz14DaysEntry(): KeyValueListEntry {
+    const { dateInzRollsum14d, inzRollsum14d } = (<any>this.data).dailyValues
+    const recent = (<any>this.data).deltaDayMode === 'recent'
+    const keyArgs: TextArgs = {
+      date: formatUtcDate(parseIsoDate(dateInzRollsum14d)),
+    }
+    return {
+      key: this.translator.get('OverviewCard.Table.Inz14D.Label', keyArgs),
+      value: adminFormatNum(inzRollsum14d),
+      keyDescription: this.translator.get('OverviewCard.Table.Inz14D.Desc'),
+      info: recent ? this.translator.get(`${this.cardBaseContext}.Table.Inz14D.Info`) : undefined,
+    }
   }
 
   private _getPadEntries(startDateStr: string, endDateStr: string, shift = 0): HistogramLineEntry[] {

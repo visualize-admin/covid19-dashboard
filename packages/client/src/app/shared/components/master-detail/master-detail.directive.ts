@@ -37,10 +37,7 @@ export class MasterDetailDirective<T extends MasterDetailMenuItem> implements On
    * The presence of this method is a signal to the Ivy template type-check compiler that the
    * `bagMasterDetail` structural directive renders its template with a specific context type.
    */
-  static ngTemplateContextGuard<T extends MasterDetailMenuItem>(
-    dir: MasterDetailDirective<T>,
-    ctx: any,
-  ): ctx is MasterDetailContext<T> {
+  static ngTemplateContextGuard<T extends MasterDetailMenuItem>(dir: MasterDetailDirective<T>, ctx: any): ctx is MasterDetailContext<T> {
     return true
   }
 

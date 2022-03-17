@@ -59,22 +59,28 @@ export class CardOverviewHospCapacityComponent extends BaseCardOverviewComponent
     return [
       { key: this.translator.get('OverviewCardHospCapacity.Table.Icu.Title'), isTitle: true },
       {
-        key: this.translator.get('OverviewCardHospCapacity.Table.Icu.Occupation.Covid19.Mean15Days', {
+        key: this.translator.get('OverviewCardHospCapacity.Table.Icu.Occupation.Covid19.Mean15Days.Short', {
+          date: formatUtcDate(parseIsoDate(<string>valuesIcu.date15dMean)),
+        }),
+        keyDescription: this.translator.get('Commons.Mean15dFromDate', {
           date: formatUtcDate(parseIsoDate(<string>valuesIcu.date15dMean)),
         }),
         value: adminFormatNum(valuesIcu.rollmean15d_hospBedsCovid),
+        info: this.translator.get('IndicatorsDescription.OverviewCardHospCapacity.Icu.Covid19.Mean15Days'),
         combineAbove: true,
         combineBelow: true,
       },
       {
         key: this.translator.get('OverviewCardHospCapacity.Table.Occupation.All'),
         value: `${adminFormatNum(valuesIcu.percentage_hospBedsAll, 2)}%`,
+        info: this.translator.get('IndicatorsDescription.OverviewCardHospCapacity.Icu.All'),
         combineAbove: true,
         combineBelow: true,
       },
       {
         key: this.translator.get('OverviewCardHospCapacity.Table.Occupation.Covid19'),
         value: `${adminFormatNum(valuesIcu.percentage_hospBedsCovid, 2)}%`,
+        info: this.translator.get('IndicatorsDescription.OverviewCardHospCapacity.Icu.Covid19'),
         combineAbove: true,
       },
 
@@ -82,12 +88,14 @@ export class CardOverviewHospCapacityComponent extends BaseCardOverviewComponent
       {
         key: this.translator.get('OverviewCardHospCapacity.Table.Occupation.All'),
         value: `${adminFormatNum(valuesTot.percentage_hospBedsAll, 2)}%`,
+        info: this.translator.get('IndicatorsDescription.OverviewCardHospCapacity.Total.All'),
         combineAbove: true,
         combineBelow: true,
       },
       {
         key: this.translator.get('OverviewCardHospCapacity.Table.Occupation.Covid19'),
         value: `${adminFormatNum(valuesTot.percentage_hospBedsCovid, 2)}%`,
+        info: this.translator.get('IndicatorsDescription.OverviewCardHospCapacity.Total.Covid19'),
         combineAbove: true,
       },
     ]

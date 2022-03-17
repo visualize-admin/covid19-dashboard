@@ -5,21 +5,4 @@
     [options]="timeSlotFilterOptions"
     [formControl]="timeSlotFilterCtrl"
   ></bag-single-select>
-
-  <bag-toggle-button-list
-    class="detail-filter__field detail-filter__field--toggle"
-    [attr.aria-label]="'RelativityFilter.Label' | i18n"
-    [formControl]="relativityFilterCtrl"
-  >
-    <ng-container *ngFor="let opt of relativityFilterOptions">
-      <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
-    </ng-container>
-  </bag-toggle-button-list>
-
-  <bag-single-select
-    class="detail-filter__field detail-filter__field--relativity"
-    labelKey="RelativityFilter.Label"
-    [options]="relativityFilterOptions"
-    [formControl]="relativityFilterCtrl"
-  ></bag-single-select>
 </div>

@@ -59,7 +59,7 @@ export class CardOverviewVirusVariantsComponent extends BaseCardOverviewComponen
                   : this.translator.get('Commons.Mean7dFromDate', {
                       date: formatUtcDate(parseIsoDate(values.date7dMean)),
                     }),
-              info: this.translator.tryGet(`VirusVariants.${gdiSubset}.Description`),
+              info: this.translator.tryGet(`IndicatorsDescription.OverviewCardVirusVariant.${gdiSubset}`),
               value: adminFormatNum(values[GdiVariant.PERCENTAGE_ROLLMEAN_7D], 1, '%'),
               // the first n items get a color
               colorCode: COLOR_PER_VIRUS_VARIANTS[gdiSubset],

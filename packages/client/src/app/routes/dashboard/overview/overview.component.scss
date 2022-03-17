@@ -59,10 +59,17 @@
 
   .overview__filter {
     margin: 6px 12px;
+    display: flex;
+    align-items: center;
+
+    bag-info-tooltip {
+      margin-left: 8px;
+    }
   }
 
   .overview__filter--select {
     justify-self: stretch;
+    flex: 1;
   }
 
   .overview__card-grid {

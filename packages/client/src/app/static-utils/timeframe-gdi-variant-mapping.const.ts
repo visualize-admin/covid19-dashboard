@@ -36,6 +36,11 @@ export const timeframeGdiVariantMapping = {
     inz: GdiVariant.INZ_P5,
     prctPos: GdiVariant.PRCT_P5_POSTEST,
   },
+  [TimeSlotFilter.PHASE_6]: {
+    sum: GdiVariant.SUMP6,
+    inz: GdiVariant.INZ_P6,
+    prctPos: GdiVariant.PRCT_P6_POSTEST,
+  },
   [TimeSlotFilter.LAST_4_WEEKS]: {
     sum: GdiVariant.SUM28D,
     inz: GdiVariant.INZ_28D,

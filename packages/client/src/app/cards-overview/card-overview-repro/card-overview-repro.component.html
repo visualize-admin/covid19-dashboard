@@ -7,15 +7,28 @@
   [warnKey]="warningKey$ | async"
   sourceKey="Commons.Source.RE"
 >
-  <div bagOverviewCardHint [translate]="'OverviewCardRepro.CardHint'"></div>
-  <p *bagOverviewCardInfo class="g-content" bagOverviewCardHint [translate]="'OverviewCardRepro.InfoText.Top'"></p>
+  <p
+    *bagOverviewCardInfo
+    class="g-content"
+    bagOverviewCardHint
+    [translate]="'IndicatorsDescription.OverviewCardRepro.General'"
+  ></p>
 
-  <bag-key-value-list *ngIf="keyValueList$ | async as keyValueList" [data]="keyValueList"></bag-key-value-list>
+  <bag-key-value-list
+    *ngIf="keyValueList$ | async as keyValueList"
+    [data]="keyValueList"
+    [showInfo]="(overviewCard?.showInfo$ | async) || false"
+  ></bag-key-value-list>
 
   <ng-container *ngIf="histogram$ | async as histogram">
     <bag-repro-legend class="card__legend" facet="overview"></bag-repro-legend>
     <bag-histogram-preview-re [data]="histogram"></bag-histogram-preview-re>
   </ng-container>
 
-  <p *bagOverviewCardInfo class="g-content" bagOverviewCardHint [translate]="'OverviewCardRepro.InfoText.Bottom'"></p>
+  <p
+    *bagOverviewCardInfo
+    class="g-content"
+    bagOverviewCardHint
+    [translate]="'IndicatorsDescription.OverviewCardRepro.Graph'"
+  ></p>
 </bag-overview-card>

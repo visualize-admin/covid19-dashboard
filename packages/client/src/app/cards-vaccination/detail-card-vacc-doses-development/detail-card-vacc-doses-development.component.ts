@@ -18,7 +18,6 @@ import { RoutePaths } from '../../routes/route-paths.enum'
 import {
   COLOR_VACC_ADMINISTERED,
   COLOR_VACC_ADMINISTERED_DEV,
-  COLOR_VACC_CONTINGENT_DEV,
   COLOR_VACC_DAILY_BAR,
   COLOR_VACC_DELIVERED_DEV,
   COLOR_VACC_MEAN_7D,
@@ -28,13 +27,14 @@ import { Source } from '../../shared/components/detail-card/detail-card.componen
 import {
   TooltipListContentComponent,
   TooltipListContentData,
+  TooltipListContentEntry,
 } from '../../shared/components/tooltip/tooltip-list-content/tooltip-list-content.component'
 import {
   DEFAULT_VACC_DEV_CUMULATIVE_FILTER,
   VaccDevCumulativeFilter,
   vaccDevCumulativeFilterOptions,
 } from '../../shared/models/filters/vacc-dev-cumulative-filter.enum'
-import { VaccinationRelativityFilter } from '../../shared/models/filters/vaccination-relativity-filter.enum'
+import { Inz100AbsFilter } from '../../shared/models/filters/relativity/inz100-abs-filter.enum'
 import { QueryParams } from '../../shared/models/query-params.enum'
 import { adminFormatNum } from '../../static-utils/admin-format-num.function'
 import { formatUtcDate, parseIsoDate } from '../../static-utils/date-utils'
@@ -55,7 +55,7 @@ interface CurrentValues extends CurrentValuesVaccinationBase {
 interface HistogramData {
   isInz: boolean
   data: HistogramLineEntry[]
-  legendPairs: Array<[string, string, boolean]>
+  legendPairs: Array<[string, string]>
   colors: string[]
   geoUnit: GeoUnit
   dashedLines: Array<string | null>
@@ -106,7 +106,7 @@ export class DetailCardVaccDosesDevelopmentComponent
       return {
         geoUnit,
         cumulativeFilter,
-        isInz: relativityFilter === VaccinationRelativityFilter.INZ_100,
+        isInz: relativityFilter === Inz100AbsFilter.INZ_100,
         timeSpan: this.data.timeSpan,
       }
     }),
@@ -132,9 +132,7 @@ export class DetailCardVaccDosesDevelopmentComponent
     | 'tooltipLabel2Inz'
     | 'tooltipLabel2Abs'
     | 'tooltipLabel3Inz'
-    | 'tooltipLabel3Abs'
-    | 'tooltipLabel4Inz'
-    | 'tooltipLabel4Abs',
+    | 'tooltipLabel3Abs',
     string
   >
 
@@ -149,52 +147,32 @@ export class DetailCardVaccDosesDevelopmentComponent
   }
 
   showTooltip({ source, data }: HistogramElFocusEvent<HistogramLineEntry>, isRel: boolean, geoUnit: GeoUnit) {
-    const [v0, v1, v2, v3] = data.values
+    const getTooltipEntryFn = (entry: [number | null, string, string]): TooltipListContentEntry => ({
+      label: this.translator.get(entry[2]),
+      value: adminFormatNum(entry[0], isRel ? 2 : undefined),
+      color: entry[1],
+    })
+    const [v0, v1, v2] = data.values
+    // legendPair [0] = value, [1] = color, [2] = translate key
+    const legendPairEntries: [number | null, string, string][] =
+      geoUnit === TopLevelGeoUnit.CHFL
+        ? [
+            [v0, COLOR_VACC_ADMINISTERED_DEV, isRel ? this.keys.tooltipLabel2Inz : this.keys.tooltipLabel2Abs],
+            [v1, COLOR_VACC_DELIVERED_DEV, isRel ? this.keys.tooltipLabel1Inz : this.keys.tooltipLabel1Abs],
+            [v2, COLOR_VACC_RECEIVED_DEV, isRel ? this.keys.tooltipLabel3Inz : this.keys.tooltipLabel3Abs],
+          ]
+        : [
+            [v0, COLOR_VACC_ADMINISTERED, isRel ? this.keys.tooltipLabel2Inz : this.keys.tooltipLabel2Abs],
+            [v1, COLOR_VACC_DELIVERED_DEV, isRel ? this.keys.tooltipLabel1Inz : this.keys.tooltipLabel1Abs],
+          ]
+
+    const entries = legendPairEntries.sort((a, b) => (b[0] || 0) - (a[0] || 0)).map(getTooltipEntryFn)
 
     const ctx: TooltipListContentData = {
       title: formatUtcDate(data.date),
-      entries:
-        geoUnit === TopLevelGeoUnit.CHFL
-          ? [
-              {
-                label: this.translator.get(isRel ? this.keys.tooltipLabel3Inz : this.keys.tooltipLabel3Abs),
-                value: adminFormatNum(v2, isRel ? 2 : undefined),
-                color: COLOR_VACC_RECEIVED_DEV,
-              },
-              {
-                label: this.translator.get(isRel ? this.keys.tooltipLabel4Inz : this.keys.tooltipLabel4Abs),
-                value: adminFormatNum(v3, isRel ? 2 : undefined),
-                color: COLOR_VACC_CONTINGENT_DEV,
-              },
-              {
-                label: this.translator.get(isRel ? this.keys.tooltipLabel1Inz : this.keys.tooltipLabel1Abs),
-                value: adminFormatNum(v1, isRel ? 2 : undefined),
-                color: COLOR_VACC_DELIVERED_DEV,
-              },
-              {
-                label: this.translator.get(isRel ? this.keys.tooltipLabel2Inz : this.keys.tooltipLabel2Abs),
-                value: adminFormatNum(v0, isRel ? 2 : undefined),
-                color: COLOR_VACC_ADMINISTERED_DEV,
-              },
-            ]
-          : [
-              {
-                label: this.translator.get(isRel ? this.keys.tooltipLabel4Inz : this.keys.tooltipLabel4Abs),
-                value: adminFormatNum(v2, isRel ? 2 : undefined),
-                color: COLOR_VACC_CONTINGENT_DEV,
-              },
-              {
-                label: this.translator.get(isRel ? this.keys.tooltipLabel1Inz : this.keys.tooltipLabel1Abs),
-                value: adminFormatNum(v1, isRel ? 2 : undefined),
-                color: COLOR_VACC_DELIVERED_DEV,
-              },
-              {
-                label: this.translator.get(isRel ? this.keys.tooltipLabel2Inz : this.keys.tooltipLabel2Abs),
-                value: adminFormatNum(v0, isRel ? 2 : undefined),
-                color: COLOR_VACC_ADMINISTERED,
-              },
-            ],
+      entries,
     }
+
     this.tooltipService.showCmp(TooltipListContentComponent, source, ctx, {
       position: ['before', 'after', 'above'],
       offsetX: 16,
@@ -238,8 +216,6 @@ export class DetailCardVaccDosesDevelopmentComponent
       tooltipLabel2Abs: 'Vaccination.Card.Development.Tooltip.Administered.Abs',
       tooltipLabel3Inz: 'Vaccination.Card.Development.Tooltip.Received.Inz',
       tooltipLabel3Abs: 'Vaccination.Card.Development.Tooltip.Received.Abs',
-      tooltipLabel4Inz: 'Vaccination.Card.Development.Tooltip.Contingent.Inz',
-      tooltipLabel4Abs: 'Vaccination.Card.Development.Tooltip.Contingent.Abs',
     }
   }
 
@@ -257,11 +233,6 @@ export class DetailCardVaccDosesDevelopmentComponent
 
   private prepareSources(cv: CurrentValues): Source[] {
     return [
-      {
-        sourceKey: 'Commons.Source.BAG',
-        descKey: 'Vaccination.Card.DosesContingent',
-        date: new Date(this.data.vaccSourceDates[GdiSubset.VACC_DOSES_CONTINGENT]),
-      },
       cv.geoUnit === TopLevelGeoUnit.CHFL
         ? {
             sourceKey: 'Commons.Source.LBA',
@@ -297,12 +268,10 @@ export class DetailCardVaccDosesDevelopmentComponent
               cv.isInz ? e[GdiSubset.VACC_DOSES_ADMIN].inzTotal : e[GdiSubset.VACC_DOSES_ADMIN].total,
               cv.isInz ? e[GdiSubset.VACC_DOSES_DELIV].inzTotal : e[GdiSubset.VACC_DOSES_DELIV].total,
               cv.isInz ? e[GdiSubset.VACC_DOSES_RECEIVED].inzTotal : e[GdiSubset.VACC_DOSES_RECEIVED].total,
-              cv.isInz ? e[GdiSubset.VACC_DOSES_CONTINGENT].inzTotal : e[GdiSubset.VACC_DOSES_CONTINGENT].total,
             ]
           : [
               cv.isInz ? e[GdiSubset.VACC_DOSES_ADMIN].inzTotal : e[GdiSubset.VACC_DOSES_ADMIN].total,
               cv.isInz ? e[GdiSubset.VACC_DOSES_DELIV].inzTotal : e[GdiSubset.VACC_DOSES_DELIV].total,
-              cv.isInz ? e[GdiSubset.VACC_DOSES_CONTINGENT].inzTotal : e[GdiSubset.VACC_DOSES_CONTINGENT].total,
             ],
     }))
     return {
@@ -310,20 +279,18 @@ export class DetailCardVaccDosesDevelopmentComponent
       data: [...startPadEntries, ...dataEntries],
       colors:
         cv.geoUnit === TopLevelGeoUnit.CHFL
-          ? [COLOR_VACC_ADMINISTERED_DEV, COLOR_VACC_DELIVERED_DEV, COLOR_VACC_RECEIVED_DEV, COLOR_VACC_CONTINGENT_DEV]
-          : [COLOR_VACC_ADMINISTERED_DEV, COLOR_VACC_DELIVERED_DEV, COLOR_VACC_CONTINGENT_DEV],
+          ? [COLOR_VACC_ADMINISTERED_DEV, COLOR_VACC_DELIVERED_DEV, COLOR_VACC_RECEIVED_DEV]
+          : [COLOR_VACC_ADMINISTERED_DEV, COLOR_VACC_DELIVERED_DEV],
       legendPairs:
         cv.geoUnit === TopLevelGeoUnit.CHFL
           ? [
-              [COLOR_VACC_RECEIVED_DEV, 'Vaccination.Card.DosesReceived', false],
-              [COLOR_VACC_CONTINGENT_DEV, 'Vaccination.Card.DosesContingent', true],
-              [COLOR_VACC_DELIVERED_DEV, 'Vaccination.Card.DosesDelivered', false],
-              [COLOR_VACC_ADMINISTERED_DEV, 'Vaccination.Card.DosesAdministered', false],
+              [COLOR_VACC_RECEIVED_DEV, 'Vaccination.Card.DosesReceived'],
+              [COLOR_VACC_DELIVERED_DEV, 'Vaccination.Card.DosesDelivered'],
+              [COLOR_VACC_ADMINISTERED_DEV, 'Vaccination.Card.DosesAdministered'],
             ]
           : [
-              [COLOR_VACC_CONTINGENT_DEV, 'Vaccination.Card.DosesContingent', true],
-              [COLOR_VACC_DELIVERED_DEV, 'Vaccination.Card.DosesDelivered', false],
-              [COLOR_VACC_ADMINISTERED_DEV, 'Vaccination.Card.DosesAdministered', false],
+              [COLOR_VACC_DELIVERED_DEV, 'Vaccination.Card.DosesDelivered'],
+              [COLOR_VACC_ADMINISTERED_DEV, 'Vaccination.Card.DosesAdministered'],
             ],
       geoUnit: cv.geoUnit,
       dashedLines: cv.geoUnit === TopLevelGeoUnit.CHFL ? [null, null, null, '2 5'] : [null, null, '2 5'],

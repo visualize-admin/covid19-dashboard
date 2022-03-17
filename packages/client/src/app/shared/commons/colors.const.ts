@@ -2,7 +2,6 @@ import { GdiSubset, VaccinationVaccineInvidual, WgsVariants } from '@c19/commons
 
 export const COLOR_PRIMARY = '#428BD3'
 export const COLOR_LINE_PRIMARY = '#428BD3'
-export const COLOR_LINE_SECONDARY = '#C0D8F0'
 
 export const COLOR_SUM_PCR = '#C0D8F0'
 export const COLOR_SUM_ANTIGEN = '#428BD3'
@@ -42,6 +41,10 @@ export const COLOR_HOSP_CAP_NON_COVID = '#428BD3'
 export const COLOR_HOSP_CAP_FREE = '#CCCCCC'
 export const COLORS_HOSP_CAP_BARS = ['#173D63', '#428BD3', '#CCCCCC']
 export const COLORS_HOSP_CAP_LINES = ['#173D63', '#428BD3', '#CCCCCC']
+
+export const COLOR_HOSP_CAPACITY_ICU_CERT_OPERATIONAL = '#428BD3'
+export const COLOR_HOSP_CAPACITY_ICU_ADHOC_OPERATIONAL = '#C0D8F0'
+export const COLOR_HOSP_CAPACITY_ICU_CERT_TARGET = '#173D63'
 
 export const COLORS_HISTOGRAM_LINE: [string, string] = ['#428bd3', '#c0d8f0']
 
@@ -84,7 +87,6 @@ export const COLOR_UNKNOWN_VACC = '#C2DABD'
 
 export const COLOR_VACC_RECEIVED_TABLE = '#98BB95'
 export const COLOR_VACC_ADMINISTERED_TABLE = '#98BB95'
-export const COLOR_VACC_CONTINGENT_TABLE = '#C2DABD'
 export const COLOR_VACC_PERSONS_FULL_TABLE = '#C2DABD'
 export const COLOR_VACC_PERSONS_BOOSTER_TABLE = '#98BB95'
 
@@ -97,7 +99,6 @@ export const COLOR_VACC_PERSONS = '#3C763D'
 export const COLOR_VACC_RECEIVED_DEV = '#F9C646'
 export const COLOR_VACC_DELIVERED_DEV = '#81B1E2'
 export const COLOR_VACC_ADMINISTERED_DEV = '#699868'
-export const COLOR_VACC_CONTINGENT_DEV = '#504BAD'
 
 export const COLORS_VACC_HEATMAP = ['#c2dabd', '#96b993', '#699868', '#3e783f', '#2d642e', '#1a4d1b']
 export const COLORS_VACC_RATIO_BARS = ['#3E783F', '#96B993']
@@ -129,6 +130,10 @@ export const COLOR_STATUS_LINE_FULL = '#3979B8'
 export const COLOR_STATUS_LINE_PARTIAL = '#8FBAE4'
 export const COLOR_STATUS_LINE_UNKNOWN = '#D5D5D5'
 export const COLOR_STATUS_LINE_FULL_WITH_BOOSTER = '#255481'
+
+export const COLOR_HOSP_CAUSE_COVID = '#173D63'
+export const COLOR_HOSP_CAUSE_OTHER = '#428BD3'
+export const COLOR_HOSP_CAUSE_UNKNOWN = '#ADADAD'
 
 export const COLORS_VACC_PERS_GEO_OLD = [
   '#C2DABD',
@@ -202,7 +207,3 @@ export const COLOR_REPRO_TABLE_RANGE_2 = '#EFB377'
 export const COLOR_REPRO_TABLE_RANGE_2_HOVER = '#D8A674'
 export const COLOR_REPRO_TABLE_RANGE_3 = '#EB9698'
 export const COLOR_REPRO_TABLE_RANGE_3_HOVER = '#D58C92'
-
-export const COLOR_CERTIFICATE_VACC = '#699868'
-export const COLOR_CERTIFICATE_RECOVERY = '#81B1E2'
-export const COLOR_CERTIFICATE_TEST = '#504BAD'

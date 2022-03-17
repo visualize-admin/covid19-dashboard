@@ -1,0 +1,92 @@
+<bag-detail-card
+  [titleKey]="titleKey"
+  [infoKey]="hideInfo ? null : infoKey"
+  [infoAddOnKey]="hideInfo ? null : infoAddOnKey"
+  [warnKey]="hideInfo ? null : warnKey"
+  [sources]="[{ sourceKey: 'Commons.Source.BAG', date: (data.sourceDate | toDate) }]"
+  [description]="description$ | async"
+  [facet]="facet"
+  [downloadUrls]="downloadUrls$ | async"
+  [detailUrl]="detailUrl$ | async"
+>
+  <div class="detail-card-hosp-cause">
+    <ng-container *ngIf="chartData$ | async as chartData">
+      <div class="detail-card-hosp-cause__lr">
+        <!-- age group filter -->
+        <select
+          bag-select
+          [attr.aria-label]="'AgeFilter.Label' | i18n"
+          name="personsAgeFilter"
+          [formControl]="personsAgeFilterCtrl"
+        >
+          <ng-container *ngFor="let opt of personsAgeFilterOptions">
+            <option [ngValue]="opt.val" [attr.selected]="opt.val === personsAgeFilterCtrl.value ? '' : null">
+              {{ opt.key | i18n }}
+            </option>
+          </ng-container>
+        </select>
+
+        <bag-toggle-button-list
+          class="detail-card-hosp-cause__filter-field detail-card-hosp-cause__filter-toggle"
+          [attr.aria-label]="'RelativityFilter.Label' | i18n"
+          [formControl]="relativityFilterCtrl"
+        >
+          <ng-container *ngFor="let opt of relativityFilterOptions">
+            <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+          </ng-container>
+        </bag-toggle-button-list>
+
+        <bag-single-select
+          class="detail-card-hosp-cause__filter-field detail-card-hosp-cause__filter-relativity"
+          labelKey="RelativityFilter.Label"
+          [options]="relativityFilterOptions"
+          [formControl]="relativityFilterCtrl"
+        ></bag-single-select>
+      </div>
+
+      <div class="detail-card-hosp-cause__chart-intro">
+        <bag-chart-legend [itemGap]="16">
+          <div bagChartLegendLabel [translate]="'DetailCardHospCause.Legend.Title'"></div>
+          <div
+            *ngFor="let line of chartDefinition"
+            bagChartLegendSquare
+            [color]="line.color"
+            [translate]="line.legendKey"
+          >
+            {{ line.legendKey }}
+          </div>
+        </bag-chart-legend>
+      </div>
+
+      <!-- absolute and inz chart -->
+      <ng-container *ngIf="chartData.lineData">
+        <p class="detail-card-hosp-cause__meta">{{ (chartData.isInz ? metaInzKey : metaAbsKey) | i18n }}</p>
+        <bag-histogram-line
+          [data]="chartData.lineData"
+          [colors]="chartData.colors"
+          [strokeWidths]="2"
+          [focusPosYCenter]="true"
+          [withWeeklyValues]="true"
+          [skipNoDataBlocksBefore]="chartData.lineSkipNoDataBefore"
+          (elFocus)="showLineChartTooltip($event)"
+          (diagramLeave)="hideTooltip()"
+        ></bag-histogram-line>
+      </ng-container>
+
+      <!-- % chart -->
+      <ng-container *ngIf="chartData.barData">
+        <p class="detail-card-hosp-cause__meta">{{ 'DetailCardHospCause.Relative' | i18n }}</p>
+        <bag-histogram-detail
+          [withWeeklyValues]="true"
+          [yLabelFormatter]="yLabelFmt"
+          [yLabelsMaxLength]="7"
+          [data]="chartData.barData"
+          (elFocus)="showBarChartTooltip($event)"
+          (diagramLeave)="hideTooltip()"
+          [domainMax]="100"
+          [barColors]="chartData.colors"
+        ></bag-histogram-detail>
+      </ng-container>
+    </ng-container>
+  </div>
+</bag-detail-card>

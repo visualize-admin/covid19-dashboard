@@ -16,6 +16,14 @@ bag-info-tooltip {
     svg {
       transform: scale(1.5);
     }
+
+    &.info-tooltip__icon--md {
+      width: 24px;
+      height: 24px;
+      svg {
+        transform: scale(1);
+      }
+    }
   }
 }
 

@@ -11,8 +11,11 @@ import { getISOWeek } from 'date-fns'
 import { combineLatest, Observable } from 'rxjs'
 import { map, mapTo, switchMap, takeUntil, tap } from 'rxjs/operators'
 import { RoutePaths } from '../../routes/route-paths.enum'
+import {
+  getInz100KAbsFilterOptions,
+  Inz100KAbsFilter,
+} from '../../shared/models/filters/relativity/inz100k-abs-filter.enum'
 import { QueryParams } from '../../shared/models/query-params.enum'
-import { RelativityFilter, getRelativityFilterOptions } from '../../shared/models/filters/relativity-filter.enum'
 import { adminFormatNum } from '../../static-utils/admin-format-num.function'
 import { formatUtcDate, parseIsoDate } from '../../static-utils/date-utils'
 import { emitValToOwnViewFn } from '../../static-utils/emit-value-to-own-view.function'
@@ -59,11 +62,11 @@ export class WeeklyReportCardOverviewComponent
   readonly cardDetailPath = RoutePaths.SHARE_OVERVIEW
   readonly cardKeyContext = `WeeklyReport.Card.Overview`
 
-  readonly relativityFilterOptions = getRelativityFilterOptions(RelativityFilter.ABSOLUTE)
+  readonly relativityFilterOptions = getInz100KAbsFilterOptions(Inz100KAbsFilter.ABSOLUTE)
   readonly relativityFilterCtrl = new FormControl(this.route.snapshot.queryParams[QueryParams.REL_ABS_FILTER] || null)
-  readonly relativityFilter$: Observable<RelativityFilter> = this.route.queryParams.pipe(
-    selectChanged(QueryParams.REL_ABS_FILTER, RelativityFilter.ABSOLUTE),
-    tap<RelativityFilter>(emitValToOwnViewFn(this.relativityFilterCtrl, RelativityFilter.ABSOLUTE)),
+  readonly relativityFilter$: Observable<Inz100KAbsFilter> = this.route.queryParams.pipe(
+    selectChanged(QueryParams.REL_ABS_FILTER, Inz100KAbsFilter.ABSOLUTE),
+    tap<Inz100KAbsFilter>(emitValToOwnViewFn(this.relativityFilterCtrl, Inz100KAbsFilter.ABSOLUTE)),
   )
 
   readonly currentValues$: Observable<CurrentValues> = combineLatest([
@@ -76,7 +79,7 @@ export class WeeklyReportCardOverviewComponent
         isoWeek,
         currWeekStart: parseIsoDate(this.data.curr.timeSpan.start),
         prevWeekStart: parseIsoDate(this.data.prev.timeSpan.start),
-        isInz: rel === RelativityFilter.INZ_100K,
+        isInz: rel === Inz100KAbsFilter.INZ_100K,
       }
     }),
   )

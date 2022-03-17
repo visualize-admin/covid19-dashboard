@@ -1,6 +1,8 @@
 @use 'src/styles/text';
 @use 'src/styles/col';
 @use 'src/styles/layout';
+@use 'src/styles/dim';
+@use 'src/styles/mix';
 
 bag-detail-card-epidemiologic-development {
   display: block;
@@ -11,14 +13,43 @@ bag-detail-card-epidemiologic-development {
   }
 
   .detail-card-development__lr {
-    @include layout.leftRight(-8px);
-  }
-  .detail-card-development__lr-part {
-    @include layout.leftRightPart;
+    @include mix.cardFiltersMainLr;
   }
 
   .detail-card-development__meta {
     @include text.meta;
     color: var(--c-fg-meta);
+  }
+
+  .detail-card-development__chart-intro {
+    @include mix.cardChartIntro;
+  }
+
+  .detail-card-development__chart-intro-week {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+
+    > * {
+      margin-right: 8px;
+      margin-left: 8px;
+    }
+  }
+
+  .detail-card-development__filter-relativity,
+  .detail-card-development__filter-toggle {
+    justify-self: end;
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .detail-card-development__filter-toggle {
+      display: none;
+    }
+  }
+
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .detail-card-development__filter-relativity {
+      display: none;
+    }
   }
 }

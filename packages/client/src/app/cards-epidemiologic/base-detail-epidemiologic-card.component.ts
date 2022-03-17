@@ -14,7 +14,6 @@ import { TranslatorService } from '../core/i18n/translator.service'
 import { UriService } from '../core/uri.service'
 import { RoutePaths } from '../routes/route-paths.enum'
 import { TooltipService } from '../shared/components/tooltip/tooltip.service'
-import { DEFAULT_RELATIVITY_FILTER, RelativityFilter } from '../shared/models/filters/relativity-filter.enum'
 import { DEFAULT_TIME_SLOT_FILTER_DETAIL, TimeSlotFilter } from '../shared/models/filters/time-slot-filter.enum'
 import { QueryParams } from '../shared/models/query-params.enum'
 import { formatUtcDate, parseIsoDate } from '../static-utils/date-utils'
@@ -23,7 +22,6 @@ import { selectChanged } from '../static-utils/select-changed.operator'
 export interface CurrentValuesBase {
   geoUnit: CantonGeoUnit | TopLevelGeoUnit
   timeFrame: TimeSpan
-  relativityFilter: RelativityFilter
   timeFilter: TimeSlotFilter
 }
 
@@ -82,9 +80,6 @@ export abstract class BaseDetailEpidemiologicCardComponent<T extends GdiObjectTi
   readonly timeFilter$: Observable<TimeSlotFilter> = this.route.queryParams.pipe(
     selectChanged(QueryParams.TIME_FILTER, DEFAULT_TIME_SLOT_FILTER_DETAIL),
   )
-  readonly relFilter$: Observable<RelativityFilter> = this.route.queryParams.pipe(
-    selectChanged(QueryParams.REL_ABS_FILTER, DEFAULT_RELATIVITY_FILTER),
-  )
 
   readonly selectedGeoUnit$: Observable<CantonGeoUnit | TopLevelGeoUnit> = this.route.queryParams.pipe(
     selectChanged(QueryParams.GEO_FILTER, DEFAULT_GEO_UNIT),
@@ -131,18 +126,13 @@ export abstract class BaseDetailEpidemiologicCardComponent<T extends GdiObjectTi
     this.tooltipService.hide()
   }
 
-  createDescription({ timeFrame, relativityFilter, geoUnit }: CurrentValuesBase): string {
+  createDescription({ timeFrame, geoUnit }: CurrentValuesBase): string {
     const [date1, date2] = [timeFrame.start, timeFrame.end].map((d) => formatUtcDate(parseIsoDate(d)))
     const parts = [
       this.translator.get(this.topicKey),
       this.translator.get(`GeoFilter.${geoUnit}`),
       this.translator.get('Commons.DateToDate', { date1, date2 }),
     ]
-    if (relativityFilter === RelativityFilter.INZ_100K) {
-      parts.push(this.translator.get('Commons.Inz100K'))
-    } else {
-      parts.push(this.translator.get('Commons.Cases.Absolute'))
-    }
     return parts.map((part) => `<span>${part}</span>`).join(', ')
   }
 

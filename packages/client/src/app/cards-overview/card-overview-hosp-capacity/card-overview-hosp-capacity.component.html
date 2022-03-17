@@ -5,9 +5,17 @@
   [moreLinkArgs]="moreLink"
   [warnKey]="warningKey$ | async"
 >
-  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'OverviewCardHospCapacity.InfoText.Top'"></p>
+  <p
+    *bagOverviewCardInfo
+    bagOverviewCardHint
+    [translate]="'IndicatorsDescription.OverviewCardHospCapacity.General'"
+  ></p>
 
-  <bag-key-value-list *ngIf="keyValueList$ | async as keyValueList" [data]="keyValueList"></bag-key-value-list>
+  <bag-key-value-list
+    *ngIf="keyValueList$ | async as keyValueList"
+    [data]="keyValueList"
+    [showInfo]="(overviewCard?.showInfo$ | async) || false"
+  ></bag-key-value-list>
 
   <ng-container *ngIf="histogram$ | async as histogram">
     <bag-chart-legend [itemGap]="16" class="card__legend">
@@ -30,5 +38,5 @@
     ></bag-histogram-preview>
   </ng-container>
 
-  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'OverviewCardHospCapacity.InfoText.Bottom'"></p>
+  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'IndicatorsDescription.OverviewCardHospCapacity.Graph'"></p>
 </bag-overview-card>

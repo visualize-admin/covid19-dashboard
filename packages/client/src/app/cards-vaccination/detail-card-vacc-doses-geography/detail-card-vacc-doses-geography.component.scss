@@ -36,6 +36,7 @@ bag-detail-card-vacc-doses-geography {
 
     th {
       text-align: left;
+
       &.vacc-doses-table__h2-val {
         text-align: right;
       }
@@ -56,11 +57,13 @@ bag-detail-card-vacc-doses-geography {
       display: contents;
     }
   }
+
   .vacc-doses-table__row {
     th,
     td {
       background-color: col.$vacc-table-cell;
       margin-bottom: 4px;
+
       &.vacc-doses-table__mb-less-cell {
         margin-bottom: 1px;
       }
@@ -70,6 +73,7 @@ bag-detail-card-vacc-doses-geography {
       white-space: nowrap;
     }
   }
+
   .vacc-doses-table__row--large-padding {
     th,
     td {
@@ -77,6 +81,7 @@ bag-detail-card-vacc-doses-geography {
       padding-bottom: 12px;
     }
   }
+
   .vacc-doses-table__row--large-gap {
     th,
     td {
@@ -94,6 +99,7 @@ bag-detail-card-vacc-doses-geography {
   .vacc-doses-table__title-cell {
     font-weight: var.$font-weight-bold;
   }
+
   .vacc-doses-table__bar-cell {
     margin-right: -3px;
     position: relative;
@@ -118,28 +124,11 @@ bag-detail-card-vacc-doses-geography {
     }
   }
 
-  --square-size: 8px;
-  --spacing: 6px;
-
-  %before {
-    content: '';
-    display: inline-block;
-    width: var(--square-size);
-    margin-right: var(--spacing);
-  }
-
-  .vacc-doses-table__h1-square {
-    &:before {
-      @extend %before;
-      height: var(--square-size);
-      background-color: var(--color);
-    }
-  }
-
   .vacc-doses-table__val-cell {
     text-align: right;
     justify-content: flex-end;
   }
+
   .vacc-doses-table__overlay {
     display: block;
     position: absolute;
@@ -148,25 +137,9 @@ bag-detail-card-vacc-doses-geography {
     top: -1px;
     bottom: -1px;
     grid-column: 1 / span var(--cols);
-    grid-row: calc(var(--row) * 2 + 2) / span 2;
+    grid-row: calc(var(--row) + 2) / span 1;
     background: transparent !important;
     z-index: 1;
-  }
-
-  .vacc-doses-table__table-cell-rowspan-2 {
-    grid-row: span 2;
-    display: flex;
-    align-items: center;
-  }
-
-  .vacc-doses-table__table-hidden-cell {
-    padding: 0;
-    margin: 0;
-    width: 1px !important;
-    height: 1px !important;
-    position: absolute;
-    opacity: 0;
-    overflow: hidden;
   }
 
   .vacc-doses-table__overlay-link {
@@ -178,30 +151,25 @@ bag-detail-card-vacc-doses-geography {
     right: 0;
     cursor: pointer;
   }
+
   .vacc-doses-table__overlay--selected {
     border: 1px solid black;
   }
 
-  .vacc-doses-table__h1-first th {
+  .vacc-doses-table__h1 th {
     color: col.$table-header-primary;
     font-weight: var.$font-weight-normal;
     padding-top: 0;
     padding-bottom: 0;
-  }
-  .vacc-doses-table__h1-second th {
-    padding-top: 0;
+    border-bottom: 1px solid var(--c-divider-light);
   }
 
-  .vacc-doses-table__h1 th {
-    border-bottom: 1px solid var(--c-divider-light);
-    color: col.$table-header-primary;
-    font-weight: var.$font-weight-normal;
-  }
   .vacc-doses-table__h2 th {
     @include text.meta;
     color: col.$table-header-secondary;
     font-weight: var.$font-weight-normal;
   }
+
   .vacc-doses-table__h2-bar {
     margin-right: -3px;
   }
@@ -229,12 +197,9 @@ bag-detail-card-vacc-doses-geography {
         padding: 4px;
       }
 
-      .vacc-doses-table__h1-first th {
+      .vacc-doses-table__h1 th {
         padding-top: 0;
         padding-bottom: 0;
-      }
-      .vacc-doses-table__h1-second th {
-        padding-top: 0;
       }
 
       .vacc-doses-table__row--large-gap-top {
@@ -254,7 +219,7 @@ bag-detail-card-vacc-doses-geography {
 
       .vacc-doses-table__overlay {
         grid-column: 1 / span var(--mobile-cols);
-        grid-row: calc(var(--row) * 3 + 1) / span 3;
+        grid-row: calc(var(--row) * 2 + 1) / span 2;
       }
     }
 
@@ -262,6 +227,7 @@ bag-detail-card-vacc-doses-geography {
       .vacc-doses-table__overlay {
         margin-top: 16px;
       }
+
       td {
         margin-top: 0;
       }

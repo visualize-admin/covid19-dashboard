@@ -1,0 +1,36 @@
+@use 'src/styles/layout';
+@use 'src/styles/text';
+@use 'src/styles/col';
+@use 'src/styles/var';
+@use 'src/styles/dim';
+@use 'src/styles/mix';
+
+bag-detail-card-hosp-capacity-certified-beds {
+  display: block;
+
+  .detail-card-capacity-certified-beds {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-card-capacity-certified-beds__no-hosp {
+    @include mix.noDetailCardContent;
+  }
+
+  .detail-card-capacity-certified-beds__lr {
+    @include mix.cardFiltersMainLr;
+  }
+
+  .detail-card-capacity-certified-beds__legend {
+    align-self: flex-end;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    margin-bottom: 8px;
+  }
+
+  .detail-card-capacity-certified-beds__meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+}

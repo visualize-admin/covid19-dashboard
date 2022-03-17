@@ -36,6 +36,7 @@ export interface IndividualFiles {
     test: string
     testPcrAntigen: string
     hospCapacity: string
+    hospCapacityCertStatus: string
     re: string
     intCases: string
     virusVariantsWgs: string
@@ -47,6 +48,7 @@ export interface IndividualFiles {
       casesVaccPersons: string
       hosp: string
       hospVaccPersons: string
+      hospReason: string
       death: string
       deathVaccPersons: string
       test: string
@@ -108,5 +110,11 @@ export interface IndividualFiles {
     byAgeAndVaccine: {
       vaccPersons: string
     }
+  }
+  rawData: {
+    dailyEpi: string
+    dailyCasesAgeRange: string
+    weeklyEpiAgeRangeSex: string
+    populationAgeRangeSex: string
   }
 }

@@ -12,4 +12,10 @@
   <ng-container *ngIf="developmentData$ | async as developmentData">
     <bag-detail-card-hosp-capacity-development [data]="developmentData"></bag-detail-card-hosp-capacity-development>
   </ng-container>
+
+  <ng-container *ngIf="certifiedBedsDevelopmentData$ | async as hospCapacityCertAdhocDevelopmentData">
+    <bag-detail-card-hosp-capacity-certified-beds
+      [data]="hospCapacityCertAdhocDevelopmentData"
+    ></bag-detail-card-hosp-capacity-certified-beds>
+  </ng-container>
 </div>

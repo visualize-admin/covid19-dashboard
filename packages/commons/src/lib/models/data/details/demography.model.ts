@@ -35,7 +35,8 @@ export type AgeRangeByVaccinationStrategyKey = 'A_5_11' | 'A_12_15' | 'A_16_64' 
  *  Sex
  *
  *  unknown - If no gender information was provided for the associated data.
- *  male
+ *  male - male
+ *  female - female
  */
 export enum Sex {
   MALE = 'male',

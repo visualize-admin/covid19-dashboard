@@ -17,8 +17,8 @@
           {{ 'DetailCardDemography.Chart.MatrixColor.Title' | i18n }}
         </h5>
 
-        <div [class.detail-card-demography__lr]="demoData.view === DemoViewFilter.HEATMAP">
-          <div [class.detail-card-demography__lr-graph]="demoData.view === DemoViewFilter.GRAPH">
+        <div class="detail-card-demography__lr">
+          <div class="detail-card-demography__lr-part">
             <label id="detail-demo-view-filter-label" class="cdk-visually-hidden">{{
               'DemoViewFilter.Label' | i18n
             }}</label>
@@ -41,9 +41,33 @@
               </bag-multi-select>
             </ng-container>
           </div>
+
+          <div class="detail-card-demography__lr-part">
+            <bag-toggle-button-list
+              class="detail-card-demography__filter-toggle"
+              [attr.aria-label]="'RelativityFilter.Label' | i18n"
+              [formControl]="relativityFilterCtrl"
+            >
+              <ng-container *ngFor="let opt of relativityFilterOptions">
+                <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+              </ng-container>
+            </bag-toggle-button-list>
+
+            <bag-single-select
+              class="detail-card-demography__filter-relativity"
+              labelKey="RelativityFilter.Label"
+              [options]="relativityFilterOptions"
+              [formControl]="relativityFilterCtrl"
+            ></bag-single-select>
+          </div>
+        </div>
+
+        <div
+          [class.detail-card-demography__lr]="demoData.view === DemoViewFilter.HEATMAP"
+          class="detail-card-demography__heat-legend"
+        >
           <ng-container *ngIf="demoData.view === DemoViewFilter.HEATMAP">
             <bag-color-legend
-              class="detail-card-geo__legend"
               [min]="demoData.age.min"
               [max]="demoData.age.max"
               [titleKey]="demoData.isInz ? metaInzKey : metaAbsKey"
@@ -54,6 +78,7 @@
             ></bag-color-legend>
           </ng-container>
         </div>
+
         <div *ngIf="demoData.view === DemoViewFilter.GRAPH" class="detail-card-demography__lr-histogram-legend">
           <bag-chart-legend [itemGap]="16">
             <div *ngFor="let pair of demoData.histoLegendPairs" bagChartLegendSquare [color]="pair[0]">
@@ -61,6 +86,7 @@
             </div>
           </bag-chart-legend>
         </div>
+
         <ng-container *ngIf="demoData.view === DemoViewFilter.HEATMAP">
           <bag-matrix-heatmap
             [data]="demoData.age.entries"
@@ -71,6 +97,7 @@
             (diagramLeave)="hideTooltip()"
           ></bag-matrix-heatmap>
         </ng-container>
+
         <ng-container *ngIf="demoData.view === DemoViewFilter.GRAPH">
           <p class="detail-card-demography__meta">{{ (demoData.isInz ? metaInzKey : metaAbsKey) | i18n }}</p>
           <bag-histogram-line

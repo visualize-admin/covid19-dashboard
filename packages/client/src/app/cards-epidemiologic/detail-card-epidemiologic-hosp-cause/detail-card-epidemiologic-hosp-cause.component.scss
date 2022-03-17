@@ -1,0 +1,39 @@
+@use 'src/styles/text';
+@use 'src/styles/col';
+@use 'src/styles/dim';
+@use 'src/styles/layout';
+@use 'src/styles/mix';
+
+bag-detail-card-epidemiologic-hosp-cause {
+  display: block;
+
+  .detail-card-hosp-cause {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .detail-card-hosp-cause__meta {
+    @include text.meta;
+    color: var(--c-fg-meta);
+  }
+
+  .detail-card-hosp-cause__lr {
+    @include layout.leftRight(-8px);
+  }
+
+  .detail-card-hosp-cause__chart-intro {
+    @include mix.cardChartIntro;
+  }
+
+  @media (max-width: #{dim.$bp-max-md}) {
+    .detail-card-hosp-cause__filter-toggle {
+      display: none;
+    }
+  }
+
+  @media (min-width: #{dim.$bp-min-lg}) {
+    .detail-card-hosp-cause__filter-relativity {
+      display: none;
+    }
+  }
+}

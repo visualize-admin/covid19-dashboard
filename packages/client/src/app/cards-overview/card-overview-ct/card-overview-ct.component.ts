@@ -22,16 +22,19 @@ export class CardOverviewCtComponent extends BaseCardOverviewComponent<CovidCtOv
         key: this.translator.get('OverviewCardCT.Table.Isolation.Label'),
         value: adminFormatNum(this.data.dailyValues[GdiVariant.VALUE_CT_ISO]),
         keyDescription: this.translator.get('OverviewCardCT.Table.Isolation.Desc'),
+        info: this.translator.get('IndicatorsDescription.OverviewCardCT.Isolation'),
       },
       {
         key: this.translator.get('OverviewCardCT.Table.Quarantine.Label'),
         value: adminFormatNum(this.data.dailyValues[GdiVariant.VALUE_CT_QUA]),
         keyDescription: this.translator.get('OverviewCardCT.Table.Quarantine.Desc'),
+        info: this.translator.get('IndicatorsDescription.OverviewCardCT.Quarantine'),
       },
       {
         key: this.translator.get('OverviewCardCT.Table.EntryQuarantine.Label'),
         value: adminFormatNum(this.data.dailyValues[GdiVariant.VALUE_CT_ENTRY]),
         keyDescription: this.translator.get('OverviewCardCT.Table.EntryQuarantine.Desc'),
+        info: this.translator.get('IndicatorsDescription.OverviewCardCT.EntryQuarantine'),
       },
     ]
   }

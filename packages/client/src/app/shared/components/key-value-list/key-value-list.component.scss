@@ -10,6 +10,11 @@ bag-key-value-list {
   .bag-key-value-list__table {
     width: 100%;
     border-spacing: 0;
+
+    &.bag-key-value-list__table--border {
+      border-top: 1px solid var(--c-divider-light);
+      border-bottom: 1px solid var(--c-divider-light);
+    }
   }
 
   th,
@@ -24,11 +29,27 @@ bag-key-value-list {
     vertical-align: top;
   }
 
+  .bag-key-value-list__table-info {
+    td {
+      padding-left: 0px;
+      padding-top: 0px;
+      border-top: none;
+      white-space: normal;
+    }
+  }
+
   tr ~ tr {
     th,
     td {
       border-top: 1px solid var(--c-divider-light);
       padding-top: 11px;
+    }
+  }
+
+  .bag-key-value-list__entry-value-with-info {
+    th,
+    td {
+      padding-bottom: 0px;
     }
   }
 
@@ -49,9 +70,11 @@ bag-key-value-list {
   }
 
   .bag-key-value-list__combine-below {
-    th,
-    td {
-      padding-bottom: 4px;
+    &:not(.bag-key-value-list__entry-value-with-info) {
+      th,
+      td {
+        padding-bottom: 4px;
+      }
     }
   }
 

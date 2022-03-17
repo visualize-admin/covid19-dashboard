@@ -7,7 +7,7 @@
 >
   <bag-overview-card-warning *bagOverviewCardWarning key="OverviewCardTest.HiddenWarning"></bag-overview-card-warning>
 
-  <p *bagOverviewCardInfo bagOverviewCardHint>{{ 'OverviewCardTest.InfoText.Top' | i18n }}</p>
+  <p *bagOverviewCardInfo bagOverviewCardHint>{{ 'IndicatorsDescription.OverviewCardTest.General' | i18n }}</p>
 
   <bag-key-value-list
     *ngIf="keyValueList$ | async as keyValueList"
@@ -22,5 +22,5 @@
     <bag-histogram-preview [barColors]="barColors" [data]="histogram"></bag-histogram-preview>
   </ng-container>
 
-  <p *bagOverviewCardInfo bagOverviewCardHint>{{ 'OverviewCardTest.InfoText.Bottom' | i18n }}</p>
+  <p *bagOverviewCardInfo bagOverviewCardHint>{{ 'IndicatorsDescription.OverviewCardTest.Graph' | i18n }}</p>
 </bag-overview-card>

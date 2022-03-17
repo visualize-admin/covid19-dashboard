@@ -8,6 +8,7 @@ import { ChartLegendModule } from '../../shared/components/chart-legend/chart-le
 import { DetailCardModule } from '../../shared/components/detail-card/detail-card.module'
 import { Inz14dSumLegendModule } from '../../shared/components/inz14d-sum-legend/inz14d-sum-legend.module'
 import { NativeSelectModule } from '../../shared/components/native-select/native-select.module'
+import { SingleSelectModule } from '../../shared/components/single-select/single-select.module'
 import { ToggleButtonListModule } from '../../shared/components/toggle-button-list/toggle-button-list.module'
 import { TooltipModule } from '../../shared/components/tooltip/tooltip.module'
 import { DetailCardEpidemiologicDevelopmentComponent } from './detail-card-epidemiologic-development.component'
@@ -26,6 +27,7 @@ import { DetailCardEpidemiologicDevelopmentComponent } from './detail-card-epide
     NativeSelectModule,
     Inz14dSumLegendModule,
     ChartLegendModule,
+    SingleSelectModule,
   ],
   exports: [DetailCardEpidemiologicDevelopmentComponent],
 })

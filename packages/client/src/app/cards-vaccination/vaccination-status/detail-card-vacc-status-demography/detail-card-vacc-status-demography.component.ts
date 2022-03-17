@@ -30,9 +30,9 @@ import {
 import { IndicatorFilter } from '../../../shared/models/filters/indicator-filter.enum'
 import {
   DEFAULT_VACC_VACCINE_STATUS_RELATIVITY_FILTER,
-  getRelativityFilterOptions,
-  RelativityFilter,
-} from '../../../shared/models/filters/relativity-filter.enum'
+  getInz100KAbsFilterOptions,
+  Inz100KAbsFilter,
+} from '../../../shared/models/filters/relativity/inz100k-abs-filter.enum'
 import {
   DEFAULT_VACC_DEMO_CUMULATIVE_FILTER,
   getVaccCumulativeFilterOptions,
@@ -50,7 +50,7 @@ import { BaseCardVaccStatusComponent, CurrentValuesVaccStatusBase } from '../bas
 
 interface CurrentValues extends CurrentValuesVaccStatusBase {
   cumulativeFilter: VaccCumulativeFilter
-  relativityFilter: RelativityFilter
+  relativityFilter: Inz100KAbsFilter
   ageRangeFilter: AgeRange
 }
 
@@ -94,13 +94,13 @@ export class DetailCardVaccStatusDemographyComponent
     tap<VaccCumulativeFilter>(emitValToOwnViewFn(this.cumulativeFilterCtrl, DEFAULT_VACC_DEMO_CUMULATIVE_FILTER)),
   )
 
-  readonly relativityFilterOptions = getRelativityFilterOptions(DEFAULT_VACC_VACCINE_STATUS_RELATIVITY_FILTER)
+  readonly relativityFilterOptions = getInz100KAbsFilterOptions(DEFAULT_VACC_VACCINE_STATUS_RELATIVITY_FILTER)
   readonly relativityFilterCtrl = new FormControl(
     this.route.snapshot.queryParams[QueryParams.VACC_STATUS_DEMO_REL_FILTER] || null,
   )
-  readonly relativityFilter$: Observable<RelativityFilter> = this.route.queryParams.pipe(
+  readonly relativityFilter$: Observable<Inz100KAbsFilter> = this.route.queryParams.pipe(
     selectChanged(QueryParams.VACC_STATUS_DEMO_REL_FILTER, DEFAULT_VACC_VACCINE_STATUS_RELATIVITY_FILTER),
-    tap<RelativityFilter>(
+    tap<Inz100KAbsFilter>(
       emitValToOwnViewFn(this.vaccDosesRelativityFilterCtrl, DEFAULT_VACC_VACCINE_STATUS_RELATIVITY_FILTER),
     ),
   )
@@ -221,7 +221,7 @@ export class DetailCardVaccStatusDemographyComponent
     const dashedLines = [null, null, null, null]
 
     // no inz_100 for total for now
-    if (cv.relativityFilter === RelativityFilter.INZ_100K && cv.cumulativeFilter === VaccCumulativeFilter.TOTAL) {
+    if (cv.relativityFilter === Inz100KAbsFilter.INZ_100K && cv.cumulativeFilter === VaccCumulativeFilter.TOTAL) {
       return {
         lineData: [
           {
@@ -242,11 +242,11 @@ export class DetailCardVaccStatusDemographyComponent
         cumulativeFilter: cv.cumulativeFilter,
         showNoData: true,
         skipNoDataBefore: null,
-        isInz: cv.relativityFilter === RelativityFilter.INZ_100K,
+        isInz: cv.relativityFilter === Inz100KAbsFilter.INZ_100K,
       }
     }
 
-    const isInz = cv.relativityFilter === RelativityFilter.INZ_100K
+    const isInz = cv.relativityFilter === Inz100KAbsFilter.INZ_100K
     const lineData: DemoHistogramLineEntry[] = this.data.ageData[cv.indicator].map((v): DemoHistogramLineEntry => {
       const fullyNoBooster = this.extractValue(v[cv.ageRangeFilter][VaccinationStatus.FULLY_VACCINATED_NO_BOOSTER], cv)
       const partially = this.extractValue(v[cv.ageRangeFilter][VaccinationStatus.PARTIALLY_VACCINATED], cv)
@@ -280,7 +280,7 @@ export class DetailCardVaccStatusDemographyComponent
       cumulativeFilter: cv.cumulativeFilter,
       showNoData: false,
       skipNoDataBefore: cv.cumulativeFilter === VaccCumulativeFilter.WEEKLY ? addDays(lineData[0].date, 1) : null,
-      isInz: cv.relativityFilter === RelativityFilter.INZ_100K,
+      isInz: cv.relativityFilter === Inz100KAbsFilter.INZ_100K,
     }
   }
 
@@ -296,9 +296,9 @@ export class DetailCardVaccStatusDemographyComponent
     }
 
     switch (cv.relativityFilter) {
-      case RelativityFilter.INZ_100K:
+      case Inz100KAbsFilter.INZ_100K:
         return `Vaccination.Status.Card.Chart.Meta.${indicator}.Inz`
-      case RelativityFilter.ABSOLUTE:
+      case Inz100KAbsFilter.ABSOLUTE:
         return `Vaccination.Status.Card.Chart.Meta.${indicator}.Abs`
     }
   }
@@ -319,7 +319,7 @@ export class DetailCardVaccStatusDemographyComponent
 
   private extractValue(entry: VaccinationStatusDemographyEntryValues, cv: CurrentValues): number | null {
     let gdiVariant: GdiVariant.WEEK | GdiVariant.INZ_WEEK | GdiVariant.TOTAL | GdiVariant.INZ_TOTAL
-    if (cv.relativityFilter === RelativityFilter.INZ_100K) {
+    if (cv.relativityFilter === Inz100KAbsFilter.INZ_100K) {
       gdiVariant = cv.cumulativeFilter === VaccCumulativeFilter.WEEKLY ? GdiVariant.INZ_WEEK : GdiVariant.INZ_TOTAL
     } else {
       gdiVariant = cv.cumulativeFilter === VaccCumulativeFilter.WEEKLY ? GdiVariant.WEEK : GdiVariant.TOTAL

@@ -19,6 +19,7 @@ import { BaseCardOverviewComponent, CurrentValuesOverview } from '../base-card-o
   providers: [{ provide: BaseCardOverviewComponent, useExisting: CardOverviewVaccineComponent }],
 })
 export class CardOverviewVaccineComponent extends BaseCardOverviewComponent<CovidVaccinationOverviewCardV3> {
+  // TODO adjust for new overview card with boosters
   readonly previewLineColors = ['url(#patternDots)', COLOR_VACC_PERSONS_FULL, COLOR_VACC_PERSONS_MIN_ONE]
   readonly gdiObject = GdiObject.VACC_DOSES
   readonly cardBaseContext = 'OverviewCardVaccine'
@@ -66,12 +67,14 @@ export class CardOverviewVaccineComponent extends BaseCardOverviewComponent<Covi
       {
         key: this.translator.get('OverviewCardVaccine.Table.MinOneDose'),
         value: adminFormatNum(valPersonsMinOne.inzTotal, 2, '%'),
+        info: this.translator.get('IndicatorsDescription.OverviewCardVaccine.MinOneDose'),
         combineAbove: true,
         combineBelow: true,
       },
       {
         key: this.translator.get('OverviewCardVaccine.Table.VaccPersons.Partial'),
         value: adminFormatNum(valPersonsPartial.inzTotal, 2, '%'),
+        info: this.translator.get('IndicatorsDescription.OverviewCardVaccine.PartiallyVaccinated'),
         colorCode: COLOR_VACC_PERSONS_MIN_ONE,
         combineAbove: true,
         combineBelow: true,
@@ -79,6 +82,7 @@ export class CardOverviewVaccineComponent extends BaseCardOverviewComponent<Covi
       {
         key: this.translator.get('OverviewCardVaccine.Table.VaccPersons.Full'),
         value: adminFormatNum(valPersonsFull.inzTotal, 2, '%'),
+        info: this.translator.get('IndicatorsDescription.OverviewCardVaccine.FullyVaccinated'),
         colorCode: COLOR_VACC_PERSONS_FULL,
         combineAbove: true,
         combineBelow: true,
@@ -86,6 +90,7 @@ export class CardOverviewVaccineComponent extends BaseCardOverviewComponent<Covi
       {
         key: this.translator.get('OverviewCardVaccine.Table.VaccPersons.WithBooster'),
         value: adminFormatNum(valPersonsBooster.inzTotal, 2, '%'),
+        info: this.translator.get('IndicatorsDescription.OverviewCardVaccine.Booster'),
         colorCode: COLOR_VACC_PERSONS_FULL,
         pattern: true,
         combineAbove: true,
@@ -97,12 +102,14 @@ export class CardOverviewVaccineComponent extends BaseCardOverviewComponent<Covi
       {
         key: this.translator.get('OverviewCardVaccine.Table.VaccPersons.Full'),
         value: adminFormatNum(valPersons12Plus.inzTotal, 2, '%'),
+        info: this.translator.get('IndicatorsDescription.OverviewCardVaccine.FullyVaccinated.12Plus'),
         combineAbove: true,
         combineBelow: true,
       },
       {
         key: this.translator.get('OverviewCardVaccine.Table.VaccPersons.WithBooster'),
         value: adminFormatNum(valPersons12PlusFirstBooster.inzTotal, 2, '%'),
+        info: this.translator.get('IndicatorsDescription.OverviewCardVaccine.Booster.12Plus'),
         combineAbove: true,
       },
       {
@@ -113,12 +120,14 @@ export class CardOverviewVaccineComponent extends BaseCardOverviewComponent<Covi
       {
         key: this.translator.get('OverviewCardVaccine.Table.VaccPersons.Full'),
         value: adminFormatNum(valPersonsWeekly65PlusFull.inzTotal, 2, '%'),
+        info: this.translator.get('IndicatorsDescription.OverviewCardVaccine.FullyVaccinated.65Plus'),
         combineAbove: true,
         combineBelow: true,
       },
       {
         key: this.translator.get('OverviewCardVaccine.Table.VaccPersons.WithBooster'),
         value: adminFormatNum(valPersonsWeekly65PlusFirstBooster.inzTotal, 2, '%'),
+        info: this.translator.get('IndicatorsDescription.OverviewCardVaccine.Booster.65Plus'),
         combineAbove: true,
       },
     ]

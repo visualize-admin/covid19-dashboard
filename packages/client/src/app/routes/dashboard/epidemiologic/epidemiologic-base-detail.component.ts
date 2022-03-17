@@ -7,6 +7,7 @@ import {
   EpidemiologicDevelopmentData,
   EpidemiologicGeographyData,
   EpidemiologicSimpleGdi,
+  HospReasonAgeRangeData,
   TopLevelGeoUnit,
 } from '@c19/commons'
 import { Observable } from 'rxjs'
@@ -22,6 +23,7 @@ export abstract class EpidemiologicBaseDetailComponent<
   GEO = EpidemiologicGeographyData,
   DEV = EpidemiologicDevelopmentData,
   DEM = EpidemiologicDemographyData,
+  RSM = HospReasonAgeRangeData,
 > {
   abstract readonly simpleGdi: EpidemiologicSimpleGdi
 
@@ -32,7 +34,7 @@ export abstract class EpidemiologicBaseDetailComponent<
     selectChanged(QueryParams.GEO_FILTER, DEFAULT_GEO_UNIT),
   )
 
-  readonly data$: Observable<CombinedEpidemiologicData<GEO, DEV, DEM>>
+  readonly data$: Observable<CombinedEpidemiologicData<GEO, DEV, DEM, RSM>>
 
   constructor(protected readonly route: ActivatedRoute, dataService: DataService) {
     this.data$ = this.geoFilter$.pipe(

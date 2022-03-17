@@ -45,6 +45,7 @@ export class CardOverviewTestComponent extends BaseCardOverviewComponent<Epidemi
       {
         key: this.translator.get('OverviewCardTest.Table.SumPcr.Label'),
         value: adminFormatNum(dailyValuesPcr[timeframeGdiVariantMapping[timeFilter].sum]),
+        info: this.translator.get('IndicatorsDescription.OverviewCardTest.SumPcr'),
         combineBelow: true,
         combineAbove: true,
         colorCode: COLOR_SUM_PCR,
@@ -52,6 +53,7 @@ export class CardOverviewTestComponent extends BaseCardOverviewComponent<Epidemi
       {
         key: this.translator.get('OverviewCardTest.Table.SumAntigen.Label'),
         value: adminFormatNum(dailyValuesAtg[timeframeGdiVariantMapping[timeFilter].sum]),
+        info: this.translator.get('IndicatorsDescription.OverviewCardTest.SumAntigen'),
         combineAbove: true,
         colorCode: COLOR_SUM_ANTIGEN,
       },
@@ -63,12 +65,14 @@ export class CardOverviewTestComponent extends BaseCardOverviewComponent<Epidemi
       ),
       {
         key: this.translator.get('OverviewCardTest.Table.PosPercentPcr.Label'),
-        value: adminFormatNum(dailyValuesPcr[timeframeGdiVariantMapping[timeFilter].prctPos], 1, '%'),
+        value: adminFormatNum(dailyValuesPcr[timeframeGdiVariantMapping[timeFilter].prctPos], undefined, '%'),
+        info: this.translator.get('IndicatorsDescription.OverviewCardTest.PosPercentPcr'),
         combineBelow: true,
       },
       {
         key: this.translator.get('OverviewCardTest.Table.PosPercentAntigen.Label'),
-        value: adminFormatNum(dailyValuesAtg[timeframeGdiVariantMapping[timeFilter].prctPos], 1, '%'),
+        value: adminFormatNum(dailyValuesAtg[timeframeGdiVariantMapping[timeFilter].prctPos], undefined, '%'),
+        info: this.translator.get('IndicatorsDescription.OverviewCardTest.PosPercentAntigen'),
         combineAbove: true,
       },
     ]

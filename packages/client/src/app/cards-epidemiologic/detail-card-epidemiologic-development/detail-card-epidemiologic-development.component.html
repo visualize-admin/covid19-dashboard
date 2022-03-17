@@ -23,7 +23,28 @@
         </option>
         <option [ngValue]="CumulativeFilter.CUMULATIVE">{{ 'DetailCardDevelopment.Filter.Total' | i18n }}</option>
       </select>
-      <ng-container *ngIf="dailyChart$ | async as dailyChart">
+
+      <bag-toggle-button-list
+        class="detail-card-development__filter-toggle"
+        [attr.aria-label]="'RelativityFilter.Label' | i18n"
+        [formControl]="relativityFilterCtrl"
+      >
+        <ng-container *ngFor="let opt of relativityFilterOptions">
+          <bag-toggle-button [value]="opt.val">{{ opt.key | i18n }}</bag-toggle-button>
+        </ng-container>
+      </bag-toggle-button-list>
+
+      <bag-single-select
+        class="detail-card-development__filter-relativity"
+        labelKey="RelativityFilter.Label"
+        [options]="relativityFilterOptions"
+        [formControl]="relativityFilterCtrl"
+      ></bag-single-select>
+    </div>
+
+    <!-- daily legend -->
+    <ng-container *ngIf="dailyChart$ | async as dailyChart">
+      <div class="detail-card-development__chart-intro">
         <bag-chart-legend [itemGap]="16">
           <div
             *ngFor="let bar of dailyChart.legendBarDef"
@@ -45,28 +66,31 @@
           ></div>
           <div *ngIf="dailyChart.hasNoData" bagChartLegendSquare noData [length]="24" translate="Commons.NoData"></div>
         </bag-chart-legend>
-      </ng-container>
-      <ng-container *ngIf="twoWeekChart$ | async as twoWeek">
-        <div class="detail-card-development__lr-part">
-          <bag-chart-legend [itemGap]="16">
-            <div
-              *ngFor="let line of twoWeek.legendPairs"
-              [length]="16"
-              bagChartLegendLine
-              [color]="line[0]"
-              [thickness]="line[2]"
-            >
-              {{ line[1] }}
-            </div>
-          </bag-chart-legend>
-          <bag-inz14d-sum-legend
-            *ngIf="twoWeek.isInz"
-            titleKey="DetailCardDevelopment.TwoWeekSum.Inz"
-          ></bag-inz14d-sum-legend>
-        </div>
-      </ng-container>
-    </div>
+      </div>
+    </ng-container>
 
+    <!-- two weeks legend -->
+    <ng-container *ngIf="twoWeekChart$ | async as twoWeek">
+      <div class="detail-card-development__chart-intro detail-card-development__chart-intro-week">
+        <bag-chart-legend [itemGap]="16">
+          <div
+            *ngFor="let line of twoWeek.legendPairs"
+            [length]="16"
+            bagChartLegendLine
+            [color]="line[0]"
+            [thickness]="line[2]"
+          >
+            {{ line[1] }}
+          </div>
+        </bag-chart-legend>
+        <bag-inz14d-sum-legend
+          *ngIf="twoWeek.isInz"
+          titleKey="DetailCardDevelopment.TwoWeekSum.Inz"
+        ></bag-inz14d-sum-legend>
+      </div>
+    </ng-container>
+
+    <!-- daily chart -->
     <ng-container *ngIf="dailyChart$ | async as dailyChart">
       <p class="detail-card-development__meta">{{ (dailyChart.isInz ? metaInzKey : metaAbsKey) | i18n }}</p>
       <bag-histogram-detail
@@ -79,6 +103,7 @@
       ></bag-histogram-detail>
     </ng-container>
 
+    <!-- cumulative chart -->
     <ng-container *ngIf="cumulativeChart$ | async as cumul">
       <p class="detail-card-development__meta">{{ (cumul.isInz ? metaInzKey : metaAbsKey) | i18n }}</p>
       <bag-histogram-line
@@ -89,6 +114,7 @@
       ></bag-histogram-line>
     </ng-container>
 
+    <!-- two weeks chart -->
     <ng-container *ngIf="twoWeekChart$ | async as twoWeek">
       <p class="detail-card-development__meta">
         {{ (twoWeek.isInz ? 'DetailCardDevelopment.TwoWeekSum.Inz' : 'DetailCardDevelopment.TwoWeekSum.Abs') | i18n }}

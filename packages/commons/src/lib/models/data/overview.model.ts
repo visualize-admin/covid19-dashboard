@@ -41,10 +41,13 @@ export type EpidemiologicOverviewDailyValues =
   | GdiVariant.INZ_P4
   | GdiVariant.SUMP5
   | GdiVariant.INZ_P5
+  | GdiVariant.SUMP6
+  | GdiVariant.INZ_P6
   | GdiVariant.SUM28D
   | GdiVariant.INZ_28D
   | GdiVariant.SUM14D
   | GdiVariant.INZ_14D
+  | GdiVariant.INZ_ROLLSUM_14D
 
 export type EpidemiologicTestOverviewDailyValues =
   | EpidemiologicOverviewDailyValues
@@ -54,6 +57,7 @@ export type EpidemiologicTestOverviewDailyValues =
   | GdiVariant.PRCT_P3_POSTEST
   | GdiVariant.PRCT_P4_POSTEST
   | GdiVariant.PRCT_P5_POSTEST
+  | GdiVariant.PRCT_P6_POSTEST
   | GdiVariant.PRCT_28D_POSTEST
   | GdiVariant.PRCT_14D_POSTEST
 
@@ -102,7 +106,7 @@ export type OverviewDataObjectKeys = keyof OverviewDataV4
 
 export interface EpidemiologicOverviewCardV3
   extends OverviewCardV3<
-    InlineValues<EpidemiologicOverviewDailyValues>,
+    InlineValues<EpidemiologicOverviewDailyValues> & { dateInzRollsum14d: string },
     EpidemiologicOverviewTimelineData,
     number | null
   > {

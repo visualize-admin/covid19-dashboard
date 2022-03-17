@@ -41,7 +41,7 @@ import {
   getVaccCumulativeFilterOptions,
   VaccCumulativeFilter,
 } from '../../shared/models/filters/vacc-cumulative-filter.enum'
-import { VaccinationRelativityFilter } from '../../shared/models/filters/vaccination-relativity-filter.enum'
+import { Inz100AbsFilter } from '../../shared/models/filters/relativity/inz100-abs-filter.enum'
 import { QueryParams } from '../../shared/models/query-params.enum'
 import { adminFormatNum } from '../../static-utils/admin-format-num.function'
 import { createMatrixData, MatrixCreationData } from '../../static-utils/data-utils'
@@ -64,7 +64,7 @@ import {
 } from '../base-detail-card-vaccination.component'
 
 interface CurrentValues extends CurrentValuesVaccinationBase {
-  relativityFilter: VaccinationRelativityFilter
+  relativityFilter: Inz100AbsFilter
   cumulativeFilter: VaccCumulativeFilter
   isRel: boolean
   locations: VaccinationLocation[]
@@ -153,7 +153,7 @@ export class DetailCardVaccDosesLocationComponent
     switchMap((args) => this.onChanges$.pipe(mapTo(args))),
     withLatestFrom(this.selectedGeoUnit$),
     map(([[relativityFilter, cumulativeFilter, locationFilter], geoUnit]) => {
-      const isRel = relativityFilter === VaccinationRelativityFilter.INZ_100
+      const isRel = relativityFilter === Inz100AbsFilter.INZ_100
       return {
         geoUnit,
         relativityFilter,

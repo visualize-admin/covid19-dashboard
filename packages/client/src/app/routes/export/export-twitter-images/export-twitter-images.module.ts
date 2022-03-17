@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common'
 import { NgModule } from '@angular/core'
 import { RouterModule } from '@angular/router'
 import { CardOverviewCaseModule } from '../../../cards-overview/card-overview-case/card-overview-case.module'
-import { CardOverviewCertificateModule } from '../../../cards-overview/card-overview-certificate/card-overview-certificate.module'
 import { CardOverviewDeathModule } from '../../../cards-overview/card-overview-death/card-overview-death.module'
 import { CardOverviewHospCapacityModule } from '../../../cards-overview/card-overview-hosp-capacity/card-overview-hosp-capacity.module'
 import { CardOverviewHospModule } from '../../../cards-overview/card-overview-hosp/card-overview-hosp.module'
@@ -33,7 +32,6 @@ import { ExportTwitterImagesComponent } from './export-twitter-images.component'
     CardOverviewVirusVariantsModule,
     CardOverviewReproModule,
     CardOverviewHospCapacityModule,
-    CardOverviewCertificateModule,
   ],
   declarations: [ExportTwitterImagesComponent],
 })

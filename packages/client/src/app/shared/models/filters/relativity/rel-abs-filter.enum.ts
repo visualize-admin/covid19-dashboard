@@ -1,17 +1,17 @@
 import { getEnumValues } from '@shiftcode/utilities'
-import { OptionsDef } from '../option-def.type'
+import { OptionsDef } from '../../option-def.type'
 
 export enum RelAbsFilter {
-  ABSOLUTE = 'abs',
   RELATIVE = 'rel',
+  ABSOLUTE = 'abs',
 }
 
-export const relAbsFilterKey: Record<RelAbsFilter, string> = {
-  [RelAbsFilter.ABSOLUTE]: 'RelAbsFilter.Absolute',
-  [RelAbsFilter.RELATIVE]: 'RelAbsFilter.Relative',
+const relAbsFilterKey: Record<RelAbsFilter, string> = {
+  [RelAbsFilter.RELATIVE]: 'RelativityFilter.Relative',
+  [RelAbsFilter.ABSOLUTE]: 'RelativityFilter.Absolute',
 }
 
-export const DEFAULT_REL_ABS_FILTER_HOSP_CAPACITY_DEV: RelAbsFilter = RelAbsFilter.ABSOLUTE
+export const DEFAULT_VACC_PERSONS_REL_ABS_FILTER: RelAbsFilter = RelAbsFilter.RELATIVE
 
 export function getRelAbsFilterOptions(defaultOption: RelAbsFilter): OptionsDef<RelAbsFilter> {
   const opts = <RelAbsFilter[]>getEnumValues(RelAbsFilter)

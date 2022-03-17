@@ -11,11 +11,10 @@ import {
   EpiTimelineEntry,
   GdiObject,
   GdiVariant,
-  HistogramDetailCard,
   isDefined,
   TopLevelGeoUnit,
 } from '@c19/commons'
-import { combineLatest, Observable } from 'rxjs'
+import { combineLatest, merge, Observable } from 'rxjs'
 import { map, mapTo, shareReplay, switchMap, takeUntil, tap, withLatestFrom } from 'rxjs/operators'
 import { TranslatorService } from '../../core/i18n/translator.service'
 import { UriService } from '../../core/uri.service'
@@ -39,9 +38,13 @@ import {
 } from '../../shared/components/tooltip/tooltip-list-content/tooltip-list-content.component'
 import { TooltipService } from '../../shared/components/tooltip/tooltip.service'
 import { CumulativeFilter, DEFAULT_CUMULATIVE_FILTER } from '../../shared/models/filters/cumulative-filter.enum'
-import { QueryParams } from '../../shared/models/query-params.enum'
-import { RelativityFilter } from '../../shared/models/filters/relativity-filter.enum'
+import {
+  DEFAULT_RELATIVITY_FILTER,
+  getInz100KAbsFilterOptions,
+  Inz100KAbsFilter,
+} from '../../shared/models/filters/relativity/inz100k-abs-filter.enum'
 import { TimeSlotFilter, timeSlotFilterTimeFrameKey } from '../../shared/models/filters/time-slot-filter.enum'
+import { QueryParams } from '../../shared/models/query-params.enum'
 import { adminFormatNum } from '../../static-utils/admin-format-num.function'
 import { getTimeslotCorrespondingValues } from '../../static-utils/data-utils'
 import { formatUtcDate, parseIsoDate } from '../../static-utils/date-utils'
@@ -55,6 +58,7 @@ interface CurrentDevelopmentValues extends CurrentValuesBase {
   cumulativeFilter: CumulativeFilter
   isInz: boolean
   values: EpiTimelineEntry<any, any>[]
+  relativityFilter: Inz100KAbsFilter
 }
 
 interface DailyChartEntry extends HistogramDetailEntry {
@@ -90,8 +94,6 @@ interface CumulativeChartData extends BaseChartData {
   data: CumulativeChartEntry[]
   cumulativeDef: CumulativeDef
 }
-
-export type HistoDetailCardData = HistogramDetailCard<DetailTimelineValues>
 
 interface HistogramPartDef {
   gdi: DetailTimelineValues
@@ -139,6 +141,7 @@ export class DetailCardEpidemiologicDevelopmentComponent extends BaseDetailEpide
     [TimeSlotFilter.PHASE_3]: GdiVariant.INZ_P3,
     [TimeSlotFilter.PHASE_4]: GdiVariant.INZ_P4,
     [TimeSlotFilter.PHASE_5]: GdiVariant.INZ_P5,
+    [TimeSlotFilter.PHASE_6]: GdiVariant.INZ_P6,
     [TimeSlotFilter.LAST_4_WEEKS]: GdiVariant.INZ_28D,
     [TimeSlotFilter.LAST_2_WEEKS]: GdiVariant.INZ_14D,
   }
@@ -149,6 +152,7 @@ export class DetailCardEpidemiologicDevelopmentComponent extends BaseDetailEpide
     [TimeSlotFilter.PHASE_3]: GdiVariant.SUMP3,
     [TimeSlotFilter.PHASE_4]: GdiVariant.SUMP4,
     [TimeSlotFilter.PHASE_5]: GdiVariant.SUMP5,
+    [TimeSlotFilter.PHASE_6]: GdiVariant.SUMP6,
     [TimeSlotFilter.LAST_4_WEEKS]: GdiVariant.SUM28D,
     [TimeSlotFilter.LAST_2_WEEKS]: GdiVariant.SUM14D,
   }
@@ -159,6 +163,7 @@ export class DetailCardEpidemiologicDevelopmentComponent extends BaseDetailEpide
     [TimeSlotFilter.PHASE_3]: GdiVariant.INZ_P3_PCR,
     [TimeSlotFilter.PHASE_4]: GdiVariant.INZ_P4_PCR,
     [TimeSlotFilter.PHASE_5]: GdiVariant.INZ_P5_PCR,
+    [TimeSlotFilter.PHASE_6]: GdiVariant.INZ_P6_PCR,
     [TimeSlotFilter.LAST_4_WEEKS]: GdiVariant.INZ_28D_PCR,
     [TimeSlotFilter.LAST_2_WEEKS]: GdiVariant.INZ_14D_PCR,
   }
@@ -169,6 +174,7 @@ export class DetailCardEpidemiologicDevelopmentComponent extends BaseDetailEpide
     [TimeSlotFilter.PHASE_3]: GdiVariant.SUMP3_PCR,
     [TimeSlotFilter.PHASE_4]: GdiVariant.SUMP4_PCR,
     [TimeSlotFilter.PHASE_5]: GdiVariant.SUMP5_PCR,
+    [TimeSlotFilter.PHASE_6]: GdiVariant.SUMP6_PCR,
     [TimeSlotFilter.LAST_4_WEEKS]: GdiVariant.SUM28D_PCR,
     [TimeSlotFilter.LAST_2_WEEKS]: GdiVariant.SUM14D_PCR,
   }
@@ -179,6 +185,7 @@ export class DetailCardEpidemiologicDevelopmentComponent extends BaseDetailEpide
     [TimeSlotFilter.PHASE_3]: GdiVariant.INZ_P3_ANTIGEN,
     [TimeSlotFilter.PHASE_4]: GdiVariant.INZ_P4_ANTIGEN,
     [TimeSlotFilter.PHASE_5]: GdiVariant.INZ_P5_ANTIGEN,
+    [TimeSlotFilter.PHASE_6]: GdiVariant.INZ_P6_ANTIGEN,
     [TimeSlotFilter.LAST_4_WEEKS]: GdiVariant.INZ_28D_ANTIGEN,
     [TimeSlotFilter.LAST_2_WEEKS]: GdiVariant.INZ_14D_ANTIGEN,
   }
@@ -189,6 +196,7 @@ export class DetailCardEpidemiologicDevelopmentComponent extends BaseDetailEpide
     [TimeSlotFilter.PHASE_3]: GdiVariant.SUMP3_ANTIGEN,
     [TimeSlotFilter.PHASE_4]: GdiVariant.SUMP4_ANTIGEN,
     [TimeSlotFilter.PHASE_5]: GdiVariant.SUMP5_ANTIGEN,
+    [TimeSlotFilter.PHASE_6]: GdiVariant.SUMP6_ANTIGEN,
     [TimeSlotFilter.LAST_4_WEEKS]: GdiVariant.SUM28D_ANTIGEN,
     [TimeSlotFilter.LAST_2_WEEKS]: GdiVariant.SUM14D_ANTIGEN,
   }
@@ -212,6 +220,14 @@ export class DetailCardEpidemiologicDevelopmentComponent extends BaseDetailEpide
     tap<CumulativeFilter>(emitValToOwnViewFn(this.cumulativeFilterCtrl, DEFAULT_CUMULATIVE_FILTER)),
   )
 
+  readonly relativityFilterOptions = getInz100KAbsFilterOptions(DEFAULT_RELATIVITY_FILTER)
+  readonly relativityFilterCtrl = new FormControl(
+    this.route.snapshot.queryParams[QueryParams.EPI_REL_ABS_DEVELOPMENT_FILTER] || null,
+  )
+  readonly relFilter$: Observable<Inz100KAbsFilter> = this.route.queryParams.pipe(
+    selectChanged(QueryParams.EPI_REL_ABS_DEVELOPMENT_FILTER, DEFAULT_RELATIVITY_FILTER),
+  )
+
   readonly currentValues$: Observable<CurrentDevelopmentValues> = combineLatest([
     this.timeFilter$,
     this.relFilter$,
@@ -219,7 +235,7 @@ export class DetailCardEpidemiologicDevelopmentComponent extends BaseDetailEpide
   ]).pipe(
     switchMap((args) => this.onChanges$.pipe(mapTo(args))),
     withLatestFrom(this.selectedGeoUnit$),
-    map(([[timeFilter, relativityFilter, cumulativeFilter], geoUnit]) => {
+    map(([[timeFilter, relativityFilter, cumulativeFilter], geoUnit]): CurrentDevelopmentValues => {
       const timeFrame = this.data.timeframes[timeSlotFilterTimeFrameKey[timeFilter]]
       const values: EpiTimelineEntry<any, any>[] = this.data.values
       return {
@@ -229,7 +245,7 @@ export class DetailCardEpidemiologicDevelopmentComponent extends BaseDetailEpide
         timeFrame,
         cumulativeFilter,
         values: getTimeslotCorrespondingValues(values, timeFrame),
-        isInz: relativityFilter === RelativityFilter.INZ_100K,
+        isInz: relativityFilter === Inz100KAbsFilter.INZ_100K,
       }
     }),
     shareReplay(1),
@@ -254,11 +270,11 @@ export class DetailCardEpidemiologicDevelopmentComponent extends BaseDetailEpide
   ) {
     super(route, router, translator, uriService, tooltipService)
 
-    this.cumulativeFilterCtrl.valueChanges
-      .pipe(
-        map((v) => ({ [QueryParams.CUMULATIVE_FILTER]: <string>v })),
-        takeUntil(this.onDestroy),
-      )
+    merge(
+      this.cumulativeFilterCtrl.valueChanges.pipe(map((v) => ({ [QueryParams.CUMULATIVE_FILTER]: <string>v }))),
+      this.relativityFilterCtrl.valueChanges.pipe(map((v) => ({ [QueryParams.EPI_REL_ABS_DEVELOPMENT_FILTER]: v }))),
+    )
+      .pipe(takeUntil(this.onDestroy))
       .subscribe(updateQueryParamsFn(router))
   }
 

@@ -12,7 +12,6 @@ import { CommonsModule } from '../../../shared/commons/commons.module'
 import { MasterDetailModule } from '../../../shared/components/master-detail/master-detail.module'
 import { SelectTitleModule } from '../../../shared/components/select-title/select-title.module'
 import { CumulativeFilter } from '../../../shared/models/filters/cumulative-filter.enum'
-import { RelativityFilter } from '../../../shared/models/filters/relativity-filter.enum'
 import { TimeSlotFilter } from '../../../shared/models/filters/time-slot-filter.enum'
 import { QueryParams } from '../../../shared/models/query-params.enum'
 import { RouteDataKey } from '../../route-data-key.enum'
@@ -47,7 +46,6 @@ import { EpidemiologicComponent } from './epidemiologic.component'
         data: {
           [RouteDataKey.QUERY_PARAMS_MAPPING]: <QueryParamsMapping>[
             [QueryParams.TIME_FILTER, getEnumValues(TimeSlotFilter)],
-            [QueryParams.REL_ABS_FILTER, getEnumValues(RelativityFilter)],
             [QueryParams.GEO_FILTER, [...getEnumValues(TopLevelGeoUnit), ...getEnumValues(CantonGeoUnit)]],
           ],
         },

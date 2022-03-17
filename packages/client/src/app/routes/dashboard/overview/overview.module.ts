@@ -6,7 +6,6 @@ import { RouterModule } from '@angular/router'
 import { SvgModule } from '@shiftcode/ngx-components'
 import { getEnumValues } from '@shiftcode/utilities'
 import { CardOverviewCaseModule } from '../../../cards-overview/card-overview-case/card-overview-case.module'
-import { CardOverviewCertificateModule } from '../../../cards-overview/card-overview-certificate/card-overview-certificate.module'
 import { CardOverviewCtModule } from '../../../cards-overview/card-overview-ct/card-overview-ct.module'
 import { CardOverviewDeathModule } from '../../../cards-overview/card-overview-death/card-overview-death.module'
 import { CardOverviewHospCapacityModule } from '../../../cards-overview/card-overview-hosp-capacity/card-overview-hosp-capacity.module'
@@ -16,15 +15,16 @@ import { CardOverviewTestModule } from '../../../cards-overview/card-overview-te
 import { CardOverviewVaccineModule } from '../../../cards-overview/card-overview-vaccine/card-overview-vaccine.module'
 import { CardOverviewVirusVariantsModule } from '../../../cards-overview/card-overview-virus-variants/card-overview-virus-variants.module'
 import { DefaultSeoMetaResolver } from '../../../core/default-seo-meta-resolver.service'
+import { OverviewDataResolver } from '../../../core/overview-data-resolver.service'
 import { QueryParamsGuard, QueryParamsMapping } from '../../../core/query-params.guard'
 import { CommonsModule } from '../../../shared/commons/commons.module'
+import { InfoTooltipModule } from '../../../shared/components/info-tooltip/info-tooltip.module'
 import { NativeSelectModule } from '../../../shared/components/native-select/native-select.module'
 import { OptionModule } from '../../../shared/components/option/option.module'
-import { QueryParams } from '../../../shared/models/query-params.enum'
 import { TimeSlotFilter } from '../../../shared/models/filters/time-slot-filter.enum'
+import { QueryParams } from '../../../shared/models/query-params.enum'
 import { RouteDataKey } from '../../route-data-key.enum'
 import { OverviewComponent } from './overview.component'
-import { OverviewDataResolver } from '../../../core/overview-data-resolver.service'
 
 @NgModule({
   declarations: [OverviewComponent],
@@ -65,8 +65,8 @@ import { OverviewDataResolver } from '../../../core/overview-data-resolver.servi
     CardOverviewVaccineModule,
     CardOverviewVirusVariantsModule,
     CardOverviewHospCapacityModule,
-    CardOverviewCertificateModule,
     A11yModule,
+    InfoTooltipModule,
   ],
 })
 export class OverviewModule {}

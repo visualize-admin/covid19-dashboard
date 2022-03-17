@@ -8,9 +8,9 @@
     resetFilterKey="Epidemiologic.ResetGeographyFilter"
   ></bag-select-title>
 
+
   <ng-template [bagMasterDetail]="detailMenuItems$" [stickyHeaderEl]="geoSelectTitle.element" let-item>
-    <bag-histogram-menu
-      *ngIf="item.type === 'histogram'"
+    <bag-histogram-menu *ngIf="item.type === 'histogram'"
       [data]="item.histogramData"
       [selectionStartDate]="item.selectionStartDate"
     ></bag-histogram-menu>

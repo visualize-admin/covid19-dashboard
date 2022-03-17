@@ -20,14 +20,14 @@ import { RoutePaths } from '../routes/route-paths.enum'
 import { TooltipService } from '../shared/components/tooltip/tooltip.service'
 import {
   DEFAULT_VACC_PERSONS_REL_ABS_FILTER,
-  getVaccPersonsRelAbsFilterOptions,
-  VaccPersonsRelAbsFilter,
-} from '../shared/models/filters/vacc-persons-rel-abs-filter.enum'
+  getRelAbsFilterOptions,
+  RelAbsFilter,
+} from '../shared/models/filters/relativity/rel-abs-filter.enum'
 import {
   DEFAULT_VACCINATION_RELATIVITY_FILTER,
-  getVaccinationRelativityFilterOptions,
-  VaccinationRelativityFilter,
-} from '../shared/models/filters/vaccination-relativity-filter.enum'
+  getInz100AbsFilterOptions,
+  Inz100AbsFilter,
+} from '../shared/models/filters/relativity/inz100-abs-filter.enum'
 import { QueryParams } from '../shared/models/query-params.enum'
 import { formatUtcDate, parseIsoDate } from '../static-utils/date-utils'
 import { emitValToOwnViewFn } from '../static-utils/emit-value-to-own-view.function'
@@ -67,28 +67,22 @@ export abstract class BaseDetailCardVaccinationComponent<T extends VaccRestricte
   @Input()
   hideInfo = false
 
-  readonly vaccDosesRelativityFilterOptions = getVaccinationRelativityFilterOptions(
-    DEFAULT_VACCINATION_RELATIVITY_FILTER,
-  )
+  readonly vaccDosesRelativityFilterOptions = getInz100AbsFilterOptions(DEFAULT_VACCINATION_RELATIVITY_FILTER)
   readonly vaccDosesRelativityFilterCtrl = new FormControl(
     this.route.snapshot.queryParams[QueryParams.VACC_REL_FILTER] || null,
   )
-  readonly vaccDosesRelativityFilter$: Observable<VaccinationRelativityFilter> = this.route.queryParams.pipe(
+  readonly vaccDosesRelativityFilter$: Observable<Inz100AbsFilter> = this.route.queryParams.pipe(
     selectChanged(QueryParams.VACC_REL_FILTER, DEFAULT_VACCINATION_RELATIVITY_FILTER),
-    tap<VaccinationRelativityFilter>(
-      emitValToOwnViewFn(this.vaccDosesRelativityFilterCtrl, DEFAULT_VACCINATION_RELATIVITY_FILTER),
-    ),
+    tap<Inz100AbsFilter>(emitValToOwnViewFn(this.vaccDosesRelativityFilterCtrl, DEFAULT_VACCINATION_RELATIVITY_FILTER)),
   )
 
-  readonly vaccPersonsRelativityFilterOptions = getVaccPersonsRelAbsFilterOptions(DEFAULT_VACC_PERSONS_REL_ABS_FILTER)
+  readonly vaccPersonsRelativityFilterOptions = getRelAbsFilterOptions(DEFAULT_VACC_PERSONS_REL_ABS_FILTER)
   readonly vaccPersonsRelativityFilterCtrl = new FormControl(
     this.route.snapshot.queryParams[QueryParams.VACC_PERSONS_REL_FILTER] || null,
   )
-  readonly vaccPersonsRelativityFilter$: Observable<VaccPersonsRelAbsFilter> = this.route.queryParams.pipe(
+  readonly vaccPersonsRelativityFilter$: Observable<RelAbsFilter> = this.route.queryParams.pipe(
     selectChanged(QueryParams.VACC_PERSONS_REL_FILTER, DEFAULT_VACC_PERSONS_REL_ABS_FILTER),
-    tap<VaccPersonsRelAbsFilter>(
-      emitValToOwnViewFn(this.vaccPersonsRelativityFilterCtrl, DEFAULT_VACC_PERSONS_REL_ABS_FILTER),
-    ),
+    tap<RelAbsFilter>(emitValToOwnViewFn(this.vaccPersonsRelativityFilterCtrl, DEFAULT_VACC_PERSONS_REL_ABS_FILTER)),
   )
 
   readonly selectedGeoUnit$: Observable<CantonGeoUnit | TopLevelGeoUnit> = this.route.queryParams.pipe(

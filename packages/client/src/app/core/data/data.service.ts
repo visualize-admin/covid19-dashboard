@@ -27,9 +27,11 @@ import {
   EpidemiologicVaccSymptomsDevelopmentData,
   ExtraGeoUnitsData,
   GdiObject,
+  HospCapacityCertAdhocDevelopmentData,
   HospCapacityDevelopmentData,
   HospCapacityGdiObjects,
   HospCapacityGeographyData,
+  HospReasonAgeRangeData,
   InternationalComparisonDetailData,
   InternationalComparisonDetailGeoData,
   InternationalQuarantineData,
@@ -82,10 +84,12 @@ export interface CombinedEpidemiologicData<
   GEO = EpidemiologicGeographyData | EpidemiologicTestGeographyData,
   DEV = EpidemiologicDevelopmentData | EpidemiologicTestDevelopmentData,
   DEM = EpidemiologicDemographyData | EpidemiologicVaccDemographyData,
+  RSN = HospReasonAgeRangeData,
 > {
   geography: GEO
   development: DEV
   demography: DEM
+  hospReason: RSN
 }
 
 export interface CombinedVaccinationData<
@@ -227,6 +231,15 @@ export class DataService {
     return this.loadFile<HospCapacityDevelopmentData>(`hospcapacity/hospcapacity-development-${fileKey}-${geoKey}.json`)
   }
 
+  async loadHospCapacityCertAdhocDevelopmentData(
+    geoUnit: CantonGeoUnit | null,
+  ): Promise<HospCapacityCertAdhocDevelopmentData> {
+    const geoKey = (geoUnit || TopLevelGeoUnit.CH).toLowerCase()
+    return this.loadFile<HospCapacityCertAdhocDevelopmentData>(
+      `hospcapacity/hospcapacity-development-icu-certadhoc-${geoKey}.json`,
+    )
+  }
+
   async loadOverviewData(): Promise<OverviewDataV4> {
     return this.loadFile<OverviewDataV4>('overview/overview-v4.json')
   }
@@ -259,6 +272,11 @@ export class DataService {
     return this.loadFile<any>(filePath)
   }
 
+  async loadEpidemiologicHospReasonData(geoUnit: CantonGeoUnit | TopLevelGeoUnit): Promise<HospReasonAgeRangeData> {
+    const filePath = `epidemiologic/epidemiologic-agerange-hosp-reason-${geoUnit.toLowerCase()}.json`
+    return this.loadFile<HospReasonAgeRangeData>(filePath)
+  }
+
   async loadEpidemiologicMenuData(geoUnit: CantonGeoUnit | TopLevelGeoUnit): Promise<EpidemiologicMenuData> {
     const data: Array<readonly [GdiObject, any]> = await Promise.all([
       this.loadEpidemiologicDevelopmentData(EpidemiologicSimpleGdi.CASE, geoUnit).then(
@@ -282,12 +300,22 @@ export class DataService {
     gdi: EpidemiologicSimpleGdi,
     geoUnit: CantonGeoUnit | TopLevelGeoUnit,
   ): Promise<CombinedEpidemiologicData> {
-    const [geography, development, demography] = await Promise.all([
-      this.loadEpidemiologicGeographyData(gdi),
-      this.loadEpidemiologicDevelopmentData(gdi, geoUnit),
-      this.loadEpidemiologicDemographyData(gdi, geoUnit),
-    ])
-    return { geography, development, demography }
+    if (gdi === EpidemiologicSimpleGdi.HOSP) {
+      const [geography, development, demography, hospReason] = await Promise.all([
+        this.loadEpidemiologicGeographyData(gdi),
+        this.loadEpidemiologicDevelopmentData(gdi, geoUnit),
+        this.loadEpidemiologicDemographyData(gdi, geoUnit),
+        this.loadEpidemiologicHospReasonData(geoUnit),
+      ])
+      return <any>{ geography, development, demography, hospReason }
+    } else {
+      const [geography, development, demography] = await Promise.all([
+        this.loadEpidemiologicGeographyData(gdi),
+        this.loadEpidemiologicDevelopmentData(gdi, geoUnit),
+        this.loadEpidemiologicDemographyData(gdi, geoUnit),
+      ])
+      return <any>{ geography, development, demography, hospReason: undefined }
+    }
   }
 
   async loadVaccinationGeographyData(

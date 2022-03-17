@@ -2,7 +2,7 @@ import { AfterViewInit, Directive, ElementRef, Input, OnChanges, SimpleChanges }
 
 @Directive({ selector: '[bagSvgAnimate]' })
 export class SvgAnimateDirective implements OnChanges, AfterViewInit {
-  /** state input in form {selector:state} - will be animated when state == true */
+  /** state input in form {selector:state} - will be animated when state === true */
   @Input('bagSvgAnimate')
   states: Record<string, boolean> | null
 

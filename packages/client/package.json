@@ -2,7 +2,7 @@
   "name": "@c19/client",
   "version": "0.0.0",
   "private": true,
-  "license": "UNLICENSED",
+  "license": "BSD-3-Clause",
   "author": "shiftcode GmbH <team@shiftcode.ch>",
   "contributors": [
     {

@@ -7,7 +7,7 @@
 >
   <bag-overview-card-warning *bagOverviewCardWarning key="OverviewCardHosp.HiddenWarning"></bag-overview-card-warning>
 
-  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'OverviewCardHosp.InfoText.Top'"></p>
+  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'IndicatorsDescription.OverviewCardHosp.General'"></p>
 
   <bag-key-value-list
     *ngIf="keyValueList$ | async as keyValueList"
@@ -24,7 +24,7 @@
     <bag-histogram-preview [data]="histogram"></bag-histogram-preview>
   </ng-container>
 
-  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'OverviewCardHosp.InfoText.Bottom'"></p>
+  <p *bagOverviewCardInfo bagOverviewCardHint [translate]="'IndicatorsDescription.OverviewCardHosp.Graph'"></p>
 
   <a
     *ngIf="facet !== 'print'"

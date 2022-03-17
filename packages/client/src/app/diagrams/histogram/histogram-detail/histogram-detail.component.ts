@@ -1,7 +1,7 @@
 import { ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges, ViewEncapsulation } from '@angular/core'
 import { isDefined } from '@c19/commons'
 import { Line, Selection } from 'd3'
-import { isSameDay } from 'date-fns'
+import { addDays, differenceInDays, isSameDay } from 'date-fns'
 import { COLOR_NO_CASE, COLORS_HISTOGRAM_DEFAULT } from '../../../shared/commons/colors.const'
 import { hexToRgb, rgbToHex } from '../../utils'
 import { HistogramEntry, NoDataBlock } from '../base-histogram.component'
@@ -120,6 +120,13 @@ export class HistogramDetailComponent<T extends HistogramDetailEntry>
 
       this.noDataBlocks = this.calcNoDataBlocks(hasDataFn)
       this.notExistingBlocks = this.calcNoDataBlocks(doesExistsFn)
+
+      // special handing for bar chart with weekly values
+      if (this.withWeeklyValues) {
+        this.firstDate = addDays(this.data[0].date, -3)
+        this.lastDate = addDays(this.data[this.data.length - 1].date, 3)
+        this.xCount = differenceInDays(this.lastDate, this.firstDate) + 1
+      }
     }
 
     // super.ngOnChanges repaints, noDataBlocks need to be set before repaint
